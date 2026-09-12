@@ -171,8 +171,10 @@ class EmailParser:
             "date": date,
             "message_id": message_id,
             "auth_results": str(self.msg.get("Authentication-Results", "")),
+            "auth_results_list": [str(x) for x in self.msg.get_all("Authentication-Results", [])],
             "received_spf": str(self.msg.get("Received-SPF", "")),
-            "dkim_signature": str(self.msg.get("DKIM-Signature", ""))
+            "dkim_signature": str(self.msg.get("DKIM-Signature", "")),
+            "dkim_signatures": [str(x) for x in self.msg.get_all("DKIM-Signature", [])]
         }
 
     def get_received_chain(self) -> List[Dict[str, Any]]:

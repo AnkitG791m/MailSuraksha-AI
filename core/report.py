@@ -309,19 +309,20 @@ class ForensicReportGenerator:
             story.append(t_pb)
             story.append(Spacer(1, 12))
 
-        # 10. Section 65B Digital Evidence Admissibility Certificate (Indian Evidence Act / BSA 2023)
-        story.append(Paragraph("<b>8. Statutory Certificate of Electronic Evidence (Section 65B Indian Evidence Act / Section 63 BSA 2023)</b>", h2_style))
+        # 10. Section 65B Digital Evidence Documentation Certificate (Indian Evidence Act / BSA 2023)
+        story.append(Paragraph("<b>8. Statutory Evidence Documentation Package (Section 65B Indian Evidence Act / Section 63 BSA 2023)</b>", h2_style))
         sec65b_text = (
-            "<b>FORENSIC INTEGRITY & STATUTORY ELECTRONIC EVIDENCE CERTIFICATE</b><br/><br/>"
-            f"1. This is to certify that the digital evidence associated with Case ID <b>{esc(self.report_id)}</b> "
-            f"(Evidence SHA-256: <code>{esc(hashes.get('sha256', 'N/A'))}</code>) was acquired, verified, and analyzed "
-            f"on <b>{esc(self.timestamp)}</b> using the automated MailGuardian AI Forensic Workstation (v1.0-SIH2026).<br/>"
-            "2. The cryptographic SHA-256 hashing and RFC parsing algorithms operated without hardware or software malfunction. "
-            "The bitstream integrity of the raw RFC 5322 electronic message was preserved throughout extraction and verification.<br/>"
-            "3. <b>Forensic Scope & Limitations:</b> Network indicators (origin IP, ASN, Geolocation) represent probabilistic routing leads; "
-            "physical actor identity cannot be solely inferred from network routing alone without ISP subscriber log correlation.<br/>"
-            "4. <b>Forensic Authority:</b> Security Operations Center & Digital Defense Unit | Examiner: <b>Codex Monarch (Lead Cyber Defense Architect)</b>.<br/>"
-            "5. <b>Legal Admissibility:</b> Forensic-ready evidence dossier prepared in compliance with Section 65B of Indian Evidence Act, 1872 & Section 63 of Bharatiya Sakshya Adhiniyam, 2023."
+            "<b>STATUTORY EVIDENCE DOCUMENTATION CERTIFICATE (EXAMINER SUPPORT RECORD)</b><br/><br/>"
+            f"1. <b>Evidence Identifier:</b> <code>{esc(self.report_id)}</code> | <b>Original Bitstream Hash (SHA-256):</b> <code>{esc(hashes.get('sha256', 'N/A'))}</code><br/>"
+            f"2. <b>Acquisition Timestamp (UTC):</b> <b>{esc(self.timestamp)}</b> | <b>Time Sync Reference:</b> UTC System Clock via NTP.<br/>"
+            "3. <b>Acquisition & Processing Tool:</b> MailSuraksha AI Forensic Workstation (v2.1.0-SOC) operating on deterministic RFC 5322/7489 parsers.<br/>"
+            "4. <b>Integrity Baseline:</b> The SHA-256 cryptographic hash of the original electronic bitstream was recorded immediately upon ingestion prior to memory representation. "
+            "No modification was made to the underlying raw evidence.<br/>"
+            "5. <b>Forensic Attribution Scope:</b> Geolocation, candidate origin IP, and Autonomous System Numbers represent probabilistic network routing leads. "
+            "Conclusive human actor attribution requires judicial correlation with serving ISP subscriber allocation records.<br/>"
+            "6. <b>Examiner Certification & Legal Notice:</b><br/>"
+            "<i>\"This package is intended to support an examiner's electronic evidence documentation and chain-of-custody verification under Section 65B of the Indian Evidence Act, 1872 / Section 63 of Bharatiya Sakshya Adhiniyam, 2023. It does not independently establish legal admissibility without examiner testimony and verified judicial affidavit.\"</i><br/><br/>"
+            "<b>Examiner Signature:</b> ___________________________ &nbsp;&nbsp;&nbsp;&nbsp; <b>Designation:</b> Lead SOC Analyst / Digital Evidence Examiner"
         )
         sec65b_data = [[Paragraph(sec65b_text, body_style)]]
         t_sec65b = Table(sec65b_data, colWidths=[540])

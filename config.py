@@ -78,11 +78,33 @@ class Settings:
     WHOIS_CACHE_TTL: int = int(os.getenv("WHOIS_CACHE_TTL", "604800"))
     GEO_CACHE_TTL: int = int(os.getenv("GEO_CACHE_TTL", "604800"))
 
-    # Risk thresholds
+    # Risk thresholds & scoring version
+    SCORING_VERSION: str = "2026.1"
     LOCAL_LOW_THRESHOLD: float = 50.0
     LOCAL_HIGH_THRESHOLD: float = 70.0
     CLEAN_THRESHOLD: float = 30.0
     SUSPICIOUS_THRESHOLD: float = 60.0
+
+    # Trust Model Configuration
+    # Only Authentication-Results headers whose authserv-id matches these will be trusted
+    @property
+    def TRUSTED_AUTHSERV_IDS(self) -> list[str]:
+        raw = os.getenv("TRUSTED_AUTHSERV_IDS", "mailsuraksha.internal,mx.corporate.in,protection.outlook.com,google.com").strip()
+        return [item.strip().lower() for item in raw.split(",") if item.strip()]
+
+    # Configured organizational relays and boundary MTAs (CIDR or IPs)
+    @property
+    def TRUSTED_RELAYS(self) -> list[str]:
+        raw = os.getenv("TRUSTED_RELAYS", "10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,127.0.0.0/8").strip()
+        return [item.strip() for item in raw.split(",") if item.strip()]
+
+    # Known trustworthy major mail infrastructure domains for relay metadata evaluation
+    TRUSTED_PROVIDER_DOMAINS: list[str] = [
+        "google.com", "outlook.com", "microsoft.com", "amazonses.com", "sendgrid.net", "mailgun.org"
+    ]
+
+    # Threat Intel timeouts and privacy settings
+    THREAT_INTEL_TIMEOUT_SECONDS: float = float(os.getenv("THREAT_INTEL_TIMEOUT_SECONDS", "4.0"))
 
 settings = Settings()
 settings.DATA_DIR.mkdir(parents=True, exist_ok=True)

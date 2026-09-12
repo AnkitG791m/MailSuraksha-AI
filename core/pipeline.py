@@ -1,4 +1,5 @@
 import uuid
+import hashlib
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict, Any, Optional
@@ -49,6 +50,21 @@ class AnalysisPipeline:
         report_id = f"SECX-{uuid.uuid4().hex[:10].upper()}"
         timestamp = datetime.now(timezone.utc).isoformat()
 
+        # Step 0: Immutable Evidence Integrity Hashing (pre-parse baseline)
+        raw_sha256 = hashlib.sha256(raw_bytes).hexdigest()
+        raw_md5 = hashlib.md5(raw_bytes).hexdigest()
+        evidence_metadata = {
+            "evidence_id": report_id,
+            "sha256": raw_sha256,
+            "md5": raw_md5,
+            "byte_size": len(raw_bytes),
+            "acquisition_utc": timestamp,
+            "tool_name": "MailSuraksha AI Forensic Engine",
+            "tool_version": "2.1.0",
+            "parser_policy": "RFC 5322 Standards-Compliant",
+            "time_sync_reference": "UTC System Clock"
+        }
+
         # Step 1 & 2: Ingestion & Forensic Parsing
         parser = EmailParser(raw_bytes)
         parsed_data = parser.parse_all()
@@ -57,10 +73,10 @@ class AnalysisPipeline:
         auth_checker = AuthChecker(parsed_data["headers"])
         auth_results = auth_checker.check_all()
 
-        # Step 4: Origin IP Extraction (walking Received chain bottom-to-top)
-        ip_extractor = OriginIPExtractor(parsed_data["received_chain"])
+        # Step 4: Origin IP & Relay Chain Anomaly Assessment
+        ip_extractor = OriginIPExtractor(parsed_data["received_chain"], auth_context=auth_results)
         origin_ip_data = ip_extractor.extract()
-        origin_ip = origin_ip_data.get("origin_ip")
+        origin_ip = origin_ip_data.get("candidate_origin_ip") or origin_ip_data.get("origin_ip")
 
         # Step 5: WHOIS & Domain Age (<30 day domain flagging)
         sender_domain = parsed_data["headers"].get("from", {}).get("domain", "")
@@ -107,9 +123,9 @@ class AnalysisPipeline:
         # Step 8: AI/ML Risk Classifier (NLP TF-IDF + structural features)
         ml_results = self.classifier.classify(parsed_data, auth_results, whois_data, threat_data)
 
-        # Step 9: Risk Scoring (weighted combination -> Final Verdict)
+        # Step 9: Risk Scoring (calibrated combination -> Final Verdict)
         risk_verdict = self.risk_scorer.calculate_verdict(
-            parsed_data, auth_results, whois_data, geo_data, threat_data, ml_results
+            parsed_data, auth_results, whois_data, geo_data, threat_data, ml_results, origin_data=origin_ip_data
         )
 
         # Step 9.2: Quishing (QR Code Phishing) Analysis
@@ -148,7 +164,7 @@ class AnalysisPipeline:
             attachments=parsed_data.get("attachments", [])
         )
 
-        # Build Graph-based Correlation Network
+        # Build Graph-based Correlation Network with Non-Causal Semantics
         correlation_graph = self._build_correlation_graph(
             report_id=report_id,
             filename=filename,
@@ -165,6 +181,7 @@ class AnalysisPipeline:
             "report_id": report_id,
             "filename": filename,
             "analyzed_at": timestamp,
+            "evidence_metadata": evidence_metadata,
             "hashes": parsed_data["hashes"],
             "headers": parsed_data["headers"],
             "received_chain": parsed_data["received_chain"],
@@ -179,144 +196,160 @@ class AnalysisPipeline:
             "local_analysis": local_analysis,
             "threat_memory": correlation_data,
             "threat_intel": threat_data,
-            "quishing": quishing_result,
-            "ml": ml_results,
+            "classifier": ml_results,
             "risk": risk_verdict,
+            "risk_score": risk_verdict.get("risk_score"),
+            "risk_band": risk_verdict.get("risk_band"),
+            "analysis_confidence": risk_verdict.get("analysis_confidence"),
+            "risk_factors": risk_verdict.get("factors", []),
+            "playbooks": risk_verdict.get("playbook_items", []),
+            "origin_assessment": origin_ip_data.get("origin_assessment", {}),
+            "candidate_origin_ip": origin_ip_data.get("candidate_origin_ip"),
+            "quishing": quishing_result,
+            "ai_insights": ai_insights,
             "correlation_graph": correlation_graph,
-            "playbook_actions": risk_verdict.get("playbook_actions", []),
-            "scoring_explanations": risk_verdict.get("scoring_explanations", []),
-            "ai_insights": ai_insights
+            "graph_data": correlation_graph,
+            "status": "complete"
         }
 
         # Step 10: Record into Threat Memory if suspicious/malicious
         threat_memory_engine.record(analysis_result)
 
-        # Generate Forensic PDF and JSON reports
+        # Step 10: Persist to DB & Generate Reports
+        db.save_analysis(report_id, filename, analysis_result)
+
         pdf_path = settings.REPORTS_DIR / f"{report_id}.pdf"
         json_path = settings.REPORTS_DIR / f"{report_id}.json"
-        
         try:
             report_gen = ForensicReportGenerator(analysis_result)
             report_gen.generate_pdf(pdf_path)
             report_gen.export_json(json_path)
             analysis_result["pdf_report_path"] = str(pdf_path)
             analysis_result["json_report_path"] = str(json_path)
-        except Exception as r_err:
-            logger.error(f"Report generation error for {report_id}: {r_err}", exc_info=True)
+            analysis_result["reports"] = {
+                "pdf_path": str(pdf_path),
+                "json_path": str(json_path)
+            }
+        except Exception:
             analysis_result["pdf_report_path"] = None
             analysis_result["json_report_path"] = None
-
-        # Persist to database
-        db.save_analysis(report_id, filename, analysis_result)
+            analysis_result["reports"] = {
+                "pdf_path": None,
+                "json_path": None
+            }
 
         return analysis_result
 
-    def _build_correlation_graph(self, report_id: str, filename: str,
-                                parsed_data: Dict[str, Any],
-                                origin_ip_data: Dict[str, Any],
-                                geo_data: Dict[str, Any],
-                                threat_data: Dict[str, Any],
-                                correlation_data: Dict[str, Any],
-                                risk_verdict: Dict[str, Any]) -> Dict[str, Any]:
+    def _build_correlation_graph(
+        self,
+        report_id: str,
+        filename: str,
+        parsed_data: Dict[str, Any],
+        origin_ip_data: Dict[str, Any],
+        geo_data: Dict[str, Any],
+        threat_data: Dict[str, Any],
+        correlation_data: Dict[str, Any],
+        risk_verdict: Dict[str, Any]
+    ) -> Dict[str, Any]:
         """
-        Builds a multi-dimensional graph of threat indicators:
-        Nodes: Email, Sender Domain, Origin IP, ASN, URLs, Attachments, Campaign Cluster.
-        Edges: Relationships connecting entities (sent_from, resolves_to, hosted_on, delivers).
+        Constructs an observational indicator correlation graph using non-causal relationship
+        semantics (observed_in, candidate_origin_for, hosted_by, associated_with, etc.)
+        pursuant to forensic rigor criteria.
         """
         nodes = []
         edges = []
         node_ids = set()
 
-        def add_node(nid: str, label: str, ntype: str, group: str, color: str, details: str = ""):
+        def add_node(nid: str, label: str, ntype: str, category: str, color: str, details: str = ""):
             if nid and nid not in node_ids:
                 node_ids.add(nid)
                 nodes.append({
                     "id": nid,
                     "label": label[:30] + ("..." if len(label) > 30 else ""),
                     "type": ntype,
-                    "group": group,
+                    "category": category,  # 'observed_fact', 'derived_relationship', 'external_intelligence'
                     "color": color,
                     "details": details or label
                 })
 
-        def add_edge(src: str, dst: str, relation: str, weight: int = 1):
+        def add_edge(src: str, dst: str, relation: str, confidence: float = 0.95, evidence_refs: list = None, weight: int = 1):
             if src in node_ids and dst in node_ids:
                 edges.append({
                     "source": src,
                     "target": dst,
+                    "label": relation,
                     "relation": relation,
+                    "relationship_confidence": confidence,
+                    "evidence_refs": evidence_refs or [],
                     "weight": weight
                 })
 
-        # Root Email Node
+        # Root Email Node (Observed Fact)
         v_color = "#ef4444" if risk_verdict.get("verdict") == "Malicious" else ("#f59e0b" if risk_verdict.get("verdict") == "Suspicious" else "#10b981")
-        add_node(report_id, filename, "email", "root", v_color, f"Email: {filename} (Score: {risk_verdict.get('risk_score', 0)}/100)")
+        add_node(report_id, filename, "email", "observed_fact", v_color, f"Email Evidence: {filename} (Score: {risk_verdict.get('risk_score', 0)}/100)")
 
-        # Sender Domain
+        # Sender Domain (Observed Fact)
         sender_domain = parsed_data.get("headers", {}).get("from", {}).get("domain", "")
         if sender_domain:
             d_id = f"domain:{sender_domain}"
-            add_node(d_id, sender_domain, "domain", "identity", "#8b5cf6", f"Sender Domain: {sender_domain}")
-            add_edge(report_id, d_id, "sent_from")
+            add_node(d_id, sender_domain, "domain", "observed_fact", "#8b5cf6", f"RFC 5322 From Domain: {sender_domain}")
+            add_edge(d_id, report_id, "observed_in", confidence=1.0, evidence_refs=["header:from"])
 
-        # Reply-To Domain (if mismatch)
+        # Reply-To Domain (Observed Fact)
         reply_domain = parsed_data.get("headers", {}).get("reply_to", {}).get("domain", "")
         if reply_domain and reply_domain != sender_domain:
             r_id = f"reply:{reply_domain}"
-            add_node(r_id, reply_domain, "reply_to", "identity", "#ec4899", f"Reply-To Mismatch Domain: {reply_domain}")
-            add_edge(report_id, r_id, "redirects_reply_to")
+            add_node(r_id, reply_domain, "reply_to", "observed_fact", "#ec4899", f"RFC 5322 Reply-To Domain: {reply_domain}")
+            add_edge(r_id, report_id, "linked_from", confidence=1.0, evidence_refs=["header:reply_to"])
 
-        # Origin IP
-        origin_ip = origin_ip_data.get("origin_ip")
-        if origin_ip:
-            ip_id = f"ip:{origin_ip}"
-            add_node(ip_id, origin_ip, "ip", "infrastructure", "#3b82f6", f"Origin Public IP: {origin_ip}")
-            if sender_domain:
-                add_edge(f"domain:{sender_domain}", ip_id, "relayed_through")
-            else:
-                add_edge(report_id, ip_id, "relayed_through")
+        # Candidate Origin IP (Derived Relationship)
+        candidate_ip = origin_ip_data.get("candidate_origin_ip") or origin_ip_data.get("origin_ip")
+        cand_conf = origin_ip_data.get("candidate_attribution_confidence", 0.70)
+        if candidate_ip:
+            ip_id = f"ip:{candidate_ip}"
+            add_node(ip_id, candidate_ip, "ip", "derived_relationship", "#3b82f6", f"Candidate Origin IP: {candidate_ip} (Confidence: {int(cand_conf*100)}%)")
+            add_edge(ip_id, report_id, "candidate_origin_for", confidence=cand_conf, evidence_refs=["header:received:earliest"])
 
-            # ASN / ISP Node
+            # ASN / Network Infrastructure (External Intelligence)
             isp = geo_data.get("isp") or geo_data.get("as_number", "")
             if isp and isp != "Unknown":
                 asn_id = f"asn:{isp[:24]}"
-                add_node(asn_id, isp[:20], "asn", "infrastructure", "#6366f1", f"ASN / Network Provider: {isp}")
-                add_edge(ip_id, asn_id, "announced_by")
+                add_node(asn_id, isp[:20], "asn", "external_intelligence", "#6366f1", f"Network Routing Provider / ASN: {isp}")
+                add_edge(ip_id, asn_id, "hosted_by", confidence=0.85, evidence_refs=["geo:bgp_asn"])
 
-        # URLs / Hyperlinks (up to 4 prominent links)
+        # URLs / Hyperlinks (Observed Fact)
         extracted_urls = parsed_data.get("urls", {}).get("urls", [])
         for u in extracted_urls[:4]:
             u_str = u if isinstance(u, str) else u.get("url", "")
             if u_str:
                 u_id = f"url:{u_str[:40]}"
-                add_node(u_id, u_str[:25], "url", "payload", "#06b6d4", f"Embedded Link: {u_str}")
-                add_edge(report_id, u_id, "contains_url")
+                add_node(u_id, u_str[:25], "url", "observed_fact", "#06b6d4", f"Observed Hyperlink: {u_str}")
+                add_edge(u_id, report_id, "observed_in", confidence=1.0, evidence_refs=["body:html_anchor"])
 
-        # Dangerous or suspicious attachments
+        # Attachments (Observed Fact)
         attachments = parsed_data.get("attachments", [])
         for att in attachments[:3]:
             att_name = att.get("filename", "attachment")
             att_id = f"att:{att_name}"
             is_dang = att.get("is_dangerous", False)
-            add_node(att_id, att_name, "attachment", "payload", "#f97316" if is_dang else "#64748b", f"Attachment: {att_name} ({att.get('size_bytes', 0)} B)")
-            add_edge(report_id, att_id, "carries_attachment")
+            add_node(att_id, att_name, "attachment", "observed_fact", "#f97316" if is_dang else "#64748b", f"Attachment: {att_name} ({att.get('size_bytes', 0)} B)")
+            add_edge(att_id, report_id, "observed_in", confidence=1.0, evidence_refs=["mime:content_disposition"])
 
-        # Campaign Correlation Node
+        # Campaign Correlation Node (External Intelligence / Hypothesis)
         campaign = correlation_data.get("detected_campaign")
         if campaign and campaign != "None":
             camp_id = f"camp:{campaign}"
-            add_node(camp_id, campaign, "campaign", "threat_actor", "#b91c1c", f"Correlated Attack Campaign: {campaign}")
-            add_edge(report_id, camp_id, "attributed_to_cluster")
-            if origin_ip:
-                add_edge(f"ip:{origin_ip}", camp_id, "co_observed_in_campaign")
+            add_node(camp_id, campaign, "campaign", "external_intelligence", "#b91c1c", f"Correlated Attack Cluster: {campaign}")
+            add_edge(camp_id, report_id, "associated_with", confidence=0.75, evidence_refs=["threat_memory:cluster"])
 
         return {
             "nodes": nodes,
             "edges": edges,
+            "links": edges,  # Backward compatibility for frontend
             "total_nodes": len(nodes),
             "total_edges": len(edges),
             "density": round(len(edges) / max(1, len(nodes)), 2)
         }
 
-pipeline = AnalysisPipeline()
 
+pipeline = AnalysisPipeline()

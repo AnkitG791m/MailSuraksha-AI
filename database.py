@@ -95,12 +95,19 @@ class Database:
 
     # --- Analysis Logs ---
 
-    def save_analysis(self, report_id: str, filename: str, data: Dict[str, Any]):
+    def save_analysis(self, report_id: Any, filename: Optional[str] = None, data: Optional[Dict[str, Any]] = None):
+        if isinstance(report_id, dict) and data is None:
+            data = report_id
+            report_id = data.get("report_id") or data.get("id") or "SECX-UNKNOWN"
+            filename = filename or data.get("filename") or "upload.eml"
+        elif data is None:
+            data = {}
+
         headers = data.get("headers", {})
         risk = data.get("risk", {})
-        origin_ip = data.get("origin_ip", {}).get("origin_ip")
+        origin_ip = data.get("origin_ip", {}).get("origin_ip") or data.get("candidate_origin_ip")
         country = data.get("geo", {}).get("country")
-        sha256 = data.get("hashes", {}).get("sha256")
+        sha256 = data.get("hashes", {}).get("sha256") or data.get("evidence_metadata", {}).get("sha256")
         now_iso = datetime.now(timezone.utc).isoformat()
 
         with self._get_connection() as conn:

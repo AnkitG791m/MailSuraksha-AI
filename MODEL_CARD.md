@@ -2,6 +2,7 @@
 
 **Model Name:** MailSuraksha Forensic Gradient Ensemble (FGE-v2)  
 **Version:** 2.1.0  
+**Status:** Target benchmark specification — provisional and subject to independent validation against the reproducible test harness.  
 **Release Date:** September 2026  
 **License:** Apache 2.0  
 **Model Type:** Supervised Hybrid Gradient Boosting Classifier (LightGBM + Random Forest Meta-Estimator)  
@@ -9,9 +10,13 @@
 
 ---
 
-## 1. Executive Summary
+## 1. Executive Summary & Verification Notice
 
-MailSuraksha FGE-v2 is an explainable machine learning model specifically optimized for email threat classification and forensic attribution. Rather than treating emails as mere blocks of text, the model operates on a rich 42-dimensional forensic feature vector extracted across header cryptographic integrity, DNS authentication alignment (RFC 7489), received relay path divergence, domain lexical entropy, and multi-source threat intelligence.
+> [!IMPORTANT]
+> **Provisional Evaluation Notice:**  
+> The quantitative metrics presented in this document represent **target benchmark specifications** established during prototyping. They are provisional and not yet independently verified across multi-institution evaluation sets. In strict adherence to forensic rigor, production deployment requires executing the reproducible evaluation harness described in Section 4.
+
+MailSuraksha FGE-v2 is an explainable machine learning model engineered for email threat classification and forensic attribution. The model operates on a 42-dimensional forensic feature vector extracted across header cryptographic integrity, DNS authentication alignment (RFC 7489), received relay path divergence, domain lexical entropy, and multi-source threat intelligence.
 
 The model classifies ingested `.eml` emails into three actionable risk categories:
 - **Clean (Risk Score: 0–30):** Valid authentication, standard relay transit, high-reputation infrastructure.
@@ -20,55 +25,65 @@ The model classifies ingested `.eml` emails into three actionable risk categorie
 
 ---
 
-## 2. Dataset & Training Methodology
+## 2. Target Dataset Specifications
 
-### 2.1 Dataset Composition
-The model was trained and evaluated on a benchmark corpus of **18,450 emails** rigorously sanitized and deduplicated:
+### 2.1 Proposed Training Corpus
+Target training and evaluation corpus composition:
 
-| Sub-Corpus Source | Category | Samples | Description |
+| Sub-Corpus Source | Proposed Category | Samples | Description |
 | :--- | :--- | :--- | :--- |
-| **Enron Email Corpus (Clean Subset)** | Benign / Enterprise | 7,200 | Real-world corporate communication showing normal internal routing. |
+| **Enron Email Corpus (Clean Subset)** | Benign / Enterprise | 7,200 | Corporate communication showing normal internal routing. |
 | **SpamAssassin Public Corpus** | Spam / Low-Risk | 3,850 | Unsolicited bulk marketing, low-entropy spam, and automated notifications. |
 | **APWG Phishing Archive & OpenPhish** | Malicious / Phishing | 4,200 | Credential harvesting, executive impersonation, lookalike domains. |
-| **Internal SOC & CERT-In Adversarial Vectors** | Advanced Threats | 3,200 | BEC (Business Email Compromise), zero-hop spoofing, homoglyph punycode attacks, anomalous relay injection. |
-| **Total Ingested Corpus** | — | **18,450** | Fully labeled with ground-truth cryptographic verification. |
+| **CERT-In / Synthetic Adversarial Vectors** | Advanced Threats | 3,200 | BEC, zero-hop spoofing, homoglyph punycode attacks, anomalous relay injection. |
+| **Total Ingested Corpus** | — | **18,450** | Target labeled corpus with cryptographic verification. |
 
-### 2.2 Data Split
-- **Train Split:** 80% (14,760 emails) with 5-fold stratified cross-validation.
-- **Holdout Test Split:** 20% (3,690 emails) completely isolated until final evaluation.
-
----
-
-## 3. Quantitative Performance Metrics
-
-Evaluated on the 3,690 holdout test set with zero data leakage:
-
-| Metric | Score | Industry Benchmark | Margin of Superiority |
-| :--- | :---: | :---: | :---: |
-| **Overall Accuracy** | **98.2%** | 94.5% | +3.7% |
-| **Precision (Malicious)** | **98.4%** | 93.8% | +4.6% (Significantly reduced false positives) |
-| **Recall / True Positive Rate** | **97.1%** | 91.2% | +5.9% (Catches elusive low-volume BEC attacks) |
-| **F1-Score (Macro)** | **0.977** | 0.925 | +0.052 |
-| **Area Under ROC Curve (ROC-AUC)** | **0.992** | 0.961 | Exceptionally high discriminative capability |
-| **False Discovery Rate (FDR)** | **1.6%** | 6.2% | Prevents alert fatigue in enterprise SOCs |
+### 2.2 Proposed Split Protocol
+- **Train Split:** 80% (14,760 emails) with 5-fold stratified cross-validation (random seed: 42).
+- **Holdout Test Split:** 20% (3,690 emails) held back for evaluation.
 
 ---
 
-## 4. Feature Engineering (42 Forensic Features)
+## 3. Target Performance Metrics (Provisional Specifications)
+
+Target operational metrics established for model tuning:
+
+| Metric | Target Specification | Note |
+| :--- | :---: | :--- |
+| **Overall Accuracy** | **98.2%** | Target benchmark on holdout test set |
+| **Precision (Malicious)** | **98.4%** | Target specification to minimize false positive quarantines |
+| **Recall / True Positive Rate** | **97.1%** | Target specification to detect stealthy low-volume BEC attacks |
+| **F1-Score (Macro)** | **0.977** | Harmonic balance between precision and recall |
+| **Area Under ROC Curve (ROC-AUC)** | **0.992** | Target discriminative capability |
+| **False Positive Rate (FPR)** | **< 1.0%** | Designed to prevent alert fatigue in enterprise SOCs |
+
+*Disclaimer: These figures are target engineering specifications and should not be cited as certified production metrics until verified by an independent third-party audit.*
+
+---
+
+## 4. Reproducible Evaluation Harness Protocol
+
+To independently verify these metrics, evaluators must run:
+1. `python3 -m unittest discover -s tests -v` (core engine tests).
+2. Execute the evaluation script with a fixed seed (`seed=42`).
+3. Verify that the confusion matrix does not exhibit data leakage between train and test splits.
+
+---
+
+## 5. Feature Engineering (42 Forensic Features)
 
 1. **Cryptographic Alignment (10 features):**
-   - SPF status (pass, softfail, fail, none, neutral)
-   - DKIM status & signature algorithm bitness
-   - DMARC effective policy (`none`, `quarantine`, `reject`)
+   - SPF authentication result (pass, softfail, fail, none, neutral)
+   - DKIM multi-signature authentication statuses
+   - DMARC published policy (`none`, `quarantine`, `reject`)
    - RFC 7489 Strict vs. Relaxed identifier alignment (Header From vs RFC 5321 MAIL FROM)
    - DKIM domain (`d=`) alignment with Header From
 
 2. **Routing & Relay Divergence (8 features):**
-   - Number of Received headers (hop count)
-   - Earliest observed hop vs. border relay IP delta
+   - Monotonic Received header timestamp verification
+   - Hop count and public/private IP boundary transitions
    - Bogon/Private IP leakage in external transit hops
    - Reverse DNS pointer mismatch (PTR record validation)
-   - Transit timestamp monotonically increasing validation (clock drift anomaly)
 
 3. **Domain & Identity Lexicals (10 features):**
    - Display name spoofing (VIP name match with external domain)
@@ -83,48 +98,17 @@ Evaluated on the 3,690 holdout test set with zero data leakage:
    - VirusTotal IP positive detection count
    - VirusTotal URL/domain malicious detection count
    - AlienVault OTX active threat pulse association
-   - Historical sender domain reputation score
 
 5. **Structural & Payload Indicators (6 features):**
-   - Suspicious MIME attachment extensions (`.vbs`, `.iso`, `.exe`, `.hta`, `.scr`)
+   - High-risk MIME attachment extensions (`.vbs`, `.iso`, `.exe`, `.hta`, `.scr`)
    - Hidden or obfuscated HTML JavaScript injection
    - Text-to-image ratio (image-only phishing detection)
-   - Urgency sentiment score (VADER/heuristic lexical analysis)
-
----
-
-## 5. Feature Importance Breakdown
-
-Top features driving the model predictions:
-- RFC 7489 DMARC Alignment Violation: **24.2%**
-- Reply-To Domain Divergence: **18.5%**
-- Threat Intelligence (AbuseIPDB + VirusTotal): **16.1%**
-- Display Name Impersonation: **11.8%**
-- Homoglyph / Lookalike Domain Distance: **9.4%**
-- Monotonic Hop Timestamp Anomaly: **7.1%**
-- High-Risk MIME Attachment Types: **5.3%**
-- Domain Registration Age < 14 Days: **4.8%**
-- Other Structural Heuristics: **2.8%**
+   - Urgency sentiment score (lexical heuristic analysis)
 
 ---
 
 ## 6. Interpretability & Explainability
 
-MailSuraksha enforces transparency in high-stakes security operations:
-- **No Black-Box Scores:** Every score is paired with a quantitative **Impact Points Breakdown** (e.g., `+30 pts: DMARC Policy Violation`, `+25 pts: Reply-To Divergence`).
-- **Standardized Incident Playbooks:** Each prediction triggers step-by-step SOC containment procedures (M365 PowerShell quarantine, firewall CIDR blocklist, active user credential reset).
-
----
-
-## 7. Inference Latency & System Footprint
-
-- **Inference Time per Email:** 28 ms to 45 ms (CPU-only, no specialized GPU required).
-- **Model Binary Footprint:** 14.8 MB.
-- **Memory Consumption:** < 85 MB resident set size under active multi-threaded analysis.
-
----
-
-## 8. Limitations & Intended Use
-
-- **Intended Use:** Tier-1 and Tier-2 Security Operations Center (SOC) triage, digital forensics laboratories, incident response teams, and compliance auditing.
-- **Out-of-Scope Use:** Autonomous deletion of emails without human-in-the-loop validation in legal evidentiary proceedings.
+- **Decoupled Confidence:** Analysis confidence (completeness of data inputs) is tracked separately from risk score and candidate origin IP attribution.
+- **Calibrated Scoring Factors:** Structured signals with explicit impact points and severity levels under `scoring_version: "2026.1"`.
+- **Standardized Playbooks:** Actionable containment playbooks with scope, impact level, and analyst approval requirements.
