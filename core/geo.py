@@ -1,6 +1,7 @@
 import time
 import requests
 from typing import Dict, Any, Optional
+from config import settings
 
 # In-memory Geo cache {ip: (timestamp, data)}
 _GEO_CACHE: Dict[str, tuple] = {}
