@@ -1,0 +1,33 @@
+Received: from relay01.gateway-host.net (relay01.gateway-host.net [198.51.100.88])
+	by mail.company-finance.com (Postfix) with ESMTPS id 5C384B9
+	for <accounts-payable@company-finance.com>; Tue, 08 Sep 2026 14:02:11 +0000 (UTC)
+Received: from fake-smtp.bulletproof-host.is (fake-smtp.bulletproof-host.is [194.26.29.112])
+	by relay01.gateway-host.net (Postfix) with ESMTP id 2D119A
+	for <accounts-payable@company-finance.com>; Tue, 08 Sep 2026 14:02:08 +0000 (UTC)
+Authentication-Results: relay01.gateway-host.net;
+	dkim=fail reason="signature missing";
+	spf=softfail (relay01.gateway-host.net: transitioning domain of ceo@company-finance.com does not designate 194.26.29.112 as permitted sender) smtp.mailfrom=ceo@company-finance.com;
+	dmarc=fail (p=REJECT) header.from=company-finance.com
+From: "Jonathan Vance (CEO)" <ceo@company-finance.com>
+To: <accounts-payable@company-finance.com>
+Reply-To: executive-board-wire@secure-offshore-desk.net
+Return-Path: <spoofed-bounce@scam-relay-nodes.xyz>
+Subject: Confidential: Immediate Wire Transfer Request - Acquisition Escrow
+Date: Tue, 08 Sep 2026 14:01:45 +0000
+Message-ID: <ceo-direct-20260908140145@company-finance.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+
+Hi Sarah,
+
+I am currently in an executive committee meeting and unable to take phone calls. 
+We are finalizing a sensitive strategic acquisition and need an urgent wire transfer of $84,500 processed before 4:00 PM today to close the escrow account.
+
+Please process this immediately using the offshore instructions attached, or reply directly to this email so I can forward the beneficiary invoice details.
+
+Keep this strictly confidential until the official press release tomorrow morning.
+
+Thank you,
+Jonathan Vance
+Chief Executive Officer
+Company Finance Corp

@@ -1,0 +1,35 @@
+Received: from mail-relay-out.github.com (mail-relay-out.github.com [140.82.112.21])
+	by mx.acme-corp.com (Postfix) with ESMTPS id 4VxyzN001
+	for <developer@acme-corp.com>; Tue, 08 Sep 2026 09:15:30 +0000 (UTC)
+Received: from github-worker-04.internal (github-worker-04 [10.200.4.15])
+	by mail-relay-out.github.com (Postfix) with ESMTP id 8B90A1F
+	for <developer@acme-corp.com>; Tue, 08 Sep 2026 09:15:28 +0000 (UTC)
+Authentication-Results: mx.acme-corp.com;
+	dkim=pass header.i=@github.com header.s=s20210512 header.b=Abc123XY;
+	spf=pass (mx.acme-corp.com: domain of support@github.com designates 140.82.112.21 as permitted sender) smtp.mailfrom=support@github.com;
+	dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=github.com
+Received-SPF: pass (mx.acme-corp.com: domain of support@github.com designates 140.82.112.21 as permitted sender)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=github.com; s=s20210512;
+	t=1788858928; bh=zW4u8xK=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
+	b=Abc123XYlegitDkimSignatureValid==
+From: GitHub Support <support@github.com>
+To: developer@acme-corp.com
+Reply-To: support@github.com
+Return-Path: <support@github.com>
+Subject: [GitHub] Security advisory alert: dependencies updated in securex-repo
+Date: Tue, 08 Sep 2026 09:15:25 +0000
+Message-ID: <github-alert-20260908091525@github.com>
+MIME-Version: 1.0
+Content-Type: text/html; charset="UTF-8"
+
+<!DOCTYPE html>
+<html>
+<head><title>GitHub Security Advisory</title></head>
+<body>
+<p>Hello developer,</p>
+<p>Dependabot detected 0 vulnerabilities in your repository <strong>securex-repo</strong>. All security dependencies are up to date as of today's weekly scan.</p>
+<p>You can view your repository settings at <a href="https://github.com/settings/security">https://github.com/settings/security</a>.</p>
+<p>Best regards,<br/>GitHub Security Team</p>
+</body>
+</html>

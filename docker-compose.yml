@@ -1,0 +1,17 @@
+services:
+  securex:
+    build: .
+    container_name: securex_platform
+    ports:
+      - "8000:8000"
+    environment:
+      - APP_NAME=SecureX
+      - APP_ENV=production
+      - DEBUG=False
+      - VIRUSTOTAL_API_KEY=${VIRUSTOTAL_API_KEY:-}
+      - ABUSEIPDB_API_KEY=${ABUSEIPDB_API_KEY:-}
+      - ALIENVAULT_OTX_API_KEY=${ALIENVAULT_OTX_API_KEY:-}
+    volumes:
+      - ./data:/app/data
+      - ./reports:/app/reports
+    restart: unless-stopped

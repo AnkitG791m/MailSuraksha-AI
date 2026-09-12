@@ -1,0 +1,35 @@
+Received: from edge-smtp01.acme-corp.com (edge-smtp01.acme-corp.com [198.51.100.2])
+	by mail.acme-corp.com (Postfix) with ESMTPS id 3F4K9B
+	for <victim@acme-corp.com>; Tue, 08 Sep 2026 11:20:10 +0000 (UTC)
+Received: from unknown-vps.compromised-cloud.ru (unknown-vps.compromised-cloud.ru [185.220.101.5])
+	by edge-smtp01.acme-corp.com (Postfix) with ESMTP id 9A72BC45
+	for <victim@acme-corp.com>; Tue, 08 Sep 2026 11:20:05 +0000 (UTC)
+Authentication-Results: edge-smtp01.acme-corp.com;
+	dkim=none;
+	spf=fail (edge-smtp01.acme-corp.com: domain of security-alert@microsoft-support-verify.com designates 185.220.101.5 as not permitted sender) smtp.mailfrom=security-alert@microsoft-support-verify.com;
+	dmarc=fail (p=NONE) header.from=microsoft-support-verify.com
+Received-SPF: fail (edge-smtp01.acme-corp.com: domain of security-alert@microsoft-support-verify.com designates 185.220.101.5 as not permitted sender)
+From: "Microsoft Security Center" <security-alert@microsoft-support-verify.com>
+To: victim@acme-corp.com
+Reply-To: credential-collector@temp-mail-relay.xyz
+Return-Path: <bounce@microsoft-support-verify.com>
+Subject: URGENT: Account Suspension Notice - Immediate Verification Required
+Date: Tue, 08 Sep 2026 11:19:40 +0000
+Message-ID: <threat-20260908111940@microsoft-support-verify.com>
+MIME-Version: 1.0
+Content-Type: text/html; charset="UTF-8"
+
+<!DOCTYPE html>
+<html>
+<body>
+<h2>CRITICAL SECURITY ALERT</h2>
+<p>Dear Valued User,</p>
+<p>We detected unauthorized login attempts to your corporate account from an unknown IP address. Your mailbox access will be <strong>terminated within 24 hours</strong> unless you immediately verify your identity.</p>
+<p>Failure to act immediately will result in permanent deletion of your messages and account data.</p>
+<p>Please click the secure link below to confirm your password and restore full access:</p>
+<p style="padding: 12px; background: #e02424; color: white; display: inline-block;">
+  <a href="http://login-security-update-993.top/verify.php?id=928341" style="color: white; font-weight: bold; text-decoration: none;">https://login.microsoftonline.com/common/oauth2/verify-account</a>
+</p>
+<p>Reference Ticket: MS-SEC-99214<br/>Microsoft Security &amp; Compliance Team</p>
+</body>
+</html>

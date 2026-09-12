@@ -1,0 +1,145 @@
+/* MailGuardian AI - Enterprise Cybersecurity SOC Stylesheet */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+:root {
+  --bg-main: #f8fafc;
+  --bg-card: #ffffff;
+  --bg-subtle: #f1f5f9;
+  --border-color: #e2e8f0;
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --brand-blue: #2563eb;
+  --brand-indigo: #1e40af;
+  --accent-emerald: #10b981;
+  --accent-amber: #f59e0b;
+  --accent-orange: #f97316;
+  --accent-crimson: #ef4444;
+}
+
+html.dark {
+  --bg-main: #0b0f19;
+  --bg-card: #121829;
+  --bg-subtle: #0e1424;
+  --border-color: #1e293b;
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+code, pre, .font-mono {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Custom Sleek Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 6px;
+}
+html.dark ::-webkit-scrollbar-thumb {
+  background: #334155;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Leaflet Map Theme Overrides */
+.leaflet-container {
+  font-family: 'Inter', sans-serif !important;
+  border-radius: 12px;
+}
+html.dark .leaflet-tile {
+  filter: brightness(0.65) invert(1) contrast(2.8) hue-rotate(200deg) saturate(0.35) brightness(0.7);
+}
+.leaflet-popup-content-wrapper {
+  background: var(--bg-card) !important;
+  color: var(--text-main) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1) !important;
+  padding: 4px !important;
+}
+.leaflet-popup-tip {
+  background: var(--bg-card) !important;
+}
+
+/* Animated Radar Pulse Marker on Map */
+.pulse-marker {
+  display: block;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #ef4444;
+  cursor: pointer;
+  box-shadow: 0 0 0 rgba(239, 68, 68, 0.6);
+  animation: marker-pulse 1.8s infinite;
+}
+.pulse-marker.clean {
+  background: #10b981;
+  box-shadow: 0 0 0 rgba(16, 185, 129, 0.6);
+  animation: marker-pulse-clean 1.8s infinite;
+}
+.pulse-marker.suspicious {
+  background: #f59e0b;
+  box-shadow: 0 0 0 rgba(245, 158, 11, 0.6);
+  animation: marker-pulse-suspicious 1.8s infinite;
+}
+
+@keyframes marker-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.8); }
+  70% { box-shadow: 0 0 0 14px rgba(239, 68, 68, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+}
+@keyframes marker-pulse-clean {
+  0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.8); }
+  70% { box-shadow: 0 0 0 14px rgba(16, 185, 129, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+@keyframes marker-pulse-suspicious {
+  0% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.8); }
+  70% { box-shadow: 0 0 0 14px rgba(245, 158, 11, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); }
+}
+
+/* Radar Sweep Animation */
+.radar-sweep {
+  position: relative;
+  overflow: hidden;
+}
+.radar-sweep::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(from 0deg, rgba(37, 99, 235, 0.12) 0deg, transparent 60deg, transparent 360deg);
+  transform-origin: 0 0;
+  animation: radar-rotate 4s linear infinite;
+  pointer-events: none;
+}
+@keyframes radar-rotate {
+  from { transform: rotate(0deg) translate(-50%, -50%); }
+  to { transform: rotate(360deg) translate(-50%, -50%); }
+}
+
+.table-row-hover:hover {
+  background-color: rgba(241, 245, 249, 0.8);
+  cursor: pointer;
+}
+html.dark .table-row-hover:hover {
+  background-color: rgba(30, 41, 59, 0.5);
+}
+
