@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MailSuraksha AI | Enterprise Email Threat Intelligence & Forensic Defense</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eff6ff',
+              100: '#dbeafe',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+              900: '#1e3a8a',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts & FontAwesome -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body class="bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 font-['Plus_Jakarta_Sans',sans-serif] min-h-screen flex flex-col antialiased selection:bg-blue-600 selection:text-white transition-colors duration-200">
+
+  <!-- TOP PUBLIC NAVBAR -->
+  <header class="sticky top-0 z-40 w-full border-b border-gray-200/80 dark:border-gray-800/80 bg-white/90 dark:bg-gray-950/90 backdrop-blur-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <a href="/" class="flex items-center space-x-3 group">
+        <div class="h-9 w-9 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white shadow-md shadow-blue-500/20 group-hover:scale-105 transition">
+          <i class="fa-solid fa-shield-halved text-base"></i>
+        </div>
+        <div>
+          <div class="flex items-center space-x-2">
+            <span class="font-extrabold text-base tracking-tight text-gray-900 dark:text-white">MailSuraksha<span class="text-blue-600 dark:text-blue-400">AI</span></span>
+            <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800">SOC 2 Type II</span>
+          </div>
+          <p class="text-[10px] text-gray-400 font-mono -mt-0.5">Automated Evidence-Preserving Forensics</p>
+        </div>
+      </a>
+
+      <!-- Navigation Links -->
+      <nav class="hidden md:flex items-center space-x-8 text-xs font-semibold text-gray-600 dark:text-gray-300">
+        <a href="#how-it-works" class="hover:text-blue-600 dark:hover:text-blue-400 transition">How It Works</a>
+        <a href="#privacy-trust" class="hover:text-blue-600 dark:hover:text-blue-400 transition">Privacy & Trust</a>
+        <a href="#features" class="hover:text-blue-600 dark:hover:text-blue-400 transition">Forensic Capabilities</a>
+        <a href="https://github.com/AnkitG791m/MailSuraksha-AI" target="_blank" class="hover:text-blue-600 dark:hover:text-blue-400 transition flex items-center space-x-1.5">
+          <i class="fa-brands fa-github text-sm"></i>
+          <span>GitHub</span>
+        </a>
+      </nav>
+
+      <!-- Right Controls & Authentication Button -->
+      <div class="flex items-center space-x-3">
+        <!-- Theme Toggle -->
+        <button onclick="toggleTheme()" class="h-9 w-9 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition flex items-center justify-center cursor-pointer" title="Toggle dark mode">
+          <i id="theme-icon" class="fa-solid fa-moon text-sm"></i>
+        </button>
+
+        <!-- Sign In Button (Redirects to /login) -->
+        <a href="/login" class="px-4 py-2 text-xs font-semibold text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 transition">
+          Sign In
+        </a>
+
+        <!-- Primary CTA to Protected Workspace -->
+        <a href="/login" class="px-4 py-2 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-xs font-bold transition flex items-center space-x-2 shadow-sm shadow-blue-500/20">
+          <i class="fa-solid fa-lock text-[11px]"></i>
+          <span>Access SOC Workspace</span>
+        </a>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- MAIN HERO SECTION -->
+  <main class="flex-grow">
+    
+    <!-- Hero Block -->
+    <section class="relative pt-16 pb-20 overflow-hidden">
+      <!-- Background Ambient Glow -->
+      <div class="absolute inset-0 pointer-events-none opacity-40 dark:opacity-20 flex justify-center">
+        <div class="w-[800px] h-[400px] bg-gradient-to-b from-blue-500/20 via-indigo-500/10 to-transparent blur-3xl rounded-full"></div>
+      </div>
+
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 space-y-6">
+        
+        <!-- Smart India Hackathon 2026 Badge -->
+        <div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-blue-50 dark:bg-blue-950/80 border border-blue-200/80 dark:border-blue-800 text-blue-700 dark:text-blue-300 text-xs font-semibold shadow-sm">
+          <i class="fa-solid fa-award text-amber-500 text-xs"></i>
+          <span>Smart India Hackathon (SIH 2026) Official Prototype</span>
+          <span class="text-blue-400">|</span>
+          <span class="text-gray-500 dark:text-gray-400 font-mono text-[11px]">RFC 7489 & Section 65B Compliant</span>
+        </div>
+
+        <!-- Hero Headline -->
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-950 dark:text-white tracking-tight leading-[1.15]">
+          Stop Email Threats <br class="hidden sm:inline">
+          <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500">Before They Compromise Your Enterprise.</span>
+        </h1>
+
+        <!-- Subheadline -->
+        <p class="max-w-2xl mx-auto text-base sm:text-lg text-gray-600 dark:text-gray-400 leading-relaxed font-normal">
+          MailSuraksha AI parses raw email headers, evaluates RFC-compliant SPF/DKIM/DMARC alignment, inspects deceptive QR quishing vectors, and correlates multi-hop infrastructure into legally defensible electronic evidence.
+        </p>
+
+        <!-- CTA Buttons -->
+        <div class="pt-4 flex flex-col sm:flex-row items-center justify-center gap-3">
+          <a href="/login" class="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs transition flex items-center justify-center space-x-2 shadow-lg shadow-blue-500/25">
+            <i class="fa-solid fa-microscope text-sm"></i>
+            <span>Launch Forensic Scanner</span>
+            <i class="fa-solid fa-arrow-right text-xs ml-1"></i>
+          </a>
+
+          <a href="#how-it-works" class="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-white dark:bg-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 border border-gray-200 dark:border-gray-800 text-gray-800 dark:text-gray-200 font-semibold text-xs transition flex items-center justify-center space-x-2">
+            <i class="fa-solid fa-circle-play text-blue-600"></i>
+            <span>Explore 10-Step Architecture</span>
+          </a>
+        </div>
+
+        <!-- Notice: Zero Data Exposure on Public Landing -->
+        <div class="pt-4 flex items-center justify-center space-x-2 text-[11px] text-gray-400 font-mono">
+          <i class="fa-solid fa-lock text-emerald-500"></i>
+          <span>Workspace Access Protected: Forensic records & investigations require authenticated credentials.</span>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- TRUST & PRIVACY PILLARS (Your Privacy Comes First) -->
+    <section id="privacy-trust" class="py-16 border-y border-gray-200/70 dark:border-gray-800/70 bg-white/50 dark:bg-gray-900/30">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+        
+        <div class="text-center space-y-2">
+          <span class="text-xs font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400 font-mono">Forensic Integrity First</span>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-gray-950 dark:text-white tracking-tight">
+            Engineered for Judicial Defense & Zero Data Leakage
+          </h2>
+          <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 max-w-xl mx-auto">
+            Unlike consumer email checkers that upload your sensitive corporate messages to public third parties, MailSuraksha AI operates with complete privacy isolation.
+          </p>
+        </div>
+
+        <!-- 3 Feature Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          
+          <!-- Card 1: Ephemeral Processing -->
+          <div class="p-6 rounded-3xl bg-white dark:bg-gray-900 border border-gray-200/80 dark:border-gray-800 shadow-sm space-y-3">
+            <div class="h-10 w-10 rounded-2xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center text-lg">
+              <i class="fa-solid fa-server"></i>
+            </div>
+            <h3 class="text-sm font-bold text-gray-900 dark:text-white">Zero Cloud Leakage</h3>
+            <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
+              Email payload text is processed locally and in-memory. Zero sensitive message bodies are transmitted to public LLM servers without cryptographic sanitization.
+            </p>
+          </div>
+
+          <!-- Card 2: Standards-Based Alignment -->
+          <div class="p-6 rounded-3xl bg-white dark:bg-gray-900 border border-gray-200/80 dark:border-gray-800 shadow-sm space-y-3">
+            <div class="h-10 w-10 rounded-2xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-lg">
+              <i class="fa-solid fa-scale-balanced"></i>
+            </div>
+            <h3 class="text-sm font-bold text-gray-900 dark:text-white">RFC 7489 Alignment Rigor</h3>
+            <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
+              Calculates strict vs relaxed domain alignment across envelope MAIL FROM, visible Header From, and DKIM d= signing selectors to eliminate spoofing evasion.
+            </p>
+          </div>
+
+          <!-- Card 3: Section 65B Certified Dossiers -->
+          <div class="p-6 rounded-3xl bg-white dark:bg-gray-900 border border-gray-200/80 dark:border-gray-800 shadow-sm space-y-3">
+            <div class="h-10 w-10 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-lg">
+              <i class="fa-solid fa-stamp"></i>
+            </div>
+            <h3 class="text-sm font-bold text-gray-900 dark:text-white">Section 65B Evidence Ready</h3>
+            <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
+              Automatically generates chain-of-custody hashes (SHA-256) and statutory electronic evidence certificates aligned with the Indian Evidence Act & Bharatiya Sakshya Adhiniyam 2023.
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS (3 Step Visual Guide) -->
+    <section id="how-it-works" class="py-20">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+        
+        <div class="text-center space-y-2">
+          <span class="text-xs font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400 font-mono">10-Layer Automated Pipeline</span>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-gray-950 dark:text-white tracking-tight">
+            How MailSuraksha AI Detects Deception
+          </h2>
+          <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 max-w-lg mx-auto">
+            From raw RFC 5322 byte ingestion to judicial evidence dossiers in under 1.8 seconds.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
+          
+          <!-- Step 1 -->
+          <div class="relative p-6 rounded-3xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 space-y-4">
+            <div class="flex items-center justify-between">
+              <span class="text-3xl font-black font-mono text-blue-600/20 dark:text-blue-400/20">01</span>
+              <span class="h-8 w-8 rounded-full bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400 flex items-center justify-center text-xs font-bold">
+                <i class="fa-solid fa-file-arrow-up"></i>
+              </span>
+            </div>
+            <h3 class="text-base font-bold text-gray-900 dark:text-white">Raw MIME Ingestion</h3>
+            <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
+              Drag & drop any suspicious <code class="text-blue-600 font-mono">.eml</code> file. The engine computes SHA-256 forensic fingerprints, extracts boundary headers, decodes base64 attachments, and traverses the Received hop chain.
+            </p>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="relative p-6 rounded-3xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 space-y-4">
+            <div class="flex items-center justify-between">
+              <span class="text-3xl font-black font-mono text-indigo-600/20 dark:text-indigo-400/20">02</span>
+              <span class="h-8 w-8 rounded-full bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-xs font-bold">
+                <i class="fa-solid fa-network-wired"></i>
+              </span>
+            </div>
+            <h3 class="text-base font-bold text-gray-900 dark:text-white">Multi-Tier Inspection</h3>
+            <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
+              Local zero-network scoring checks DNS TXT records, scans inline QR quishing images, resolves origin IP infrastructure via BGP ASN, and selectively correlates global threat intel (AbuseIPDB, OTX, VirusTotal).
+            </p>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="relative p-6 rounded-3xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 space-y-4">
+            <div class="flex items-center justify-between">
+              <span class="text-3xl font-black font-mono text-emerald-600/20 dark:text-emerald-400/20">03</span>
+              <span class="h-8 w-8 rounded-full bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xs font-bold">
+                <i class="fa-solid fa-file-shield"></i>
+              </span>
+            </div>
+            <h3 class="text-base font-bold text-gray-900 dark:text-white">SOC Triage & Evidence Export</h3>
+            <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
+              SOC analysts receive itemized explainable score factors, visual graph correlation, actionable containment playbooks (quarantine, block domain), and one-click Section 65B forensic PDF dossiers.
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- CALL TO ACTION BANNER -->
+    <section class="py-14 bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 text-white">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 text-center space-y-5">
+        <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight">
+          Ready to Secure Your Organization's Email Communications?
+        </h2>
+        <p class="text-xs sm:text-sm text-blue-100 max-w-xl mx-auto">
+          Access the authenticated SOC forensic workspace to inspect suspect emails, query threat telemetry, and run automated evidence investigations.
+        </p>
+        <div class="pt-2 flex items-center justify-center gap-3">
+          <a href="/login" class="px-6 py-3 rounded-2xl bg-white text-blue-700 hover:bg-gray-100 font-bold text-xs transition shadow-md shadow-blue-900/30 flex items-center space-x-2">
+            <i class="fa-solid fa-user-shield text-sm"></i>
+            <span>Log In to SOC Workspace</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- PUBLIC FOOTER -->
+  <footer class="border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950 text-gray-500 dark:text-gray-400 text-xs py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center space-x-2 font-mono text-[11px]">
+        <span>© 2026 MailSuraksha AI</span>
+        <span>•</span>
+        <span>Smart India Hackathon</span>
+        <span>•</span>
+        <span class="text-emerald-500">v1.0-SIH2026</span>
+      </div>
+      <div class="flex items-center space-x-6 text-[11px]">
+        <a href="https://github.com/AnkitG791m/MailSuraksha-AI" target="_blank" class="hover:text-blue-600 dark:hover:text-blue-400 transition">Repository</a>
+        <a href="/login" class="hover:text-blue-600 dark:hover:text-blue-400 transition">Analyst Portal</a>
+        <span class="text-gray-400">Section 65B Evidentiary Standard</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    function initTheme() {
+      const savedTheme = localStorage.getItem("theme") || "light";
+      if (savedTheme === "dark") {
+        document.documentElement.classList.add("dark");
+        updateThemeIcon(true);
+      } else {
+        document.documentElement.classList.remove("dark");
+        updateThemeIcon(false);
+      }
+    }
+
+    function toggleTheme() {
+      const isDark = document.documentElement.classList.toggle("dark");
+      localStorage.setItem("theme", isDark ? "dark" : "light");
+      updateThemeIcon(isDark);
+    }
+
+    function updateThemeIcon(isDark) {
+      const icon = document.getElementById("theme-icon");
+      if (icon) {
+        icon.className = isDark ? "fa-solid fa-sun text-sm text-amber-400" : "fa-solid fa-moon text-sm";
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", initTheme);
+  </script>
+</body>
+</html>

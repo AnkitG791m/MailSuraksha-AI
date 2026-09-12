@@ -148,6 +148,18 @@ class AnalysisPipeline:
             attachments=parsed_data.get("attachments", [])
         )
 
+        # Build Graph-based Correlation Network
+        correlation_graph = self._build_correlation_graph(
+            report_id=report_id,
+            filename=filename,
+            parsed_data=parsed_data,
+            origin_ip_data=origin_ip_data,
+            geo_data=geo_data,
+            threat_data=threat_data,
+            correlation_data=correlation_data,
+            risk_verdict=risk_verdict
+        )
+
         # Build combined analysis payload
         analysis_result = {
             "report_id": report_id,
@@ -170,6 +182,9 @@ class AnalysisPipeline:
             "quishing": quishing_result,
             "ml": ml_results,
             "risk": risk_verdict,
+            "correlation_graph": correlation_graph,
+            "playbook_actions": risk_verdict.get("playbook_actions", []),
+            "scoring_explanations": risk_verdict.get("scoring_explanations", []),
             "ai_insights": ai_insights
         }
 
@@ -196,4 +211,112 @@ class AnalysisPipeline:
 
         return analysis_result
 
+    def _build_correlation_graph(self, report_id: str, filename: str,
+                                parsed_data: Dict[str, Any],
+                                origin_ip_data: Dict[str, Any],
+                                geo_data: Dict[str, Any],
+                                threat_data: Dict[str, Any],
+                                correlation_data: Dict[str, Any],
+                                risk_verdict: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Builds a multi-dimensional graph of threat indicators:
+        Nodes: Email, Sender Domain, Origin IP, ASN, URLs, Attachments, Campaign Cluster.
+        Edges: Relationships connecting entities (sent_from, resolves_to, hosted_on, delivers).
+        """
+        nodes = []
+        edges = []
+        node_ids = set()
+
+        def add_node(nid: str, label: str, ntype: str, group: str, color: str, details: str = ""):
+            if nid and nid not in node_ids:
+                node_ids.add(nid)
+                nodes.append({
+                    "id": nid,
+                    "label": label[:30] + ("..." if len(label) > 30 else ""),
+                    "type": ntype,
+                    "group": group,
+                    "color": color,
+                    "details": details or label
+                })
+
+        def add_edge(src: str, dst: str, relation: str, weight: int = 1):
+            if src in node_ids and dst in node_ids:
+                edges.append({
+                    "source": src,
+                    "target": dst,
+                    "relation": relation,
+                    "weight": weight
+                })
+
+        # Root Email Node
+        v_color = "#ef4444" if risk_verdict.get("verdict") == "Malicious" else ("#f59e0b" if risk_verdict.get("verdict") == "Suspicious" else "#10b981")
+        add_node(report_id, filename, "email", "root", v_color, f"Email: {filename} (Score: {risk_verdict.get('risk_score', 0)}/100)")
+
+        # Sender Domain
+        sender_domain = parsed_data.get("headers", {}).get("from", {}).get("domain", "")
+        if sender_domain:
+            d_id = f"domain:{sender_domain}"
+            add_node(d_id, sender_domain, "domain", "identity", "#8b5cf6", f"Sender Domain: {sender_domain}")
+            add_edge(report_id, d_id, "sent_from")
+
+        # Reply-To Domain (if mismatch)
+        reply_domain = parsed_data.get("headers", {}).get("reply_to", {}).get("domain", "")
+        if reply_domain and reply_domain != sender_domain:
+            r_id = f"reply:{reply_domain}"
+            add_node(r_id, reply_domain, "reply_to", "identity", "#ec4899", f"Reply-To Mismatch Domain: {reply_domain}")
+            add_edge(report_id, r_id, "redirects_reply_to")
+
+        # Origin IP
+        origin_ip = origin_ip_data.get("origin_ip")
+        if origin_ip:
+            ip_id = f"ip:{origin_ip}"
+            add_node(ip_id, origin_ip, "ip", "infrastructure", "#3b82f6", f"Origin Public IP: {origin_ip}")
+            if sender_domain:
+                add_edge(f"domain:{sender_domain}", ip_id, "relayed_through")
+            else:
+                add_edge(report_id, ip_id, "relayed_through")
+
+            # ASN / ISP Node
+            isp = geo_data.get("isp") or geo_data.get("as_number", "")
+            if isp and isp != "Unknown":
+                asn_id = f"asn:{isp[:24]}"
+                add_node(asn_id, isp[:20], "asn", "infrastructure", "#6366f1", f"ASN / Network Provider: {isp}")
+                add_edge(ip_id, asn_id, "announced_by")
+
+        # URLs / Hyperlinks (up to 4 prominent links)
+        extracted_urls = parsed_data.get("urls", {}).get("urls", [])
+        for u in extracted_urls[:4]:
+            u_str = u if isinstance(u, str) else u.get("url", "")
+            if u_str:
+                u_id = f"url:{u_str[:40]}"
+                add_node(u_id, u_str[:25], "url", "payload", "#06b6d4", f"Embedded Link: {u_str}")
+                add_edge(report_id, u_id, "contains_url")
+
+        # Dangerous or suspicious attachments
+        attachments = parsed_data.get("attachments", [])
+        for att in attachments[:3]:
+            att_name = att.get("filename", "attachment")
+            att_id = f"att:{att_name}"
+            is_dang = att.get("is_dangerous", False)
+            add_node(att_id, att_name, "attachment", "payload", "#f97316" if is_dang else "#64748b", f"Attachment: {att_name} ({att.get('size_bytes', 0)} B)")
+            add_edge(report_id, att_id, "carries_attachment")
+
+        # Campaign Correlation Node
+        campaign = correlation_data.get("detected_campaign")
+        if campaign and campaign != "None":
+            camp_id = f"camp:{campaign}"
+            add_node(camp_id, campaign, "campaign", "threat_actor", "#b91c1c", f"Correlated Attack Campaign: {campaign}")
+            add_edge(report_id, camp_id, "attributed_to_cluster")
+            if origin_ip:
+                add_edge(f"ip:{origin_ip}", camp_id, "co_observed_in_campaign")
+
+        return {
+            "nodes": nodes,
+            "edges": edges,
+            "total_nodes": len(nodes),
+            "total_edges": len(edges),
+            "density": round(len(edges) / max(1, len(nodes)), 2)
+        }
+
 pipeline = AnalysisPipeline()
+

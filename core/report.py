@@ -141,20 +141,39 @@ class ForensicReportGenerator:
         story.append(t_custody)
         story.append(Spacer(1, 10))
 
-        # 4. Authentication Validation (SPF / DKIM / DMARC)
-        story.append(Paragraph("<b>2. Sender Identity & Authentication Verification</b>", h2_style))
+        # 4. Authentication Validation (RFC 7489 Alignment Matrix)
+        story.append(Paragraph("<b>2. Sender Identity & RFC 7489 Authentication Matrix</b>", h2_style))
         auth = self.data.get("auth", {})
+        matrix_rows = auth.get("alignment_matrix") or auth.get("alignment", {}).get("matrix", [])
+        
         auth_data = [
-            [Paragraph("<b>Protocol</b>", body_style), Paragraph("<b>Status</b>", body_style), Paragraph("<b>Verification Source & Findings</b>", body_style)],
-            [Paragraph("<b>SPF</b>", body_style), Paragraph(esc(auth.get("spf", {}).get("status", "none")).upper(), body_style), Paragraph(esc(auth.get("spf", {}).get("details", "N/A")), body_style)],
-            [Paragraph("<b>DKIM</b>", body_style), Paragraph(esc(auth.get("dkim", {}).get("status", "none")).upper(), body_style), Paragraph(esc(auth.get("dkim", {}).get("details", "N/A")), body_style)],
-            [Paragraph("<b>DMARC</b>", body_style), Paragraph(esc(auth.get("dmarc", {}).get("status", "none")).upper(), body_style), Paragraph(esc(auth.get("dmarc", {}).get("details", "N/A")), body_style)]
+            [Paragraph("<b>Standard</b>", body_style), Paragraph("<b>Result</b>", body_style), Paragraph("<b>Domain Evaluated</b>", body_style), Paragraph("<b>Alignment Status</b>", body_style), Paragraph("<b>Forensic Evidence</b>", body_style)]
         ]
-        t_auth = Table(auth_data, colWidths=[70, 90, 380])
+        
+        if matrix_rows:
+            for m in matrix_rows:
+                res_col = "#16a34a" if "PASS" in str(m.get("result", "")) else "#dc2626"
+                auth_data.append([
+                    Paragraph(f"<b>{esc(m.get('protocol'))}</b>", body_style),
+                    Paragraph(f"<font color='{res_col}'><b>{esc(m.get('result'))}</b></font>", body_style),
+                    Paragraph(f"<code>{esc(m.get('domain'))}</code>", mono_style),
+                    Paragraph(esc(m.get("alignment")), body_style),
+                    Paragraph(esc(m.get("evidence")), body_style)
+                ])
+        else:
+            auth_data.append([
+                Paragraph("<b>SPF</b>", body_style),
+                Paragraph(esc(auth.get("spf", {}).get("status", "none")).upper(), body_style),
+                Paragraph(esc(auth.get("spf", {}).get("domain", "N/A")), body_style),
+                Paragraph("N/A", body_style),
+                Paragraph(esc(auth.get("spf", {}).get("details", "N/A")), body_style)
+            ])
+
+        t_auth = Table(auth_data, colWidths=[90, 60, 110, 100, 180])
         t_auth.setStyle(TableStyle([
             ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#f1f5f9")),
             ("GRID", (0, 0), (-1, -1), 0.5, colors.HexColor("#cbd5e1")),
-            ("PADDING", (0, 0), (-1, -1), 4)
+            ("PADDING", (0, 0), (-1, -1), 3.5)
         ]))
         story.append(t_auth)
         story.append(Spacer(1, 10))
@@ -163,19 +182,24 @@ class ForensicReportGenerator:
         story.append(Paragraph("<b>3. Origin IP & Geolocation Intelligence</b>", h2_style))
         raw_origin = self.data.get("origin_ip", {})
         origin_ip = raw_origin.get("origin_ip", "N/A") if isinstance(raw_origin, dict) else str(raw_origin)
+        conf_pct = raw_origin.get("confidence_score", 0.72) * 100 if isinstance(raw_origin, dict) else 70
         geo = self.data.get("geo", {})
+        geo_mode = geo.get("data_mode", "LIVE")
+        
         geo_data = [
-            [Paragraph("<b>Identified Origin IP:</b>", body_style), Paragraph(f"<b>{esc(origin_ip)}</b>", body_style),
+            [Paragraph("<b>Probable Origin IP:</b>", body_style), Paragraph(f"<b>{esc(origin_ip)}</b> (Conf: {int(conf_pct)}%)", body_style),
              Paragraph("<b>Country / City:</b>", body_style), Paragraph(f"{esc(geo.get('country', 'N/A'))} ({esc(geo.get('city', 'N/A'))})", body_style)],
             [Paragraph("<b>Latitude / Longitude:</b>", body_style), Paragraph(f"{esc(geo.get('lat', 'N/A'))}, {esc(geo.get('lon', 'N/A'))}", body_style),
-             Paragraph("<b>ISP / ASN:</b>", body_style), Paragraph(f"{esc(geo.get('isp', 'N/A'))} [{esc(geo.get('as_number', 'N/A'))}]", body_style)]
+             Paragraph("<b>ISP / ASN:</b>", body_style), Paragraph(f"{esc(geo.get('isp', 'N/A'))} [{esc(geo.get('as_number', 'N/A'))}]", body_style)],
+            [Paragraph("<b>Intelligence Mode:</b>", body_style), Paragraph(f"<b>[{esc(geo_mode)}]</b> via {esc(geo.get('source', 'System'))}", body_style),
+             Paragraph("<b>Forensic Attribution:</b>", body_style), Paragraph("Probabilistic network routing lead (Not human identity)", body_style)]
         ]
         t_geo = Table(geo_data, colWidths=[120, 150, 110, 160])
         t_geo.setStyle(TableStyle([
             ("GRID", (0, 0), (-1, -1), 0.5, colors.HexColor("#e2e8f0")),
             ("BACKGROUND", (0, 0), (0, -1), colors.HexColor("#f8fafc")),
             ("BACKGROUND", (2, 0), (2, -1), colors.HexColor("#f8fafc")),
-            ("PADDING", (0, 0), (-1, -1), 4)
+            ("PADDING", (0, 0), (-1, -1), 3.5)
         ]))
         story.append(t_geo)
         story.append(Spacer(1, 10))
@@ -269,17 +293,35 @@ class ForensicReportGenerator:
             story.append(t_quish)
             story.append(Spacer(1, 14))
 
+        # 9. Actionable Incident Response & Containment Playbook
+        playbook_acts = self.data.get("playbook_actions", [])
+        if playbook_acts:
+            story.append(Paragraph("<b>7. Actionable Incident Response & Containment Playbook</b>", h2_style))
+            pb_rows = [[Paragraph("<b>#</b>", body_style), Paragraph("<b>Mandated Containment Action</b>", body_style)]]
+            for p_idx, act in enumerate(playbook_acts):
+                pb_rows.append([Paragraph(str(p_idx + 1), body_style), Paragraph(f"• {esc(act)}", body_style)])
+            t_pb = Table(pb_rows, colWidths=[25, 515])
+            t_pb.setStyle(TableStyle([
+                ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#f8fafc")),
+                ("GRID", (0, 0), (-1, -1), 0.5, colors.HexColor("#e2e8f0")),
+                ("PADDING", (0, 0), (-1, -1), 3.5)
+            ]))
+            story.append(t_pb)
+            story.append(Spacer(1, 12))
+
         # 10. Section 65B Digital Evidence Admissibility Certificate (Indian Evidence Act / BSA 2023)
-        story.append(Paragraph("<b>8. Statutory Certificate of Electronic Evidence (Section 65B Indian Evidence Act)</b>", h2_style))
+        story.append(Paragraph("<b>8. Statutory Certificate of Electronic Evidence (Section 65B Indian Evidence Act / Section 63 BSA 2023)</b>", h2_style))
         sec65b_text = (
-            "<b>CERTIFICATE UNDER SECTION 65B OF THE INDIAN EVIDENCE ACT, 1872 / SECTION 63 OF BHARATIYA SAKSHYA ADHINIYAM (BSA), 2023</b><br/><br/>"
-            f"1. This is to certify that the electronic record associated with Case ID <b>{esc(self.report_id)}</b> "
-            f"(Evidence SHA-256: <code>{esc(hashes.get('sha256', 'N/A'))}</code>) was ingested, hashed, and forensically parsed "
-            f"on <b>{esc(self.timestamp)}</b> by the automated MailGuardian AI forensic workstation.<br/>"
-            "2. The computer systems and cryptographic hashing algorithms were operating properly throughout the extraction process, "
-            "and the cryptographic integrity of the RFC 5322 MIME stream was preserved without alteration.<br/>"
-            "3. <b>Forensic Authority:</b> Security Operations Center & Digital Defense Unit | Examiner: <b>Codex Monarch (Lead Cyber Defense Architect)</b>.<br/>"
-            "4. <b>Admissibility Status:</b> Tamper-evident forensic digital dossier admissible for formal law enforcement investigation."
+            "<b>FORENSIC INTEGRITY & STATUTORY ELECTRONIC EVIDENCE CERTIFICATE</b><br/><br/>"
+            f"1. This is to certify that the digital evidence associated with Case ID <b>{esc(self.report_id)}</b> "
+            f"(Evidence SHA-256: <code>{esc(hashes.get('sha256', 'N/A'))}</code>) was acquired, verified, and analyzed "
+            f"on <b>{esc(self.timestamp)}</b> using the automated MailGuardian AI Forensic Workstation (v1.0-SIH2026).<br/>"
+            "2. The cryptographic SHA-256 hashing and RFC parsing algorithms operated without hardware or software malfunction. "
+            "The bitstream integrity of the raw RFC 5322 electronic message was preserved throughout extraction and verification.<br/>"
+            "3. <b>Forensic Scope & Limitations:</b> Network indicators (origin IP, ASN, Geolocation) represent probabilistic routing leads; "
+            "physical actor identity cannot be solely inferred from network routing alone without ISP subscriber log correlation.<br/>"
+            "4. <b>Forensic Authority:</b> Security Operations Center & Digital Defense Unit | Examiner: <b>Codex Monarch (Lead Cyber Defense Architect)</b>.<br/>"
+            "5. <b>Legal Admissibility:</b> Forensic-ready evidence dossier prepared in compliance with Section 65B of Indian Evidence Act, 1872 & Section 63 of Bharatiya Sakshya Adhiniyam, 2023."
         )
         sec65b_data = [[Paragraph(sec65b_text, body_style)]]
         t_sec65b = Table(sec65b_data, colWidths=[540])

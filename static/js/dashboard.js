@@ -9,6 +9,7 @@ let currentPage = 1;
 const PAGE_SIZE = 10;
 
 document.addEventListener("DOMContentLoaded", () => {
+  try { checkAuthSession(); } catch (e) { console.error("Auth check error:", e); }
   try { initTheme(); } catch (e) { console.error("Theme init error:", e); }
   try { initMap(); } catch (e) { console.error("Map init error:", e); }
   try { setupUpload(); } catch (e) { console.error("Upload setup error:", e); }
@@ -261,11 +262,52 @@ function scrollToHistory() {
 }
 
 /* ==========================================================================
+   SESSION & AUTHENTICATION MANAGEMENT
+   ========================================================================== */
+async function checkAuthSession() {
+  try {
+    const res = await fetch("/api/auth/me");
+    if (!res.ok) {
+      window.location.href = "/login";
+      return;
+    }
+    const data = await res.json();
+    if (!data.authenticated) {
+      window.location.href = "/login";
+      return;
+    }
+    const nameEl = document.getElementById("nav-user-name");
+    if (nameEl && data.user && data.user.name) {
+      nameEl.textContent = data.user.name;
+    }
+  } catch (e) {
+    // network fallback - keep state from localStorage if available
+    const localName = localStorage.getItem("user_name");
+    const nameEl = document.getElementById("nav-user-name");
+    if (nameEl && localName) nameEl.textContent = localName;
+  }
+}
+
+async function handleLogout() {
+  try {
+    await fetch("/api/auth/logout", { method: "POST" });
+  } catch (e) {}
+  localStorage.removeItem("user_name");
+  localStorage.removeItem("user_email");
+  localStorage.removeItem("user_role");
+  window.location.href = "/login";
+}
+
+/* ==========================================================================
    HISTORY & 10-ROW PAGINATION
    ========================================================================== */
 async function fetchHistory() {
   try {
     const res = await fetch("/api/history");
+    if (res.status === 401) {
+      window.location.href = "/login";
+      return;
+    }
     if (!res.ok) return;
     const records = await res.json();
     allRecords = records || [];
@@ -598,6 +640,83 @@ function renderAnalysis(data) {
   if (elVt) elVt.textContent = intel.virustotal ? `${intel.virustotal.positives} / ${intel.virustotal.total}` : "0 / 72";
   if (elOtx) elOtx.textContent = intel.alienvault_otx ? `${intel.alienvault_otx.pulse_count || 0} Pulses` : "0 Pulses";
 
+  // Update Threat Intel Provenance Badge
+  const badgeIntel = document.getElementById("intel-provenance-badge");
+  if (badgeIntel) {
+    let mode = "LIVE API";
+    if (intel.abuseipdb && intel.abuseipdb.data_mode) {
+      mode = intel.abuseipdb.data_mode;
+    } else if (intel.virustotal && intel.virustotal.data_mode) {
+      mode = intel.virustotal.data_mode;
+    }
+    badgeIntel.textContent = mode;
+    if (mode === "LIVE") {
+      badgeIntel.className = "text-[10px] text-emerald-600 dark:text-emerald-400 font-mono bg-emerald-50 dark:bg-emerald-950/50 px-2 py-0.5 rounded-full font-bold";
+    } else if (mode === "CACHED") {
+      badgeIntel.className = "text-[10px] text-blue-600 dark:text-blue-400 font-mono bg-blue-50 dark:bg-blue-950/50 px-2 py-0.5 rounded-full font-bold";
+    } else {
+      badgeIntel.className = "text-[10px] text-amber-600 dark:text-amber-400 font-mono bg-amber-50 dark:bg-amber-950/50 px-2 py-0.5 rounded-full font-bold";
+    }
+  }
+
+  // Interactive Indicator Correlation Graph
+  try {
+    renderCorrelationGraph(data.correlation_graph);
+  } catch (errGraph) {
+    console.warn("Correlation graph rendering notice:", errGraph);
+  }
+
+  // Explainable Scoring Breakdown
+  const factorsList = document.getElementById("scoring-factors-list");
+  if (factorsList) {
+    const explanations = (data.risk && data.risk.scoring_explanations) || [];
+    if (explanations.length === 0) {
+      factorsList.innerHTML = `
+        <div class="p-2 rounded-xl bg-emerald-50/60 dark:bg-emerald-950/30 border border-emerald-200/60 dark:border-emerald-900/40 text-[11px] text-emerald-700 dark:text-emerald-300 flex items-center space-x-2">
+          <i class="fa-solid fa-circle-check text-emerald-600"></i>
+          <span>Clean forensic baseline. Zero malicious risk factors detected.</span>
+        </div>
+      `;
+    } else {
+      factorsList.innerHTML = explanations.map(exp => {
+        const isHigh = exp.impact >= 25 || exp.severity === "high";
+        const badgeColor = isHigh 
+          ? "bg-rose-100 dark:bg-rose-950/80 text-rose-700 dark:text-rose-300 border-rose-200 dark:border-rose-900" 
+          : "bg-amber-100 dark:bg-amber-950/80 text-amber-700 dark:text-amber-300 border-amber-200 dark:border-amber-900";
+        return `
+          <div class="flex items-start justify-between p-2 rounded-xl bg-white dark:bg-gray-900 border border-gray-200/80 dark:border-gray-700/60 text-xs">
+            <div class="space-y-0.5 max-w-[78%]">
+              <div class="font-bold text-gray-800 dark:text-gray-200 flex items-center space-x-1.5">
+                <span class="h-1.5 w-1.5 rounded-full ${isHigh ? 'bg-rose-500' : 'bg-amber-500'}"></span>
+                <span>${exp.factor || exp.name || 'Risk Indicator'}</span>
+              </div>
+              <div class="text-[10px] text-gray-500 dark:text-gray-400 leading-tight">${exp.evidence || exp.description || ''}</div>
+            </div>
+            <span class="font-mono font-bold text-[10px] px-2 py-0.5 rounded-full border ${badgeColor}">
+              +${exp.impact || 10} pts
+            </span>
+          </div>
+        `;
+      }).join('');
+    }
+  }
+
+  // Actionable Incident Response Playbook
+  const playbookList = document.getElementById("playbook-actions-list");
+  if (playbookList) {
+    const playbooks = (data.risk && data.risk.playbook_actions) || [];
+    if (playbooks.length === 0) {
+      playbookList.innerHTML = `<div class="text-gray-400 text-[11px]">Preserve record in compliance store. No urgent quarantine needed.</div>`;
+    } else {
+      playbookList.innerHTML = playbooks.map((action, idx) => `
+        <div class="flex items-center space-x-2 p-1.5 rounded-lg hover:bg-rose-100/40 dark:hover:bg-rose-950/30 transition text-[11px]">
+          <span class="h-4 w-4 rounded-full bg-rose-200 dark:bg-rose-900/60 text-rose-800 dark:text-rose-300 font-mono text-[9px] font-bold flex items-center justify-center flex-shrink-0">${idx + 1}</span>
+          <span class="font-medium text-gray-800 dark:text-gray-200">${action}</span>
+        </div>
+      `).join('');
+    }
+  }
+
   // AI Insights & Explanations
   const ai = data.ai_insights || {};
   const aiExplEl = document.getElementById("ai-threat-explanation");
@@ -624,6 +743,107 @@ function renderAnalysis(data) {
 
   // Update active row highlight in table
   highlightActiveTableRow();
+}
+
+/* ==========================================================================
+   INTERACTIVE INDICATOR CORRELATION GRAPH (SVG)
+   ========================================================================== */
+function renderCorrelationGraph(graphData) {
+  const svg = document.getElementById("correlation-svg");
+  const placeholder = document.getElementById("graph-placeholder");
+  const statsBadge = document.getElementById("graph-stats-badge");
+  if (!svg) return;
+
+  if (!graphData || !graphData.nodes || graphData.nodes.length === 0) {
+    svg.innerHTML = "";
+    if (placeholder) placeholder.classList.remove("hidden");
+    if (statsBadge) statsBadge.textContent = "0 Nodes";
+    return;
+  }
+
+  if (placeholder) placeholder.classList.add("hidden");
+  if (statsBadge) {
+    statsBadge.textContent = `${graphData.nodes.length} Nodes • ${graphData.links ? graphData.links.length : 0} Edges`;
+  }
+
+  const width = 360;
+  const height = 176;
+  svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
+
+  const nodes = graphData.nodes;
+  const links = graphData.links || [];
+
+  const cx = width / 2;
+  const cy = height / 2;
+
+  const nodePos = {};
+  const satellites = [];
+
+  nodes.forEach((n, idx) => {
+    if (n.type === "email" || idx === 0) {
+      nodePos[n.id] = { x: cx, y: cy, node: n, isCenter: true };
+    } else {
+      satellites.push(n);
+    }
+  });
+
+  const satCount = satellites.length;
+  const rx = 125;
+  const ry = 55;
+
+  satellites.forEach((n, i) => {
+    const angle = (2 * Math.PI * i) / (satCount || 1) - Math.PI / 2;
+    nodePos[n.id] = {
+      x: cx + rx * Math.cos(angle),
+      y: cy + ry * Math.sin(angle),
+      node: n,
+      isCenter: false
+    };
+  });
+
+  let svgContent = `<defs>
+    <filter id="node-glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="2" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>`;
+
+  // Draw Edges
+  links.forEach(l => {
+    const s = nodePos[l.source];
+    const t = nodePos[l.target];
+    if (s && t) {
+      svgContent += `
+        <line x1="${s.x}" y1="${s.y}" x2="${t.x}" y2="${t.y}" 
+              stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="3,3" stroke-opacity="0.5">
+          <title>${l.label || 'relates_to'}</title>
+        </line>
+      `;
+    }
+  });
+
+  // Draw Nodes
+  Object.values(nodePos).forEach(item => {
+    const n = item.node;
+    const r = item.isCenter ? 14 : 9;
+    const color = n.color || (item.isCenter ? "#2563eb" : "#7c3aed");
+    const rawLabel = n.label || n.id || "";
+    const displayLabel = rawLabel.length > 14 ? rawLabel.slice(0, 12) + ".." : rawLabel;
+
+    svgContent += `
+      <g class="cursor-pointer group" transform="translate(${item.x}, ${item.y})">
+        <title>${n.title || n.label || n.id}</title>
+        <circle r="${r + 3}" fill="${color}" opacity="0.2" class="animate-pulse" />
+        <circle r="${r}" fill="${color}" stroke="#ffffff" stroke-width="1.5" />
+        <text y="${r + 9}" text-anchor="middle" font-size="8" font-family="'JetBrains Mono', monospace" 
+              fill="#64748b" font-weight="600">
+          ${displayLabel}
+        </text>
+      </g>
+    `;
+  });
+
+  svg.innerHTML = svgContent;
 }
 
 function highlightActiveTableRow() {

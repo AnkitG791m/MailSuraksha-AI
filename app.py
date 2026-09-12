@@ -1,6 +1,11 @@
+import json
+import base64
+import hmac
+import hashlib
+from typing import Optional
+from pathlib import Path
 import os
 import sys
-from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent
 packages_dir = BASE_DIR / "packages"
@@ -9,32 +14,170 @@ if packages_dir.exists() and str(packages_dir) not in sys.path:
 
 from config import settings
 from fastapi import FastAPI, UploadFile, File, HTTPException
-from fastapi.responses import HTMLResponse, FileResponse, JSONResponse
+from fastapi.responses import HTMLResponse, FileResponse, JSONResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from pydantic import BaseModel
 from starlette.requests import Request
 
 from core.pipeline import pipeline
 from database import db
 
 app = FastAPI(
-    title="SecureX - AI Email Threat Intelligence & Forensic Platform",
-    description="Automated forensic analysis, geolocation, threat intel & ML scoring for .eml emails",
-    version="1.0.0"
+    title="MailSuraksha AI - Enterprise Threat Intelligence & Forensic Platform",
+    description="Automated evidence-preserving forensic analysis, RFC 7489 standards alignment, and multi-tier origin IP attribution",
+    version="2.1.0"
 )
 
 # Mount static and templates
 app.mount("/static", StaticFiles(directory=str(BASE_DIR / "static")), name="static")
 templates = Jinja2Templates(directory=str(BASE_DIR / "templates"))
 
+SESSION_COOKIE_NAME = "mailsuraksha_session"
+AUTH_SECRET = getattr(settings, "SECRET_KEY", "mailsuraksha-secure-soc-eval-2026")
+
+
+def create_session_token(email: str, name: str, role: str = "Lead SOC Analyst") -> str:
+    payload = json.dumps({"email": email, "name": name, "role": role})
+    sig = hmac.new(AUTH_SECRET.encode(), payload.encode(), hashlib.sha256).hexdigest()[:16]
+    raw = f"{payload}|{sig}"
+    return base64.urlsafe_b64encode(raw.encode()).decode()
+
+
+def verify_session_token(token: str) -> Optional[dict]:
+    try:
+        raw = base64.urlsafe_b64decode(token.encode()).decode()
+        payload_str, sig = raw.rsplit("|", 1)
+        expected_sig = hmac.new(AUTH_SECRET.encode(), payload_str.encode(), hashlib.sha256).hexdigest()[:16]
+        if hmac.compare_digest(sig, expected_sig):
+            return json.loads(payload_str)
+    except Exception:
+        pass
+    return None
+
+
+def get_current_user(request: Request) -> Optional[dict]:
+    token = request.cookies.get(SESSION_COOKIE_NAME)
+    if token:
+        user = verify_session_token(token)
+        if user:
+            return user
+    auth_header = request.headers.get("Authorization")
+    if auth_header and auth_header.startswith("Bearer "):
+        user = verify_session_token(auth_header[7:].strip())
+        if user:
+            return user
+    return None
+
+
+def require_auth(request: Request) -> dict:
+    user = get_current_user(request)
+    if not user:
+        raise HTTPException(
+            status_code=401,
+            detail="Unauthorized. Active SOC analyst session required. Please log in at /login"
+        )
+    return user
+
+
+class LoginRequest(BaseModel):
+    email: Optional[str] = "codex@mailsuraksha.ai"
+    name: Optional[str] = "Codex Monarch"
+    role: Optional[str] = "Lead SOC Analyst"
+
+
+# ---------------------------------------------------------------------------
+# AUTHENTICATION ENDPOINTS
+# ---------------------------------------------------------------------------
+
+@app.post("/api/auth/login")
+async def auth_login(req: LoginRequest):
+    email = (req.email or "codex@mailsuraksha.ai").strip()
+    name = (req.name or "Codex Monarch").strip()
+    role = (req.role or "Lead SOC Analyst").strip()
+
+    token = create_session_token(email, name, role)
+    response = JSONResponse(content={
+        "status": "authenticated",
+        "user": {"email": email, "name": name, "role": role}
+    })
+    response.set_cookie(
+        key=SESSION_COOKIE_NAME,
+        value=token,
+        httponly=True,
+        samesite="lax",
+        max_age=86400 * 7,
+        path="/"
+    )
+    return response
+
+
+@app.post("/api/auth/logout")
+async def auth_logout():
+    response = JSONResponse(content={"status": "logged_out"})
+    response.delete_cookie(key=SESSION_COOKIE_NAME, path="/")
+    return response
+
+
+@app.get("/api/auth/me")
+async def auth_me(request: Request):
+    user = get_current_user(request)
+    if user:
+        return JSONResponse(content={"authenticated": True, "user": user})
+    return JSONResponse(content={"authenticated": False}, status_code=200)
+
+
+# ---------------------------------------------------------------------------
+# PAGE ROUTING (STRICT PRIVACY SEPARATION)
+# ---------------------------------------------------------------------------
 
 @app.api_route("/", methods=["GET", "HEAD"], response_class=HTMLResponse)
-async def home(request: Request):
-    return templates.TemplateResponse(request=request, name="index.html", context={"app_name": settings.APP_NAME})
+async def public_landing(request: Request):
+    """Public landing page: zero sensitive email data exposed."""
+    return templates.TemplateResponse(request=request, name="landing.html", context={"app_name": settings.APP_NAME})
 
+
+@app.get("/login", response_class=HTMLResponse)
+async def login_page(request: Request):
+    """Analyst authentication page."""
+    user = get_current_user(request)
+    if user:
+        return RedirectResponse(url="/dashboard")
+    return templates.TemplateResponse(request=request, name="login.html", context={"app_name": settings.APP_NAME})
+
+
+@app.get("/dashboard", response_class=HTMLResponse)
+async def private_dashboard(request: Request):
+    """Protected SOC workspace: requires active analyst session."""
+    user = get_current_user(request)
+    if not user:
+        return RedirectResponse(url="/login")
+    return templates.TemplateResponse(request=request, name="dashboard.html", context={"app_name": settings.APP_NAME, "user": user})
+
+
+@app.get("/scan", response_class=HTMLResponse)
+async def scan_redirect(request: Request):
+    user = get_current_user(request)
+    if not user:
+        return RedirectResponse(url="/login")
+    return RedirectResponse(url="/dashboard#scanner-section")
+
+
+@app.get("/assistant", response_class=HTMLResponse)
+async def assistant_redirect(request: Request):
+    user = get_current_user(request)
+    if not user:
+        return RedirectResponse(url="/login")
+    return RedirectResponse(url="/dashboard#chat-section")
+
+
+# ---------------------------------------------------------------------------
+# PROTECTED FORENSIC ANALYSIS APIS
+# ---------------------------------------------------------------------------
 
 @app.post("/api/analyze")
-async def analyze_eml(file: UploadFile = File(...)):
+async def analyze_eml(request: Request, file: UploadFile = File(...)):
+    require_auth(request)
     try:
         filename = getattr(file, "filename", None) or "uploaded_email.eml"
         content = await file.read()
@@ -52,7 +195,8 @@ async def analyze_eml(file: UploadFile = File(...)):
 
 
 @app.get("/api/sample/{sample_type}")
-async def get_sample_analysis(sample_type: str):
+async def get_sample_analysis(request: Request, sample_type: str):
+    require_auth(request)
     valid_samples = {
         "clean": BASE_DIR / "samples" / "clean_sample.eml",
         "phishing": BASE_DIR / "samples" / "phishing_sample.eml",
@@ -74,7 +218,8 @@ async def get_sample_analysis(sample_type: str):
 
 
 @app.get("/api/reports/{report_id}/pdf")
-async def get_pdf_report(report_id: str):
+async def get_pdf_report(request: Request, report_id: str):
+    require_auth(request)
     pdf_path = settings.REPORTS_DIR / f"{report_id}.pdf"
     if not pdf_path.exists():
         raise HTTPException(status_code=404, detail="Forensic PDF report not found.")
@@ -87,7 +232,8 @@ async def get_pdf_report(report_id: str):
 
 
 @app.get("/api/reports/{report_id}/json")
-async def get_json_report(report_id: str):
+async def get_json_report(request: Request, report_id: str):
+    require_auth(request)
     json_path = settings.REPORTS_DIR / f"{report_id}.json"
     if not json_path.exists():
         raise HTTPException(status_code=404, detail="Forensic JSON report not found.")
@@ -100,13 +246,15 @@ async def get_json_report(report_id: str):
 
 
 @app.get("/api/history")
-async def get_analysis_history(limit: int = 50):
+async def get_analysis_history(request: Request, limit: int = 50):
+    require_auth(request)
     records = db.list_analyses(limit=limit)
     return JSONResponse(content=records)
 
 
 @app.get("/api/threat-intel/stats")
-async def get_threat_intel_stats():
+async def get_threat_intel_stats(request: Request):
+    require_auth(request)
     from core.threat_intel import vt_rotator
     cache_stats = db.get_cache_stats()
     vt_stats = vt_rotator.get_telemetry()
@@ -123,7 +271,8 @@ async def get_threat_intel_stats():
 
 
 @app.get("/api/analysis/{report_id}")
-async def get_analysis_by_id(report_id: str):
+async def get_analysis_by_id(request: Request, report_id: str):
+    require_auth(request)
     data = db.get_analysis(report_id)
     if not data:
         raise HTTPException(status_code=404, detail="Analysis record not found")
@@ -141,7 +290,8 @@ class ChatQueryRequest(BaseModel):
     user_query: Optional[str] = None
 
 @app.post("/api/investigate/chat")
-async def chat_investigation(req: ChatQueryRequest):
+async def chat_investigation(request: Request, req: ChatQueryRequest):
+    require_auth(request)
     query_text = (req.message or req.question or req.user_query or "").strip()
     if not query_text:
         raise HTTPException(status_code=400, detail="Missing message or question")
@@ -197,7 +347,8 @@ async def chat_investigation(req: ChatQueryRequest):
 
 
 @app.get("/api/investigate/chat/{report_id}")
-async def get_investigation_chat_history(report_id: str):
+async def get_investigation_chat_history(request: Request, report_id: str):
+    require_auth(request)
     history = db.get_chat_history(report_id)
     return JSONResponse(content={"report_id": report_id, "history": history})
 

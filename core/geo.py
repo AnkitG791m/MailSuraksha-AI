@@ -74,17 +74,21 @@ class GeoLocator:
         if not self.ip:
             return self._empty_result("No IP address provided")
 
-        # Check cache
+        # Check in-memory cache first
         now = time.time()
         if self.ip in _GEO_CACHE:
             ts, data = _GEO_CACHE[self.ip]
             if now - ts < CACHE_TTL:
-                return data
+                cached_copy = data.copy()
+                cached_copy["data_mode"] = "CACHED"
+                return cached_copy
 
         # Check if known test IP (fast-path for test samples)
         if self.ip in KNOWN_SAMPLE_GEO:
             res = KNOWN_SAMPLE_GEO[self.ip].copy()
             res["query_ip"] = self.ip
+            res["data_mode"] = "PRESET"
+            res["attribution_disclaimer"] = "Approximate network infrastructure location. Does not represent physical human sender identity."
             _GEO_CACHE[self.ip] = (now, res)
             return res
 
@@ -102,6 +106,7 @@ class GeoLocator:
                     lon = float(loc[1]) if len(loc) > 1 else 0.0
                     res = {
                         "status": "success",
+                        "data_mode": "LIVE",
                         "query_ip": self.ip,
                         "country": payload.get("country", "Unknown"),
                         "country_code": payload.get("country", "XX"),
@@ -115,7 +120,8 @@ class GeoLocator:
                         "isp": payload.get("org", "Unknown ISP"),
                         "org": payload.get("org", ""),
                         "as_number": payload.get("org", "").split(" ")[0] if " " in payload.get("org", "") else "",
-                        "source": "ipinfo.io (token)"
+                        "source": "ipinfo.io (live API)",
+                        "attribution_disclaimer": "Approximate network infrastructure location. Does not represent physical human sender identity."
                     }
                     _GEO_CACHE[self.ip] = (now, res)
                     return res
@@ -131,6 +137,7 @@ class GeoLocator:
                 if payload.get("status") == "success":
                     res = {
                         "status": "success",
+                        "data_mode": "LIVE",
                         "query_ip": self.ip,
                         "country": payload.get("country", "Unknown"),
                         "country_code": payload.get("countryCode", "XX"),
@@ -144,7 +151,8 @@ class GeoLocator:
                         "isp": payload.get("isp", "Unknown ISP"),
                         "org": payload.get("org", ""),
                         "as_number": payload.get("as", ""),
-                        "source": "ip-api.com"
+                        "source": "ip-api.com (live API)",
+                        "attribution_disclaimer": "Approximate network infrastructure location. Does not represent physical human sender identity."
                     }
                     _GEO_CACHE[self.ip] = (now, res)
                     return res
@@ -154,6 +162,7 @@ class GeoLocator:
         # Fallback if offline or API unreachable
         res = {
             "status": "fallback",
+            "data_mode": "FALLBACK",
             "query_ip": self.ip,
             "country": "Unknown",
             "country_code": "UN",
@@ -167,7 +176,8 @@ class GeoLocator:
             "isp": "Unknown Network Provider",
             "org": "",
             "as_number": "",
-            "source": "fallback"
+            "source": "fallback",
+            "attribution_disclaimer": "Approximate network infrastructure location. Does not represent physical human sender identity."
         }
         _GEO_CACHE[self.ip] = (now, res)
         return res
@@ -175,6 +185,7 @@ class GeoLocator:
     def _empty_result(self, reason: str) -> Dict[str, Any]:
         return {
             "status": "error",
+            "data_mode": "UNAVAILABLE",
             "query_ip": None,
             "error": reason,
             "country": "N/A",
@@ -183,5 +194,6 @@ class GeoLocator:
             "lat": 0.0,
             "lon": 0.0,
             "isp": "N/A",
-            "source": "none"
+            "source": "none",
+            "attribution_disclaimer": "No routable origin IP available for geolocation."
         }

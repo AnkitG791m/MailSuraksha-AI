@@ -161,6 +161,7 @@ class ThreatIntelAggregator:
             self.telemetry["cache_hits"].append(ip)
             res = cached["result"]
             res["is_cached"] = True
+            res["data_mode"] = "CACHED"
             res["last_scanned_at"] = cached.get("last_scanned_at")
             return res
 
@@ -181,7 +182,8 @@ class ThreatIntelAggregator:
             self.telemetry["virustotal_queried"] = True
         else:
             vt_res = {
-                "status": "skipped (medium risk - quota conservation)",
+                "status": "skipped (quota conservation)",
+                "data_mode": "SKIPPED",
                 "malicious": 0,
                 "suspicious": 0,
                 "harmless": 0,
@@ -190,10 +192,12 @@ class ThreatIntelAggregator:
 
         result = {
             "target": ip,
+            "data_mode": "LIVE" if (abuse_res.get("data_mode") == "LIVE" or (vt_res and vt_res.get("data_mode") == "LIVE")) else "FALLBACK",
             "virustotal": vt_res,
             "abuseipdb": abuse_res,
             "alienvault": otx_res,
-            "is_cached": False
+            "is_cached": False,
+            "attribution_disclaimer": "Threat intelligence scores represent observed network infrastructure history; not conclusive physical identity."
         }
 
         # Calculate score and save to 7-day SQLite cache
