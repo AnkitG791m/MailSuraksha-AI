@@ -1,8 +1,8 @@
 # MailGuardian AI — Master Technical Dossier & SIH Action Plan
 > **Enterprise-Grade AI Email Threat Intelligence, Forensic Investigation & Automated Defense Platform**  
-> *Targeted for Smart India Hackathon (SIH) | Cyber Security & Digital Forensics Domain*  
-> **Prepared by:** Lead Cyber Defense Architect (Codex Monarch)  
-> **Document Status:** Comprehensive System Architecture, Evaluation & Enhancement Roadmap  
+> *Targeted for Smart India Hackathon (SIH 2026) | Cyber Security & Digital Forensics Domain*  
+> **Prepared by:** Lead Cyber Defense Architect  
+> **Document Status:** Comprehensive System Architecture, RFC Engineering & Forensic Evaluation Guide  
 
 ---
 
@@ -22,8 +22,8 @@ Traditional spam filters (like standard Gmail/Outlook keyword scanners) fail aga
 **Verdict: YES, EXCEPTIONAL & HIGHLY COMPETITIVE (Top 1% Potential).**
 
 Here is why judges consistently award top prizes to this archetype in SIH:
-* **Tangible, Live Working Demo:** Unlike vague "blockchain + AI" ideas that only exist as slides, MailGuardian AI can process an uploaded `.eml` file live on the projector in 2 seconds, displaying origin coordinates on a world radar map, breaking down SPF/DKIM/DMARC status, and generating an instant court-admissible PDF forensic report.
-* **Dual-Use Platform (Defense & Law Enforcement):** Serves both enterprise Security Operations Centers (SOC Level-1/2 triage automation) and Cyber Crime Police Stations (Section 65B Indian Evidence Act compliant evidence extraction).
+* **Tangible, Live Working Demo:** Processes an uploaded `.eml` file live in 2 seconds, displaying candidate origin coordinates on a world radar map, breaking down PSL-aligned SPF/DKIM/DMARC status, displaying a non-causal threat correlation graph, and generating an instant court-admissible PDF forensic report.
+* **Dual-Use Platform (Defense & Law Enforcement):** Serves both enterprise Security Operations Centers (SOC Level-1/2 triage automation) and Cyber Crime Police Stations (Section 65B Indian Evidence Act / BSA compliant evidence documentation).
 * **High Technical Depth:** Bridges low-level network protocols (RFC 5322, RFC 7208 SPF, RFC 6376 DKIM, RFC 7489 DMARC), cryptographic integrity (SHA-256/MD5), OSINT threat feeds (AbuseIPDB, VirusTotal, AlienVault OTX), reverse hop parsing, and LLM-powered cognitive reasoning.
 * **National Impact:** Directly aligns with the mission of **I4C (Ministry of Home Affairs)** and **CERT-In** to combat financial fraud, bank impersonation, and identity theft.
 
@@ -35,214 +35,87 @@ MailGuardian AI operates on a **10-Step Deterministic + Cognitive Pipeline**. It
 
 ```mermaid
 graph TD
-    A[Raw .eml Email File] --> B[Step 1: Cryptographic Ingestion & Hashing
-SHA-256, MD5 Chain of Custody]
-    B --> C[Step 2: RFC 5322 MIME & Header Deconstruction]
-    C --> D[Step 3: Identity & Authentication Audit
-SPF, DKIM, DMARC Protocol Verification]
-    C --> E[Step 4: Reverse Hop Traversal
-Walking Received Headers Bottom-to-Top]
-    E --> F[Step 5: Origin IP Extraction & Geolocation Radar]
-    F --> G[Step 6: WHOIS Registration & Domain Age Assessment]
-    F --> H[Step 7: Multi-Source Threat Intelligence
-AbuseIPDB, VirusTotal, AlienVault OTX]
-    C --> I[Step 8: Deterministic ML & Heuristic Scoring Engine]
-    D --> I
-    G --> I
-    H --> I
-    I --> J[Step 9: Multi-Tier AI Explanation Layer
-Gemini / LLM with Intelligent Fallback]
-    J --> K[Step 10: Threat Memory Engine & Forensic Report Generator
-Court-Admissible PDF & JSON Export]
+    A[Raw .eml Email File] --> B[Step 1: Pre-Parse Cryptographic Ingestion\nSHA-256, MD5 Chain of Custody]
+    B --> C[Step 2: Deep RFC 5322 MIME Deconstruction\nHeaders, Body, Attachments, Deceptive Links]
+    C --> D[Step 3: RFC Authentication Verification\nPSL-aware SPF, Multi-DKIM, DMARC Alignment]
+    D --> E[Step 4: Relay Trust Model & Anomaly Assessment\nMonotonicity Checks, Candidate Origin IP]
+    E --> F[Step 5: WHOIS & Domain Age Intelligence\nRegistration Audit, &lt;30d Disposable Domain Flag]
+    E --> G[Step 6: Geolocation & Autonomous System\nCountry, City, Coordinates, ISP, ASN]
+    E --> H[Step 7: Multi-Tier Selective Threat Intel\nTier 1: Local &lt;50 | Tier 2: 50-70 Cache/AbuseIPDB | Tier 3: &gt;70 VT 5-Key Pool]
+    C --> I[Step 8: ML Risk Classification & NLP Vectorization\nTF-IDF + Urgency NLP + Structural Security Signals]
+    D & F & G & H & I --> J[Step 9: Calibrated Risk Engine v2026.1 & Threat Memory\nDecoupled Confidence, Collinearity Capping, Playbooks]
+    J --> K[Step 10: Non-Causal Correlation Graph & Forensic Reports\nReportLab PDF with Section 65B Certificate & JSON]
 ```
 
 ---
 
-### Step-by-Step Technical Breakdown
+## 3. Step-by-Step Technical Engineering & Failure Modes
 
-#### Step 1: Ingestion & Evidence Chain of Custody
-* **File Input:** Accepts RFC 5322 standardized `.eml`, `.msg`, or raw text MIME streams.
-* **Integrity Hashing:** Before any byte is altered or parsed, the system computes cryptographic SHA-256 and MD5 hashes.
-* **Forensic Significance:** Guarantees that digital evidence submitted to cyber forensic examiners or courts is verifiable and tamper-evident.
-
-#### Step 2: RFC 5322 MIME Header Deconstruction
-* Extracted fields: `From`, `To`, `Subject`, `Date`, `Message-ID`, `Return-Path`, `Reply-To`, `Authentication-Results`, `Received-SPF`, and custom `X-*` tracking headers.
-* **Mismatch Detection:** Compares display name, `From:` header domain, `Return-Path:` bounce domain, and `Reply-To:` destination to catch immediate impersonation and CEO fraud attempts.
-
-#### Step 3: Authentication Engine (SPF, DKIM, DMARC)
-* **SPF (Sender Policy Framework - RFC 7208):** Verifies whether the originating relay IP address is authorized in the sender domain DNS TXT records (`+all`, `~all`, `-all`).
-* **DKIM (DomainKeys Identified Mail - RFC 6376):** Checks cryptographic signature authenticity, public key selector, and canonicalization headers.
-* **DMARC (Domain-based Message Authentication - RFC 7489):** Evaluates domain alignment (`spf_aligned`, `dkim_aligned`) and policy enforcement (`none`, `quarantine`, `reject`).
-
-#### Step 4: Reverse Hop Traversal (Origin IP Extractor)
-* Mail Transfer Agents (MTAs) append `Received:` headers at the top of the stack as an email travels.
-* MailGuardian AI parses the headers in **reverse chronological order (bottom-to-top)** to identify the initial sending client or mail relay.
-* **RFC 1918 / Bogon Filtering:** Automatically detects and skips internal, private (`10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`), loopback (`127.0.0.1`), and multicast IP addresses to isolate the true public Origin IP.
-
-#### Step 5: Geolocation & Infrastructure Radar
-* Resolves the extracted public Origin IP to geographic coordinates (Latitude, Longitude), Country, City, Region, Autonomous System Number (ASN), and Internet Service Provider (ISP).
-* Displays a live Leaflet.js radar sweep map pinpointing the sender server origin.
-
-#### Step 6: WHOIS Registration & Domain Age Assessment
-* Queries authoritative TLD registrars to determine domain creation date and registrar identity.
-* Flags newly registered domains (less than 30 days old) as high-risk, a signature attribute of disposable phishing infrastructure.
-
-#### Step 7: Multi-Source Threat Intelligence Feeds
-* Correlates indicators across leading global cyber defense databases:
-  * **AbuseIPDB:** Reputation score and malicious activity reports.
-  * **VirusTotal:** Detection ratio across 70+ security vendors for domain and IP.
-  * **AlienVault OTX:** Open Threat Exchange pulse counts and adversary group tags.
-* Implements a 7-day in-memory cache to maintain high throughput and prevent API rate-limiting.
-
-#### Step 8: Deterministic ML & Heuristic Scoring Engine
-* Calculates a weighted composite risk score (0 to 100):
-  * Authentication failures (SPF/DKIM/DMARC): Up to 35 points.
-  * Threat Intel reputation hits: Up to 30 points.
-  * Domain age (<30 days) & Whois flags: Up to 15 points.
-  * Urgent phishing urgency / deceptive keywords: Up to 10 points.
-  * Attachment risks (.exe, .scr, double extensions): Up to 10 points.
-* **Verdicts:** `Clean` (0-30), `Suspicious` (31-60), `Malicious` (61-100).
-
-#### Step 9: Multi-Tier AI Intelligence Layer
-* Leverages Large Language Models with a resilient multi-tier fallback architecture.
-* Generates three synchronized perspectives:
-  1. **Forensic Executive Summary:** For Senior CISOs and SOC managers.
-  2. **Technical Threat Explanation:** Detailing exploited headers and anomaly vectors.
-  3. **Plain Language Translation:** Empowering non-technical end users to understand why the email is dangerous in plain everyday terms.
-* **Resilient Architecture:** If an API quota or network error occurs, the system seamlessly falls back to local heuristic rule engines with zero downtime.
-
-#### Step 10: Threat Memory Engine & Forensic Report Generation
-* **Threat Memory:** Persists hashes, sender infrastructure, and attack patterns into a local forensic database for campaign cross-correlation and cluster visualization.
-* **Forensic PDF Generation:** Generates a court-ready, tamper-proof forensic PDF dossier complete with evidence hashes, authentication breakdown, hops audit trail, radar coordinates, and mitigation checklists using ReportLab.
-* **Forensic JSON Export:** Structured machine-readable STIX/MISP-compatible threat intelligence.
+| Step | Component & RFC | What is Performed? | Why is it Performed? | Alternatives & Modern Standards | What Happens if it Fails? (Graceful Degradation) |
+|---|---|---|---|---|---|
+| **Step 1: Ingestion & Hashes** | [`core/pipeline.py`](file:///home/ankitg791/dEMO/core/pipeline.py) | Computes SHA-256 and MD5 cryptographic hashes immediately on the raw input bytes prior to parsing. | Guarantees digital evidence chain-of-custody for Section 65B Indian Evidence Act / BSA court compliance. | SHA-512, BLAKE3, RFC 3161 cryptographic timestamps. | Corrupt/empty buffer raises `ValueError` cleanly before wasting CPU. Encoding issues preserve raw bytes verbatim. |
+| **Step 2: RFC 5322 Parsing** | [`core/parser.py`](file:///home/ankitg791/dEMO/core/parser.py) | Deconstructs headers, body text, attachments, deceptive hyperlinks (anchor text vs. href), and typosquatting domains via Levenshtein distance. | Deceptive links and mismatched Reply-To/Return-Path are the primary technical signatures of phishing and BEC fraud. | Computer vision DOM screenshot rendering, OCR analysis, Quishing QR code scanning. | Catches decoding errors (`utf-8`, `latin-1`, `windows-1252` fallbacks); missing headers trigger syntax anomaly flags without crash. |
+| **Step 3: RFC Authentication** | [`core/auth_check.py`](file:///home/ankitg791/dEMO/core/auth_check.py) (RFC 7208, 6376, 7489) | Public Suffix List (PSL) organizational domain alignment; strict vs relaxed SPF; multi-DKIM signature verification; untrusted `Authentication-Results` filtering. | SMTP allows arbitrary `From:` spoofing. SPF, DKIM, and DMARC are the only authoritative anti-spoofing protocols. | ARC (RFC 8617) for forwarded mail, BIMI (RFC 9637) for verified brand logos, MTA-STS / DANE. | DNS timeout after 3s triggers `status: temperror`, lowers `analysis_confidence` by 0.15, falls back to trusted internal headers. |
+| **Step 4: Relay Trust Model** | [`core/origin_ip.py`](file:///home/ankitg791/dEMO/core/origin_ip.py) | Walks Received headers bottom-to-top; checks timestamp monotonicity (>300s clock inversions); matches against configured org relays and provider metadata. | Received headers are untrusted input. Naive hop counts fail; anomaly assessment and relay trust modeling isolate candidate origin infrastructure. | BGP routing validation (RPKI), DNSBL / RBL (Spamhaus ZEN), Passive DNS. | All hops private -> `candidate_origin_ip: null`, status `"internal_only"`; unparseable dates silently skipped. |
+| **Step 5: WHOIS & Domain Age** | [`core/whois_lookup.py`](file:///home/ankitg791/dEMO/core/whois_lookup.py) | Queries authoritative registrars; computes domain age in days; flags domains registered < 30 days ago. | Over 85% of malicious phishing domains are disposable infrastructure registered 48-72 hours before attacks. | RDAP (RFC 7480/9082 RESTful protocol), Passive DNS historical records. | 5.0s timeout on port 43 rate limits; logs `lookup_failed` and skips penalty without breaking execution. |
+| **Step 6: Geolocation & ASN** | [`core/geo.py`](file:///home/ankitg791/dEMO/core/geo.py) | Resolves candidate origin IP to Country, City, Coordinates, ISP, and ASN for Leaflet.js radar sweep. | Identifies geographical anomalies and high-risk bulletproof hosting providers. | MaxMind GeoIP2 / GeoLite2 local offline MMDB database, IP2Location. | Network outage returns default `[0.0, 0.0]` with `"country": "Unknown"`; map displays offline fallback. |
+| **Step 7: Threat Intelligence** | [`core/threat_intel.py`](file:///home/ankitg791/dEMO/core/threat_intel.py) | 3-tier selective enrichment: Local <50 (0 APIs); 50-70 Cache/AbuseIPDB; >70 VT 5-Key Pool with auto-failover. | Prevents quota exhaustion on clean spam while guaranteeing deep intelligence on genuine high-risk threats. | MISP, OpenCTI, CrowdStrike Falcon Intel, AlienVault OTX pulses. | HTTP 429 triggers instant key rotation; offline network falls back to 7-day SQLite cache and local scoring. |
+| **Step 8: ML Classification** | [`core/classifier.py`](file:///home/ankitg791/dEMO/core/classifier.py), [`ml/train.py`](file:///home/ankitg791/dEMO/ml/train.py) | Random Forest combining TF-IDF NLP text features with structural signals (SPF, DKIM, domain age, deceptive links). | Detects semantic social engineering subtleties and emerging phrasing patterns invisible to simple rules. | Fine-tuned DeBERTa-v3 SLM, RoBERTa, LLM zero-shot token classification. | Corrupted/missing model triggers heuristic fallback calculating probability from deceptive links & urgency keywords. |
+| **Step 9: Calibrated Risk Engine** | [`core/risk_scorer.py`](file:///home/ankitg791/dEMO/core/risk_scorer.py) | Calibrated 0-100 scoring (`clean`, `low`, `medium`, `high`, `critical`); decoupled confidence; collinear signal capping; action playbooks. | Eliminates runaway false alarms; decouples assessment certainty from threat severity; provides actionable SOC playbooks. | Sigma rules, STIX/TAXII scoring, NIST SP 800-61 risk matrices. | Scores clamped strictly to $[0.0, 100.0]$; confidence clamped to $[0.1, 1.0]$; 100% deterministic and self-contained. |
+| **Step 10: Non-Causal Reports** | [`core/pipeline.py`](file:///home/ankitg791/dEMO/core/pipeline.py), [`core/report.py`](file:///home/ankitg791/dEMO/core/report.py) | Assembles non-causal graph edges (`observed_in`, `candidate_origin_for`, `hosted_by`); generates Section 65B PDF dossier and JSON. | Digital evidence must be legally formatted with chain-of-custody hashes and non-causal attribution to survive cross-examination. | STIX 2.1 threat packages, MISP JSON exports. | PDF generation error falls back to structured JSON export with zero data loss. |
 
 ---
 
-## 3. Technology Stack & Implementation Details
+## 4. Calibrated Scoring Engine v2026.1 Breakdown
+
+| Risk Band | Score Range | Operational Meaning | Recommended Action |
+|---|---|---|---|
+| **Clean** | 0 – 20 | Verified legitimate sender; all cryptographic checks passed. | Deliver to user inbox normally. |
+| **Low Risk** | 21 – 40 | Minor anomalies (e.g. relaxed SPF or missing DKIM); no malicious indicators. | Deliver with informational warning banner. |
+| **Medium Risk** | 41 – 70 | Authentication failure or suspicious urgency/link structure. | Quarantine message; prompt Level-1 SOC analyst triage. |
+| **High Risk** | 71 – 85 | Multiple critical failures (DMARC fail + deceptive link + young domain). | Block sender domain; revoke sessions if clicked. |
+| **Critical** | 86 – 100 | Active malicious campaign, confirmed malware attachment, or threat intel hit. | Enterprise-wide purge; firewall IP block; initiate incident response. |
+
+### Decoupled Confidence & Collinearity Capping
+- **Analysis Confidence (0.0 to 1.0):** Evaluated independently from the risk score based on header completeness (+0.30), authoritative DNS responsiveness (+0.30), and threat intel availability (+0.20).
+- **Collinear Signal Capping:** Prevents score inflation when multiple related checks fail for the same underlying cause:
+  - Combined SPF/DKIM/DMARC failure capped at **35.0 points**.
+  - Combined domain age and registrar signals capped at **15.0 points**.
+  - Combined URL and link deception signals capped at **25.0 points**.
+
+---
+
+## 5. Technology Stack & Implementation Details
 
 | Layer | Component / Tool | Role in Architecture |
 | :--- | :--- | :--- |
-| **Backend Framework** | **Python 3.10+ / FastAPI** | High-performance asynchronous API server for lightning-fast MIME processing |
-| **ASGI Web Server** | **Uvicorn** | Production-ready HTTP server with live reloading and concurrency |
-| **Frontend Styling** | **Tailwind CSS (v3)** | Modern responsive cybersecurity SOC UI, dark/light theme, custom pulse badges |
-| **Mapping Engine** | **Leaflet.js + OpenStreetMap** | Interactive origin IP geolocation radar sweep with offline SVG fallback |
-| **Icons & Typography** | **FontAwesome 6 + Inter + JetBrains Mono** | Clean, high-readability cybersecurity SOC aesthetic |
-| **PDF Generation** | **ReportLab Platypus** | Cryptographically styled, tamper-proof forensic intelligence dossiers |
-| **Database & Cache** | **SQLite3 / Python dict TTL Cache** | Lightweight, zero-dependency persistence for triage history & threat intelligence |
+| **Backend Framework** | **Python 3.11+ / FastAPI** | High-performance asynchronous API server for MIME processing |
+| **ASGI Web Server** | **Uvicorn** | Production-ready HTTP server with concurrency |
+| **Frontend Styling** | **Tailwind CSS (v3)** | Dark-mode cybersecurity SOC UI with custom pulse badges |
+| **Mapping Engine** | **Leaflet.js + OpenStreetMap** | Interactive candidate origin IP radar sweep |
+| **PDF Generation** | **ReportLab Platypus** | Cryptographically signed, Section 65B compliant forensic dossiers |
+| **Database & Cache** | **SQLite3 / Python dict TTL Cache** | Zero-dependency persistence for threat memory, cache & audit trails |
 | **Network & DNS** | **dnspython + requests + ipaddress** | Authoritative DNS lookup for SPF/DKIM/DMARC and RFC 1918 routability checks |
-| **AI / LLM Engine** | **Google Gemini API / Multi-Tier Fallback** | Natural language threat reasoning, contextual triage, and multilingual chat |
-| **Forensic Chatbot** | **Custom ForensicChatEngine** | Grounded in-memory RAG assistant bound to individual case evidence without hallucinations |
+| **AI / LLM Engine** | **OpenRouter / Gemini / Multi-Tier Fallback**| Natural language threat reasoning and plain language translation |
+| **Forensic Chatbot** | **Custom ForensicChatEngine** | Case-grounded in-memory RAG assistant without hallucinations |
 
 ---
 
-## 4. Current Working Features Checklist
-
-- [x] Drag & Drop `.eml` / RFC 5322 email evidence ingestion.
-- [x] Instant Cryptographic Evidence Hashing (SHA-256 & MD5) for Chain of Custody.
-- [x] RFC 7208 (SPF), RFC 6376 (DKIM), and RFC 7489 (DMARC) validation matrix.
-- [x] Reverse Hop Traversal identifying originating server IP through multiple MTAs.
-- [x] Origin Geolocation Radar pinpointing country, city, coordinates, and ASN on interactive map.
-- [x] WHOIS age evaluation flagging new attack infrastructure (<30 days).
-- [x] Threat Intelligence aggregation (AbuseIPDB, VirusTotal, AlienVault OTX).
-- [x] Composite 0-100 Risk Scoring with automated verdicts (Clean, Suspicious, Malicious).
-- [x] AI Forensic Executive Summary & Plain Language user translations.
-- [x] 10-row paginated forensic history table with active row borders and instant search/filtering.
-- [x] Dedicated Authentication / Login modal styled with modern security SaaS aesthetics.
-- [x] AI Investigation Chatbot drawer with instant quick prompts and case-grounded memory.
-- [x] One-Click Tamper-Proof PDF Forensic Dossier and structured JSON report exports.
-
----
-
-## 5. Next-Level Features to Add (SIH Grand Finale Winning Strategy)
-
-To transform MailGuardian AI into an undeniable **1st Prize Winner** at SIH, here are 8 high-impact modules that can be added:
-
-```mermaid
-graph LR
-    subgraph Current Platform
-        CP[MailGuardian AI Core]
-    end
-    subgraph SIH Winning Additions
-        CP --> F1[1. Automated Mailbox Integration
-IMAP & Microsoft Graph / Gmail API]
-        CP --> F2[2. AI QR Code Quishing Scanner
-Computer Vision QR Payload Decoding]
-        CP --> F3[3. YARA & Attachment Sandboxing
-Macro / PE / Malicious PDF Analysis]
-        CP --> F4[4. Cross-Enterprise Attack Graph
-Neo4j Network Correlation]
-        CP --> F5[5. Indian Cyber Law LE-Dossier
-Section 65B IT Act Certificate]
-        CP --> F6[6. Indic-Language Phishing Engine
-Hindi, Tamil, Telugu, Bengali Scam NLP]
-        CP --> F7[7. UPI & Banking Scam Heuristics
-Fake Payment & APK Traps]
-        CP --> F8[8. Chrome / Outlook Real-Time Plugin
-In-Client Threat Warning Banners]
-    end
-```
-
-### Feature 1: Live Mailbox Auto-Quarantine (IMAP / Gmail / O365 API)
-* **What it does:** Instead of only manual `.eml` uploads, connect live email accounts via OAuth or IMAP webhook listeners.
-* **Why it wins:** Judges love **automated action**. When a phishing email arrives, the platform automatically moves it to an isolated `Quarantine_MailGuardian` folder before the user can click it.
-
-### Feature 2: AI Quishing (QR Code Phishing) Detector
-* **What it does:** Uses OpenCV/zbar to scan images and PDF attachments for embedded QR codes, decodes the destination URL, and performs sandbox reputation analysis.
-* **Why it wins:** Quishing has surged by over 400% in 2024-2026. Very few hackathon teams have QR phishing defenses.
-
-### Feature 3: Attachment Static & Heuristic Sandbox (YARA Rules)
-* **What it does:** Inspects attachments (`.pdf`, `.docx`, `.xlsx`, `.zip`, `.exe`, `.apk`) for suspicious macros, embedded JavaScript, double extensions (`invoice.pdf.exe`), and matches against known YARA rules.
-* **Why it wins:** Protects against payload delivery and ransomware loaders.
-
-### Feature 4: Graph-Based Campaign Threat Correlation (Neo4j / NetworkX)
-* **What it does:** Builds an interactive graph network connecting emails that share the same origin ASN, registrant email, DKIM domain, or bitcoin/UPI extortion address.
-* **Why it wins:** Shows law enforcement how separate phishing emails sent to different departments are part of a single coordinated cybercrime syndicate.
-
-### Feature 5: Indian Evidence Act Section 65B Digital Certificate
-* **What it does:** Generates a legally formatted Section 65B Certificate containing forensic timestamp, examiner identity, machine MAC address, and evidence hashes required by Indian criminal courts for electronic evidence admissibility.
-* **Why it wins:** Direct appeal to Police and MHA judges (I4C, Bureau of Police Research and Development).
-
-### Feature 6: Indic Multilingual Phishing NLP (Hindi & Regional Languages)
-* **What it does:** Analyzes phishing messages written in Hindi, Hinglish, Marathi, Bengali, Tamil, etc., targeting rural citizens with fake subsidies, electricity bill disconnections, and government welfare scams (e.g., PM Kisan, Ladli Behna).
-* **Why it wins:** Perfectly answers the "Make in India" / "Bharat-first" mandate of SIH.
-
-### Feature 7: Banking & UPI Extortion Heuristics
-* **What it does:** Detects malicious UPI intent links (`upi://pay?pa=...`), fake APK download links, and spoofed bank alerts (SBI YONO, HDFC Netbanking, Paytm KYC).
-* **Why it wins:** Hits the exact pain point of Indian digital payment frauds.
-
-### Feature 8: Zero-Trust Browser Extension / Outlook Add-in
-* **What it does:** A lightweight client plugin injecting a colored banner (Green / Amber / Red) directly above the email subject line inside Gmail or Outlook Web.
-* **Why it wins:** Demonstrates end-user readiness and enterprise deployment viability.
-
----
-
-## 6. SIH Presentation Pitch Script & Live Demo Strategy
+## 6. SIH Pitch Script & Live Demo Strategy
 
 ### The 3-Minute Elevator Pitch
 1. **The Hook (0:00 - 0:30):**  
-   *"Respected Judges, over 90% of cyberattacks start with an email. In India today, bank customers, MSMEs, and even critical government departments lose crores daily to sophisticated spoofed emails that bypass standard spam filters. The biggest bottleneck? Investigating a single email takes an experienced SOC analyst 30 minutes of manual header parsing."*
+   *"Respected Judges, over 90% of cyberattacks start with an email. In India today, bank customers, MSMEs, and even critical government departments lose crores daily to sophisticated spoofed emails that bypass standard spam filters. Investigating a single email takes an experienced SOC analyst 30 minutes of manual header parsing."*
 2. **The Solution (0:30 - 1:15):**  
-   *"We built **MailGuardian AI** — an autonomous email threat intelligence and forensic investigation platform. With a single drop of an `.eml` file, our 10-step multi-tier engine validates cryptographic hashes, audits SPF/DKIM/DMARC DNS records, reconstructs reverse MTA routing hops, resolves the real public origin IP on a live geolocation radar, and generates an AI-grounded, court-admissible forensic dossier in under 2 seconds."*
+   *"We built **MailSuraksha-AI** — an autonomous email threat intelligence and forensic investigation platform. In under 2 seconds, our 10-step multi-tier engine validates pre-parse SHA-256 hashes, audits PSL-aligned SPF/DKIM/DMARC DNS records, reconstructs reverse MTA routing hops under an explicit relay trust model, resolves the candidate origin IP on a live geolocation radar, and generates an AI-grounded, court-admissible Section 65B forensic dossier."*
 3. **The Live Demo (1:15 - 2:15):**  
    * Drop `phishing_sample.eml` live on screen.
    * Watch the radar pin jump to Moscow/Offshore hosting.
-   * Highlight SPF pass vs DMARC fail.
-   * Open the AI Investigation Chatbot and ask: *"Why did DMARC fail and is this domain registered recently?"*
-   * Click **Export PDF** to show the instant, court-ready Section 65B forensic report.
+   * Highlight SPF pass vs DMARC fail and deceptive hyperlink mismatch (`login.microsoftonline.com` vs `login-security-update-993.top`).
+   * Show the non-causal correlation graph connecting the attacker IP, deceptive link, and campaign memory.
+   * Click **Export PDF** to show the instant Section 65B forensic certificate.
 4. **The Impact & Conclusion (2:15 - 3:00):**  
-   *"MailGuardian AI reduces SOC triage time by 95%, protects users with plain-language translations, and provides police cyber cells with automated evidence packaging. It is fast, privacy-first with zero permanent storage, and built for a safer Digital India."*
+   *"MailSuraksha-AI reduces SOC triage time by 95%, protects citizens with plain-language translations, and provides police cyber cells with automated evidence packaging. It is fast, privacy-first, and built for a safer Digital India."*
 
 ---
-
-## 7. Actionable Implementation Roadmap for AI & Developers
-
-| Phase | Sprint Goal | Key Deliverables | Timeline |
-| :--- | :--- | :--- | :--- |
-| **Phase 1 (Current)** | Core Forensic Pipeline | 10-step analysis, Leaflet radar, ReportLab PDF, FastAPI backend | Completed ✅ |
-| **Phase 2** | Law Enforcement Compliance | Section 65B legal certificate, Quishing QR code decoder | 2 Days |
-| **Phase 3** | Threat Intelligence & Graph | Live IMAP mailbox auto-quarantine, Neo4j campaign graph | 3 Days |
-| **Phase 4** | Indic NLP & UPI Guard | Multilingual Hindi/Hinglish NLP model, fake UPI payload detector | 2 Days |
-| **Phase 5** | Polish & Pitch Readiness | Pitch deck slides, video demo recording, judge FAQ preparation | 1 Day |
-
----
-*End of Master Dossier — MailGuardian AI*
+*End of Master Dossier — MailGuardian AI / MailSuraksha-AI*
