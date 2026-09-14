@@ -139,6 +139,28 @@ class ForensicReportGenerator:
             ("PADDING", (0, 0), (-1, -1), 4)
         ]))
         story.append(t_custody)
+        story.append(Spacer(1, 8))
+
+        # Processing Integrity & Secure Execution Attestation
+        story.append(Paragraph("<b>Processing Integrity & Secure Execution</b>", h2_style))
+        secure_proc = self.data.get("secure_processing") or self.data.get("evidence_metadata", {}).get("secure_processing", {})
+        proc_mode = secure_proc.get("mode", "standard")
+        proc_attestation = secure_proc.get("attestation", "not-available-in-this-mode")
+        proc_note = secure_proc.get("note", "TEE attestation planned for production deployment")
+
+        mode_badge = "<font color='#1e3a8a'><b>STANDARD (In-Process)</b></font>" if proc_mode == "standard" else "<font color='#166534'><b>ENCLAVE (TEE-Ready)</b></font>"
+        integrity_data = [
+            [Paragraph("<b>Execution Mode:</b>", body_style), Paragraph(mode_badge, body_style)],
+            [Paragraph("<b>TEE Attestation:</b>", body_style), Paragraph(f"<code>{esc(proc_attestation)}</code>", mono_style)],
+            [Paragraph("<b>Integrity Status:</b>", body_style), Paragraph(esc(proc_note), body_style)]
+        ]
+        t_integrity = Table(integrity_data, colWidths=[130, 410])
+        t_integrity.setStyle(TableStyle([
+            ("GRID", (0, 0), (-1, -1), 0.5, colors.HexColor("#e2e8f0")),
+            ("BACKGROUND", (0, 0), (0, -1), colors.HexColor("#f8fafc")),
+            ("PADDING", (0, 0), (-1, -1), 3.5)
+        ]))
+        story.append(t_integrity)
         story.append(Spacer(1, 10))
 
         # 4. Authentication Validation (RFC 7489 Alignment Matrix)

@@ -106,6 +106,10 @@ class Settings:
     # Threat Intel timeouts and privacy settings
     THREAT_INTEL_TIMEOUT_SECONDS: float = float(os.getenv("THREAT_INTEL_TIMEOUT_SECONDS", "4.0"))
 
+    # Secure Processing & TEE Enclave Configuration
+    # Modes: "standard" (in-process) | "enclave" (AWS Nitro Enclave TEE interface)
+    SECURE_MODE: str = os.getenv("SECURE_MODE", "standard").strip().lower()
+
 settings = Settings()
 settings.DATA_DIR.mkdir(parents=True, exist_ok=True)
 settings.REPORTS_DIR.mkdir(parents=True, exist_ok=True)

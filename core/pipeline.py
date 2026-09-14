@@ -16,6 +16,7 @@ from core.classifier import RiskClassifier
 from core.risk_scorer import RiskScorer
 from core.quishing_scanner import QuishingScanner
 from core.ai_intelligence import ai_engine
+from core.secure_processor import secure_processor
 from core.report import ForensicReportGenerator
 from database import db
 from config import settings
@@ -50,9 +51,11 @@ class AnalysisPipeline:
         report_id = f"SECX-{uuid.uuid4().hex[:10].upper()}"
         timestamp = datetime.now(timezone.utc).isoformat()
 
-        # Step 0: Immutable Evidence Integrity Hashing (pre-parse baseline)
-        raw_sha256 = hashlib.sha256(raw_bytes).hexdigest()
-        raw_md5 = hashlib.md5(raw_bytes).hexdigest()
+        # Step 0: Immutable Evidence Integrity Hashing (pre-parse baseline via SecureProcessor)
+        secure_hashes = secure_processor.compute_evidence_hashes(raw_bytes)
+        raw_sha256 = secure_hashes["sha256"]
+        raw_md5 = secure_hashes["md5"]
+        attestation_meta = secure_processor.get_attestation_metadata()
         evidence_metadata = {
             "evidence_id": report_id,
             "sha256": raw_sha256,
@@ -62,7 +65,8 @@ class AnalysisPipeline:
             "tool_name": "MailGuardian AI Forensic Engine",
             "tool_version": "2.1.0",
             "parser_policy": "RFC 5322 Standards-Compliant",
-            "time_sync_reference": "UTC System Clock"
+            "time_sync_reference": "UTC System Clock",
+            "secure_processing": attestation_meta
         }
 
         # Step 1 & 2: Ingestion & Forensic Parsing
@@ -182,6 +186,7 @@ class AnalysisPipeline:
             "filename": filename,
             "analyzed_at": timestamp,
             "evidence_metadata": evidence_metadata,
+            "secure_processing": attestation_meta,
             "hashes": parsed_data["hashes"],
             "headers": parsed_data["headers"],
             "received_chain": parsed_data["received_chain"],

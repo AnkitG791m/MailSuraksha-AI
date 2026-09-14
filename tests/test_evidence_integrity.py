@@ -84,6 +84,44 @@ class TestEvidenceIntegrity(unittest.TestCase):
             self.assertIn("impact_level", p)
             self.assertIn("requires_approval", p)
 
+    def test_secure_processor_standard_mode(self):
+        """Verify SecureProcessor abstraction in standard mode."""
+        from core.secure_processor import SecureProcessor
+        proc = SecureProcessor(mode="standard")
+        sample_bytes = b"Subject: Secure Test\r\n\r\nHello World"
+        
+        hashes = proc.compute_evidence_hashes(sample_bytes)
+        self.assertEqual(hashes["sha256"], hashlib.sha256(sample_bytes).hexdigest())
+        self.assertEqual(hashes["md5"], hashlib.md5(sample_bytes).hexdigest())
+        self.assertEqual(hashes["byte_size"], len(sample_bytes))
+
+        # Attestation metadata must be honest and not fake a verified enclave
+        meta = proc.get_attestation_metadata()
+        self.assertEqual(meta["mode"], "standard")
+        self.assertEqual(meta["attestation"], "not-available-in-this-mode")
+        self.assertIn("planned for production", meta["note"])
+
+    def test_secure_processor_enclave_interface(self):
+        """Verify SecureProcessor enclave interface placeholder."""
+        from core.secure_processor import SecureProcessor
+        proc = SecureProcessor(mode="enclave")
+        meta = proc.get_attestation_metadata()
+        self.assertEqual(meta["mode"], "enclave")
+        self.assertEqual(meta["attestation"], "enclave-interface-ready")
+        self.assertIn("AWS Nitro Enclave", meta["enclave_provider"])
+
+    def test_secure_processor_pii_sanitization(self):
+        """Verify SecureProcessor wraps PII sanitization."""
+        from core.secure_processor import SecureProcessor
+        proc = SecureProcessor()
+        text_with_pii = "My password: SuperSecretPassword123 and card 4111 2222 3333 4444"
+        sanitized = proc.sanitize_content(text_with_pii)
+        self.assertNotIn("SuperSecretPassword123", sanitized)
+        self.assertNotIn("4111 2222 3333 4444", sanitized)
+        self.assertIn("[REDACTED_PASSWORD]", sanitized)
+        self.assertIn("[REDACTED_CARD_NUMBER]", sanitized)
+
 
 if __name__ == "__main__":
     unittest.main()
+
