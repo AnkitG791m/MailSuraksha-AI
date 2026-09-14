@@ -52,7 +52,7 @@
               <i class="fa-solid fa-microchip text-[10px]"></i>
               <span>TEE Enclave</span>
             </span>
-            <span class="hidden sm:inline-block text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800">SOC 2 Type II</span>
+            <span class="hidden sm:inline-block text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800">SOC Workstation</span>
           </div>
           <p class="text-xs text-gray-500 dark:text-gray-400 font-mono -mt-0.5 flex items-center space-x-1.5">
             <span class="text-emerald-600 dark:text-emerald-400 font-bold">Privacy #1</span>
@@ -117,7 +117,7 @@
             <span>User Privacy is Priority #1</span>
           </span>
           <span class="hidden sm:inline text-emerald-300 dark:text-emerald-700">|</span>
-          <span class="hidden sm:inline text-gray-600 dark:text-gray-400 font-mono text-xs">Zero Data Exposure</span>
+          <span class="hidden sm:inline text-gray-600 dark:text-gray-400 font-mono text-xs">Supports 65B Documentation</span>
         </div>
 
         <!-- Hero Headline -->
@@ -128,7 +128,7 @@
 
         <!-- Subheadline -->
         <p class="max-w-3xl mx-auto text-base sm:text-lg text-gray-600 dark:text-gray-300 leading-relaxed font-normal">
-          MailGuardian AI processes email payloads inside hardware-isolated <strong class="text-emerald-600 dark:text-emerald-400 font-semibold">Trusted Execution Environments (TEE)</strong>. Inspect RFC-compliant SPF/DKIM/DMARC alignment, uncover deceptive QR quishing vectors, and generate legally defensible Section 65B forensic evidence with complete privacy isolation.
+          MailGuardian AI processes email payloads inside hardware-isolated <strong class="text-emerald-600 dark:text-emerald-400 font-semibold">Trusted Execution Environments (TEE)</strong>. Inspect RFC-compliant SPF/DKIM/DMARC alignment, uncover deceptive QR quishing vectors, and generate forensic evidence packages for legal review with complete privacy isolation.
         </p>
 
         <!-- CTA Buttons -->
@@ -145,10 +145,10 @@
           </a>
         </div>
 
-        <!-- Notice: Zero Data Exposure & Privacy Guarantee -->
+        <!-- Notice: Privacy Guarantee -->
         <div class="pt-2 flex items-center justify-center space-x-2 text-xs text-gray-500 dark:text-gray-400 font-mono">
           <i class="fa-solid fa-lock text-emerald-500"></i>
-          <span>Protected SOC Workspace: Zero plain-text email bodies are stored or sent to public LLMs.</span>
+          <span>Protected SOC Workspace: Sensitive email content remains inside the TEE processing environment.</span>
         </div>
 
       </div>
@@ -161,52 +161,60 @@
         <div class="text-center space-y-3">
           <div class="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 text-xs font-bold uppercase tracking-wider font-mono">
             <i class="fa-solid fa-user-shield"></i>
-            <span>Privacy Priority #1 • Zero Data Leakage</span>
+            <span>Privacy Priority #1 • Sensitive Email Content Remains Inside the TEE</span>
           </div>
           <h2 class="text-3xl sm:text-4xl font-extrabold text-gray-950 dark:text-white tracking-tight">
             Engineered with Hardware TEE Enclave Isolation
           </h2>
           <p class="text-sm sm:text-base text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-            Unlike commercial email scanners that upload sensitive corporate communications to third-party cloud LLMs, MailGuardian AI guarantees total cryptographic isolation.
+            Unlike commercial email scanners that transmit unredacted message text to public cloud APIs, MailGuardian AI performs payload analysis inside an isolated enclave environment.
           </p>
         </div>
 
         <!-- 3 Feature Cards -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
           
-          <!-- Card 1: Hardware-Enforced TEE Enclave -->
+          <!-- Card 1: Hardware TEE Enclave -->
           <div class="p-7 sm:p-8 rounded-3xl bg-white dark:bg-gray-900 border border-gray-200/90 dark:border-gray-800 shadow-sm space-y-4">
             <div class="h-12 w-12 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-2xl">
               <i class="fa-solid fa-microchip"></i>
             </div>
             <h3 class="text-lg font-extrabold text-gray-900 dark:text-white">Hardware TEE Enclave (AWS Nitro)</h3>
             <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
-              Email payload parsing, evidence hashing, and PII redacting execute in a hardware-isolated enclave. Memory is encrypted with CPU-enforced isolation, so neither cloud administrators nor host processes can view your emails.
+              Email payload parsing, evidence hashing, and PII redacting execute in a hardware-isolated enclave. CPU and memory isolation through AWS Nitro Enclave architecture ensures email processing occurs inside an isolated enclave where parent instance processes cannot access enclave memory.
             </p>
           </div>
 
-          <!-- Card 2: Standards-Based Alignment & Zero Cloud Leakage -->
+          <!-- Card 2: Standards-Based Alignment & TEE Isolation -->
           <div class="p-7 sm:p-8 rounded-3xl bg-white dark:bg-gray-900 border border-gray-200/90 dark:border-gray-800 shadow-sm space-y-4">
             <div class="h-12 w-12 rounded-2xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-2xl">
               <i class="fa-solid fa-scale-balanced"></i>
             </div>
-            <h3 class="text-lg font-extrabold text-gray-900 dark:text-white">RFC 7489 Alignment & Zero Cloud Leakage</h3>
+            <h3 class="text-lg font-extrabold text-gray-900 dark:text-white">RFC 7489 Alignment & Enclave Isolation</h3>
             <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
-              Calculates strict vs relaxed domain alignment across envelope MAIL FROM, visible Header From, and DKIM d= signing selectors. Scoring heuristics run locally in-memory with zero raw text transmitted to public AI models.
+              Calculates strict vs relaxed domain alignment across envelope MAIL FROM, visible Header From, and DKIM d= signing selectors pursuant to RFC 7489. Sensitive email content remains inside the TEE processing environment while local scoring heuristics evaluate threat indicators.
             </p>
           </div>
 
-          <!-- Card 3: Section 65B Certified Dossiers -->
+          <!-- Card 3: Evidence Preservation Support -->
           <div class="p-7 sm:p-8 rounded-3xl bg-white dark:bg-gray-900 border border-gray-200/90 dark:border-gray-800 shadow-sm space-y-4">
             <div class="h-12 w-12 rounded-2xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center text-2xl">
               <i class="fa-solid fa-stamp"></i>
             </div>
-            <h3 class="text-lg font-extrabold text-gray-900 dark:text-white">Section 65B & Cryptographic Attestation</h3>
+            <h3 class="text-lg font-extrabold text-gray-900 dark:text-white">Evidence Preservation & Attestation Support</h3>
             <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
-              Generates court-admissible electronic evidence certificates aligned with the Indian Evidence Act & Bharatiya Sakshya Adhiniyam 2023, sealed with SHA-256 chain of custody and TEE attestation metadata.
+              Generates forensic evidence packages for legal review structured to support evidence required for Section 65B / Section 63 BSA documentation, sealed with SHA-256 chain of custody and cryptographic attestation metadata.
             </p>
           </div>
 
+        </div>
+
+        <!-- Mandatory Legal Disclaimer -->
+        <div class="p-4 rounded-2xl bg-gray-50 dark:bg-gray-900/60 border border-gray-200 dark:border-gray-800 text-center">
+          <p class="text-xs text-gray-500 dark:text-gray-400 font-mono">
+            <i class="fa-solid fa-scale-balanced text-blue-500 mr-1.5"></i>
+            <strong>Legal Disclaimer:</strong> Legal admissibility of evidence is determined by the relevant authority or court. MailGuardian AI provides structured forensic evidence packages and chain-of-custody documentation to assist authorized legal and forensic personnel.
+          </p>
         </div>
 
       </div>
@@ -225,7 +233,7 @@
             How MailGuardian AI Detects Deception
           </h2>
           <p class="text-base sm:text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto font-medium">
-            <span class="text-emerald-600 dark:text-emerald-400 font-bold">User privacy is our #1 priority:</span> From hardware-isolated TEE ingestion to judicial evidence dossiers in under 1.8 seconds.
+            <span class="text-emerald-600 dark:text-emerald-400 font-bold">User privacy is our #1 priority:</span> From hardware-isolated TEE ingestion to forensic evidence documentation in under 1.8 seconds.
           </p>
         </div>
 
@@ -241,14 +249,14 @@
                 <span class="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-emerald-100 dark:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700">Hardware-Isolated</span>
               </div>
               <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-300 mt-1">
-                Every uploaded email is processed inside a Trusted Execution Environment (TEE). Encrypted memory architecture guarantees zero host eavesdropping and absolute user privacy.
+                Every uploaded email is processed inside an isolated processing environment. CPU and memory isolation through AWS Nitro Enclave architecture helps ensure parent instance processes cannot access enclave memory.
               </p>
             </div>
           </div>
           <div class="flex items-center space-x-2 flex-shrink-0">
             <span class="px-3.5 py-2 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 text-xs font-bold text-gray-700 dark:text-gray-200 shadow-sm flex items-center space-x-1.5">
               <i class="fa-solid fa-check text-emerald-500"></i>
-              <span>Ephemeral Memory Only</span>
+              <span>Sensitive Content in TEE</span>
             </span>
             <span class="px-3.5 py-2 rounded-xl bg-emerald-600 text-white text-xs font-bold shadow-sm flex items-center space-x-1.5">
               <i class="fa-solid fa-shield text-xs"></i>
@@ -275,7 +283,7 @@
               <h3 class="text-lg sm:text-xl font-extrabold text-gray-900 dark:text-white">Raw MIME Ingestion</h3>
             </div>
             <p class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
-              Drag & drop any suspicious <code class="text-blue-600 dark:text-blue-400 font-mono font-bold">.eml</code> file. Enclave-isolated memory calculates SHA-256 forensic fingerprints, strips sender PII, decodes base64 attachments, and traverses the Received hop chain with zero host exposure.
+              Drag & drop any suspicious <code class="text-blue-600 dark:text-blue-400 font-mono font-bold">.eml</code> file. Enclave-isolated memory calculates SHA-256 forensic fingerprints, strips sender PII, decodes base64 attachments, and traverses the Received hop chain with parent-instance memory isolation.
             </p>
           </div>
 
@@ -289,12 +297,12 @@
             </div>
             <div>
               <div class="inline-block text-xs font-bold font-mono uppercase tracking-wider text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950 px-2.5 py-0.5 rounded-full mb-2">
-                Zero Cloud Leakage
+                Sensitive Content in TEE
               </div>
               <h3 class="text-lg sm:text-xl font-extrabold text-gray-900 dark:text-white">Multi-Tier Inspection</h3>
             </div>
             <p class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
-              Local zero-network scoring checks DNS TXT records, scans inline QR quishing images, resolves origin IP infrastructure via BGP ASN, and selectively correlates threat intelligence without sharing sensitive email bodies.
+              Local zero-network scoring checks DNS TXT records, scans inline QR quishing images, resolves origin IP infrastructure via BGP ASN, and selectively correlates threat intelligence while sensitive email content remains inside the TEE processing environment.
             </p>
           </div>
 
@@ -308,15 +316,22 @@
             </div>
             <div>
               <div class="inline-block text-xs font-bold font-mono uppercase tracking-wider text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950 px-2.5 py-0.5 rounded-full mb-2">
-                Section 65B & PCR Attested
+                Supports 65B Documentation
               </div>
               <h3 class="text-lg sm:text-xl font-extrabold text-gray-900 dark:text-white">SOC Triage & Evidence Export</h3>
             </div>
             <p class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
-              SOC analysts receive itemized explainable score factors, visual graph correlation, containment playbooks, and one-click Section 65B forensic PDF dossiers backed by hardware TEE attestation integrity.
+              SOC analysts receive itemized explainable score factors, visual graph correlation, containment playbooks, and one-click forensic evidence packages for legal review supported by cryptographic TEE attestation integrity.
             </p>
           </div>
 
+        </div>
+
+        <!-- Section Legal Disclaimer -->
+        <div class="text-center pt-2">
+          <p class="text-xs text-gray-400 dark:text-gray-500 font-mono">
+            * Note: Legal admissibility of evidence is determined by the relevant authority or court.
+          </p>
         </div>
 
       </div>
@@ -355,8 +370,11 @@
       <div class="flex items-center space-x-6 text-[11px]">
         <a href="https://github.com/AnkitG791m/MailSuraksha-AI" target="_blank" class="hover:text-blue-600 dark:hover:text-blue-400 transition">Repository</a>
         <a href="/login" class="hover:text-blue-600 dark:hover:text-blue-400 transition">Analyst Portal</a>
-        <span class="text-gray-400">Section 65B Evidentiary Standard</span>
+        <span class="text-gray-400">Supports Section 65B Documentation</span>
       </div>
+    </div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4 pt-3 border-t border-gray-100 dark:border-gray-900 text-center text-[11px] text-gray-400 font-mono">
+      Legal admissibility of evidence is determined by the relevant authority or court.
     </div>
   </footer>
 
