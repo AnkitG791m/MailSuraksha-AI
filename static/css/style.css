@@ -17,19 +17,13 @@
 }
 
 html {
-  font-size: 17.5px;
+  font-size: 14.5px;
   -webkit-text-size-adjust: 100%;
 }
 
 @media (min-width: 1280px) {
   html {
-    font-size: 18px;
-  }
-}
-
-@media (min-width: 1536px) {
-  html {
-    font-size: 18.5px;
+    font-size: 15px;
   }
 }
 
@@ -160,3 +154,319 @@ html.dark .table-row-hover:hover {
   background-color: rgba(30, 41, 59, 0.5);
 }
 
+/* Zero horizontal scroll guarantee for investigation table */
+.table-fixed {
+  table-layout: fixed !important;
+  width: 100% !important;
+}
+
+#investigations, #investigations-table {
+  overflow-x: hidden !important;
+}
+
+#investigations table, #investigations-table table {
+  table-layout: fixed !important;
+  width: 100% !important;
+}
+
+#investigations table td, #investigations-table table td {
+  text-overflow: ellipsis;
+}
+
+/* =========================================================================
+   FORENSIC PROCESSING OVERLAY
+   ========================================================================= */
+
+/* Fullscreen overlay backdrop */
+.forensic-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+.forensic-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Overlay content card */
+.forensic-overlay-card {
+  width: 100%;
+  max-width: 560px;
+  margin: 1rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 1.5rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  transform: translateY(20px) scale(0.97);
+  transition: transform 0.3s ease;
+}
+.forensic-overlay.active .forensic-overlay-card {
+  transform: translateY(0) scale(1);
+}
+
+/* Progress bar */
+.forensic-progress-bar {
+  height: 4px;
+  background: #e2e8f0;
+  border-radius: 2px;
+  overflow: hidden;
+}
+html.dark .forensic-progress-bar {
+  background: #1e293b;
+}
+.forensic-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #2563eb, #7c3aed);
+  border-radius: 2px;
+  transition: width 0.4s ease;
+  position: relative;
+}
+.forensic-progress-fill::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 60px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3));
+  animation: progress-shimmer 1.5s ease infinite;
+}
+@keyframes progress-shimmer {
+  0% { opacity: 0; }
+  50% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* Processing steps */
+.forensic-step {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.375rem 0;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  transition: color 0.2s ease;
+}
+.forensic-step.completed {
+  color: #10b981;
+}
+.forensic-step.active {
+  color: var(--text-main);
+  font-weight: 600;
+}
+
+.forensic-step-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 0.7rem;
+}
+.forensic-step.completed .forensic-step-icon {
+  color: #10b981;
+}
+.forensic-step.active .forensic-step-icon {
+  color: #2563eb;
+  animation: spin-step 1s linear infinite;
+}
+@keyframes spin-step {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Status text cycling animation */
+.forensic-status-text {
+  display: inline-block;
+  animation: status-fade 0.5s ease;
+}
+@keyframes status-fade {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Upload success checkmark */
+.upload-success-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #10b981, #059669);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 2rem;
+  margin: 0 auto;
+  animation: success-pop 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
+}
+@keyframes success-pop {
+  0% { transform: scale(0); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* Completion risk score animation */
+.risk-score-display {
+  animation: score-reveal 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+@keyframes score-reveal {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* =========================================================================
+   INVESTIGATION PAGE STYLES
+   ========================================================================= */
+
+/* Tab navigation */
+.inv-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid var(--border-color);
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.inv-tabs::-webkit-scrollbar { display: none; }
+
+.inv-tab {
+  padding: 0.75rem 1.25rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  white-space: nowrap;
+  transition: color 0.15s ease, border-color 0.15s ease;
+  background: none;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+}
+.inv-tab:hover {
+  color: var(--text-main);
+}
+.inv-tab.active {
+  color: #2563eb;
+  border-bottom-color: #2563eb;
+}
+html.dark .inv-tab.active {
+  color: #60a5fa;
+  border-bottom-color: #60a5fa;
+}
+
+/* Tab panels */
+.inv-tab-panel {
+  display: none;
+  animation: tab-fadein 0.25s ease;
+}
+.inv-tab-panel.active {
+  display: block;
+}
+@keyframes tab-fadein {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Investigation info cards */
+.inv-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+
+/* Auth pill styling */
+.auth-pill {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 1rem;
+  border-radius: 0.875rem;
+  border: 1px solid var(--border-color);
+  background: var(--bg-subtle);
+  min-width: 100px;
+}
+.auth-pill-label {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.auth-pill-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.125rem;
+}
+.auth-pill-icon.pass {
+  background: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+}
+.auth-pill-icon.fail {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+}
+.auth-pill-status {
+  font-size: 0.75rem;
+  font-weight: 800;
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.05em;
+}
+.auth-pill-status.pass { color: #10b981; }
+.auth-pill-status.fail { color: #ef4444; }
+.auth-pill-detail {
+  font-size: 0.625rem;
+  color: var(--text-muted);
+}
+
+/* Scoring bar */
+.scoring-bar-bg {
+  height: 8px;
+  border-radius: 4px;
+  background: #e2e8f0;
+  overflow: hidden;
+  flex: 1;
+}
+html.dark .scoring-bar-bg {
+  background: #1e293b;
+}
+.scoring-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.6s ease;
+}
+
+/* Raw email code block */
+.raw-email-block {
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-color);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6875rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-all;
+  max-height: 500px;
+  overflow-y: auto;
+  color: var(--text-main);
+}
