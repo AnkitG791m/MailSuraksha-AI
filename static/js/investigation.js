@@ -1,5 +1,5 @@
 /* =========================================================================
-   MailSurakshaAI - Investigation Page JavaScript
+   MailGuardian AI - Investigation Page JavaScript
    Full-page forensic investigation view with tabs and data rendering.
    ========================================================================= */
 

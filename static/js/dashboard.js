@@ -1,5 +1,5 @@
 /* =========================================================================
-   MailSurakshaAI - Dashboard JavaScript
+   MailGuardian AI - Dashboard JavaScript
    Handles: theme, auth, upload flow with forensic processing overlays,
    history table, pagination, filtering, chat modal.
    ========================================================================= */
@@ -638,7 +638,7 @@ async function loadChatHistory() {
           <i class="fa-solid fa-shield-halved"></i>
         </div>
         <div class="bg-slate-100 dark:bg-[#141b33] border border-slate-200 dark:border-slate-800 rounded-xl p-3.5 text-slate-800 dark:text-slate-200 leading-relaxed max-w-[85%]">
-          Hello, I am your MailSurakshaAI Forensic Assistant. I have analyzed this email's cryptographic headers, origin IP, SPF/DKIM/DMARC records, and threat memory history. What would you like to investigate?
+          Hello, I am your MailGuardian AI Forensic Assistant. I have analyzed this email's cryptographic headers, origin IP, SPF/DKIM/DMARC records, and threat memory history. What would you like to investigate?
         </div>
       </div>
     `;
@@ -757,7 +757,7 @@ async function fetchTelemetryStats() {
     const res = await fetch("/api/threat-intel/stats");
     if (!res.ok) return;
     const stats = await res.json();
-    console.log("[MailSurakshaAI] Threat Telemetry:", stats);
+    console.log("[MailGuardian AI] Threat Telemetry:", stats);
   } catch (e) {
     // Silent fail for telemetry
   }

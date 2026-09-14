@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Investigation | MailSurakshaAI</title>
+  <title>Investigation | MailGuardian AI</title>
   
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -21,6 +21,10 @@
               700: '#1d4ed8',
               900: '#1e3a8a',
             }
+          },
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
           }
         }
       }
@@ -30,7 +34,7 @@
   <!-- Google Fonts & FontAwesome -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <!-- Leaflet CSS & JS -->
@@ -38,6 +42,13 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   
   <link rel="stylesheet" href="/static/css/style.css">
+  <script>
+    if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  </script>
 </head>
 <body class="bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 font-['Plus_Jakarta_Sans',sans-serif] min-h-screen flex flex-col antialiased selection:bg-blue-600 selection:text-white transition-colors duration-200">
 
@@ -61,15 +72,21 @@
           </div>
           <div>
             <div class="flex items-center space-x-2">
-              <span class="text-base font-black tracking-tight text-gray-900 dark:text-white">MailSuraksha<span class="text-blue-600 dark:text-blue-400">AI</span></span>
+              <span class="text-base font-black tracking-tight text-gray-900 dark:text-white">MailGuardian<span class="text-blue-600 dark:text-blue-400">AI</span></span>
             </div>
-            <p class="text-[10px] text-gray-400 font-mono -mt-0.5">Enterprise Email Forensics</p>
+            <p class="text-[10px] text-gray-400 font-mono -mt-0.5">Enterprise Email Forensics • Supports Evidence Preservation</p>
           </div>
         </a>
       </div>
 
       <!-- Right actions -->
       <div class="flex items-center space-x-3 sm:space-x-4">
+        <!-- TEE-Ready Status Badge -->
+        <div class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-800 text-xs font-mono font-bold text-blue-700 dark:text-blue-300">
+          <i class="fa-solid fa-microchip text-blue-500"></i>
+          <span>TEE-READY ARCHITECTURE</span>
+        </div>
+
         <div class="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 text-[10px] font-mono font-bold text-emerald-700 dark:text-emerald-300">
           <span class="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
           <span>ENGINES NOMINAL</span>
@@ -454,11 +471,14 @@
           <i class="fa-solid fa-shield-halved text-xs"></i>
         </div>
         <div>
-          <span class="font-bold text-gray-900 dark:text-white">MailSuraksha</span><span class="font-bold text-blue-600 dark:text-blue-400">AI</span>
+          <span class="font-bold text-gray-900 dark:text-white">MailGuardian</span><span class="font-bold text-blue-600 dark:text-blue-400">AI</span>
           <p class="text-[11px] text-gray-400">Email Safety. Built for Peace of Mind.</p>
         </div>
       </div>
-      <div class="text-[11px] text-gray-400">&copy; 2026 MailSurakshaAI. All rights reserved.</div>
+      <div class="text-[11px] text-gray-400">&copy; 2026 MailGuardian AI. All rights reserved.</div>
+    </div>
+    <div class="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8 mt-4 pt-4 border-t border-gray-100 dark:border-gray-800/60 text-center text-[11px] text-gray-400">
+      <p>Legal Disclaimer: Legal admissibility of evidence is determined by the relevant authority or court. MailGuardianAI provides forensic analysis, evidence preservation, and investigation support.</p>
     </div>
   </footer>
 
