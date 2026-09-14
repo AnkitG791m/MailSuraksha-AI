@@ -163,6 +163,19 @@ async def scan_redirect(request: Request):
     return RedirectResponse(url="/dashboard#scanner-section")
 
 
+@app.get("/investigation/{report_id}", response_class=HTMLResponse)
+async def investigation_page(request: Request, report_id: str):
+    """Dedicated full-screen forensic investigation view for a specific analysis."""
+    user = get_current_user(request)
+    if not user:
+        return RedirectResponse(url="/login")
+    return templates.TemplateResponse(
+        request=request,
+        name="investigation.html",
+        context={"app_name": settings.APP_NAME, "user": user, "report_id": report_id}
+    )
+
+
 @app.get("/assistant", response_class=HTMLResponse)
 async def assistant_redirect(request: Request):
     user = get_current_user(request)

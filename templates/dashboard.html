@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" class="light">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MailGuardian AI | AI-Powered Email Threat Defense & Forensic Intelligence</title>
-  
+
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -30,45 +31,57 @@
   <!-- Google Fonts & FontAwesome -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <!-- Leaflet CSS & JS -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-  
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
   <link rel="stylesheet" href="/static/css/style.css">
 </head>
-<body class="bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 font-['Plus_Jakarta_Sans',sans-serif] min-h-screen flex flex-col antialiased selection:bg-blue-600 selection:text-white transition-colors duration-200">
+
+<body
+  class="bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 font-['Plus_Jakarta_Sans',sans-serif] min-h-screen flex flex-col antialiased selection:bg-blue-600 selection:text-white transition-colors duration-200">
 
   <!-- ROUTE GUARD: Ensure user is logged in -->
   <script>
-    (function() {
-      const user = localStorage.getItem("user_name");
-      if (!user) {
-        window.location.replace("/login");
-      }
-    })();
+      (function () {
+        const user = localStorage.getItem("user_name");
+        if (!user) {
+          window.location.replace("/login");
+        }
+      })();
   </script>
 
   <!-- =========================================================================
        1. AUTHENTICATED WORKSPACE TOP NAVBAR
        ========================================================================= -->
-  <header class="sticky top-0 z-40 w-full border-b border-gray-200/85 bg-white/95 backdrop-blur dark:border-gray-800 dark:bg-gray-900/95 transition-colors">
+  <header
+    class="sticky top-0 z-40 w-full border-b border-gray-200/85 bg-white/95 backdrop-blur dark:border-gray-800 dark:bg-gray-900/95 transition-colors">
     <div class="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-      
+
       <!-- Brand Logo & Workspace Title -->
       <div class="flex items-center space-x-3">
         <a href="/dashboard" class="flex items-center space-x-3 group">
-          <div class="flex h-10 w-10 items-center justify-center rounded-2xl bg-blue-600 text-white shadow-md shadow-blue-500/20 group-hover:bg-blue-700 transition-all">
+          <div
+            class="flex h-10 w-10 items-center justify-center rounded-2xl bg-blue-600 text-white shadow-md shadow-blue-500/20 group-hover:bg-blue-700 transition-all">
             <i class="fa-solid fa-shield-halved text-base"></i>
           </div>
           <div>
             <div class="flex items-center space-x-2">
-              <span class="text-base font-black tracking-tight text-gray-900 dark:text-white">MailGuardian<span class="text-blue-600 dark:text-blue-400">AI</span></span>
-              <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 border border-blue-200/60 dark:border-blue-800">Enterprise Security Focused</span>
+              <span class="text-base font-black tracking-tight text-gray-900 dark:text-white">MailGuardian<span
+                  class="text-blue-600 dark:text-blue-400">AI</span></span>
+              <span
+                class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 border border-blue-200/60 dark:border-blue-800">SOC
+                Workspace</span>
             </div>
-            <p class="text-[10px] text-gray-400 font-mono -mt-0.5">Enterprise Email Forensics • Supports Evidence Preservation for Legal Documentation</p>
+            <p class="text-[10px] text-gray-400 font-mono -mt-0.5">Enterprise Email Forensics • Section 65B Certified
+            </p>
           </div>
         </a>
       </div>
@@ -77,50 +90,63 @@
       <div class="hidden md:flex items-center flex-1 max-w-md mx-8">
         <div class="relative w-full">
           <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-gray-400 text-xs"></i>
-          <input type="text" id="global-search-input" onkeyup="handleTableFilter(event)" placeholder="Search evidence, sender, IP, or hash (⌘K)..." class="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl pl-9 pr-8 py-2 text-xs text-gray-800 dark:text-gray-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition">
-          <kbd class="absolute right-3 top-2.5 px-1.5 py-0.5 text-[9px] font-mono font-semibold text-gray-400 bg-gray-200 dark:bg-gray-700 rounded">⌘K</kbd>
+          <input type="text" id="global-search-input" onkeyup="handleTableFilter(event)"
+            placeholder="Search evidence, sender, IP, or hash (⌘K)..."
+            class="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl pl-9 pr-8 py-2 text-xs text-gray-800 dark:text-gray-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition">
+          <kbd
+            class="absolute right-3 top-2.5 px-1.5 py-0.5 text-[9px] font-mono font-semibold text-gray-400 bg-gray-200 dark:bg-gray-700 rounded">⌘K</kbd>
         </div>
       </div>
 
       <!-- Right Action Toolbar: Theme + User Profile + Logout -->
       <div class="flex items-center space-x-3 sm:space-x-4">
-        
-        <!-- TEE-Ready Status Badge -->
-        <div class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-800 text-xs font-mono font-bold text-blue-700 dark:text-blue-300">
+
+        <!-- TEE Enclave Status Badge -->
+        <div
+          class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-800 text-xs font-mono font-bold text-blue-700 dark:text-blue-300">
           <i class="fa-solid fa-microchip text-blue-500"></i>
-          <span>TEE-READY ARCHITECTURE</span>
+          <span>TEE ENCLAVE: SECURE</span>
         </div>
 
         <!-- Live Engine Nominal Badge -->
-        <div class="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 text-[10px] font-mono font-bold text-emerald-700 dark:text-emerald-300">
+        <div
+          class="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 text-[10px] font-mono font-bold text-emerald-700 dark:text-emerald-300">
           <span class="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
           <span>ENGINES NOMINAL</span>
         </div>
 
         <!-- AI Assistant Modal Launcher Button -->
-        <button onclick="toggleChatModal(true)" class="px-3 py-2 rounded-2xl bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200 dark:border-indigo-800 text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100 dark:hover:bg-indigo-900 transition flex items-center space-x-1.5 text-xs font-semibold cursor-pointer" title="Open Forensic AI Chatbot">
+        <button onclick="toggleChatModal(true)"
+          class="px-3 py-2 rounded-2xl bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200 dark:border-indigo-800 text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100 dark:hover:bg-indigo-900 transition flex items-center space-x-1.5 text-xs font-semibold cursor-pointer"
+          title="Open Forensic AI Chatbot">
           <i class="fa-solid fa-robot text-xs"></i>
           <span class="hidden sm:inline">AI Assistant</span>
         </button>
 
         <!-- Dark Mode Toggle Button -->
-        <button onclick="toggleTheme()" class="rounded-2xl p-2.5 text-gray-500 hover:bg-gray-100 focus:outline-none dark:text-gray-400 dark:hover:bg-gray-800 transition cursor-pointer" title="Toggle Dark/Light Mode">
+        <button onclick="toggleTheme()"
+          class="rounded-2xl p-2.5 text-gray-500 hover:bg-gray-100 focus:outline-none dark:text-gray-400 dark:hover:bg-gray-800 transition cursor-pointer"
+          title="Toggle Dark/Light Mode">
           <i id="theme-icon" class="fa-solid fa-moon text-sm"></i>
         </button>
 
         <!-- Active Analyst Profile Dropdown / Card -->
         <div class="flex items-center space-x-2 pl-3 border-l border-gray-200 dark:border-gray-800">
-          <div class="h-9 w-9 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white text-xs font-black shadow-sm">
+          <div
+            class="h-9 w-9 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white text-xs font-black shadow-sm">
             CM
           </div>
           <div class="hidden lg:block text-left">
-            <div id="user-profile-name" class="text-xs font-bold text-gray-900 dark:text-white leading-none">Codex Monarch</div>
-            <div class="text-[10px] text-emerald-600 dark:text-emerald-400 font-medium mt-0.5 flex items-center space-x-1">
+            <div id="user-profile-name" class="text-xs font-bold text-gray-900 dark:text-white leading-none">Codex
+              Monarch</div>
+            <div
+              class="text-[10px] text-emerald-600 dark:text-emerald-400 font-medium mt-0.5 flex items-center space-x-1">
               <span class="h-1.5 w-1.5 rounded-full bg-emerald-500 inline-block"></span>
               <span>Lead SOC Analyst</span>
             </div>
           </div>
-          <button onclick="handleLogout()" title="Log out from workstation" class="h-9 w-9 rounded-2xl border border-gray-200 dark:border-gray-800 hover:border-rose-300 hover:bg-rose-50 dark:hover:bg-rose-950/50 text-gray-400 hover:text-rose-600 flex items-center justify-center transition cursor-pointer ml-1">
+          <button onclick="handleLogout()" title="Log out from workstation"
+            class="h-9 w-9 rounded-2xl border border-gray-200 dark:border-gray-800 hover:border-rose-300 hover:bg-rose-50 dark:hover:bg-rose-950/50 text-gray-400 hover:text-rose-600 flex items-center justify-center transition cursor-pointer ml-1">
             <i class="fa-solid fa-right-from-bracket text-xs"></i>
           </button>
         </div>
@@ -132,15 +158,17 @@
   <!-- =========================================================================
        5. LIVE INTERACTIVE FORENSIC SCANNER & DASHBOARD WORKSPACE
        ========================================================================= -->
-  <section id="scanner-section" class="py-12 bg-gray-50/70 dark:bg-gray-950 border-y border-gray-200 dark:border-gray-800">
+  <section id="scanner-section"
+    class="py-12 bg-gray-50/70 dark:bg-gray-950 border-y border-gray-200 dark:border-gray-800">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-8">
-      
+
       <!-- Section Header -->
       <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div class="flex flex-wrap items-center gap-2">
             <div class="h-2.5 w-2.5 rounded-full bg-emerald-500 animate-pulse"></div>
-            <span class="text-xs font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400">Live SOC Intelligence Workspace</span>
+            <span class="text-xs font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400">Live SOC
+              Intelligence Workspace</span>
             <span class="text-gray-300 dark:text-gray-700">•</span>
             <span class="inline-flex items-center space-x-1 text-xs font-bold text-emerald-600 dark:text-emerald-400">
               <i class="fa-solid fa-user-shield text-[11px]"></i>
@@ -151,12 +179,14 @@
             Email Evidence Ingestion & Forensic Radar
           </h2>
           <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-1">
-            Drop real <code class="text-blue-600 font-mono">.eml</code> files or trigger benchmark vectors to run the 10-step multi-tier forensic engine.
+            Drop real <code class="text-blue-600 font-mono">.eml</code> files or trigger benchmark vectors to run the
+            10-step multi-tier forensic engine.
           </p>
         </div>
 
         <!-- Live Ticker -->
-        <div class="flex items-center space-x-2 px-4 py-2 rounded-2xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 text-xs text-gray-600 dark:text-gray-400 max-w-md shadow-sm">
+        <div
+          class="flex items-center space-x-2 px-4 py-2 rounded-2xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 text-xs text-gray-600 dark:text-gray-400 max-w-md shadow-sm">
           <span class="flex h-2 w-2 relative flex-shrink-0">
             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
             <span class="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
@@ -168,18 +198,23 @@
 
       <!-- 4 EXECUTIVE METRIC CARDS -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        
+
         <!-- Total Emails Scanned -->
-        <div onclick="handleTableFilter({target: {value: ''}}); scrollToHistory();" class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 hover:border-blue-500 dark:hover:border-blue-400 rounded-2xl p-5 shadow-sm transition group cursor-pointer">
+        <div onclick="handleTableFilter({target: {value: ''}}); scrollToHistory();"
+          class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 hover:border-blue-500 dark:hover:border-blue-400 rounded-2xl p-5 shadow-sm transition group cursor-pointer">
           <div class="flex items-center justify-between">
-            <span class="text-xs font-semibold text-gray-500 dark:text-gray-400 group-hover:text-blue-600 transition">Total Emails Scanned</span>
-            <div class="h-9 w-9 rounded-2xl bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400 flex items-center justify-center text-sm">
+            <span
+              class="text-xs font-semibold text-gray-500 dark:text-gray-400 group-hover:text-blue-600 transition">Total
+              Emails Scanned</span>
+            <div
+              class="h-9 w-9 rounded-2xl bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400 flex items-center justify-center text-sm">
               <i class="fa-solid fa-inbox"></i>
             </div>
           </div>
           <div class="mt-3 flex items-baseline space-x-3">
             <span id="stat-total" class="text-3xl font-black text-gray-900 dark:text-white font-mono">83,963</span>
-            <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-2 py-0.5 rounded-full flex items-center">
+            <span
+              class="text-xs font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-2 py-0.5 rounded-full flex items-center">
               <i class="fa-solid fa-arrow-trend-up text-[10px] mr-1"></i>+28%
             </span>
           </div>
@@ -187,16 +222,22 @@
         </div>
 
         <!-- Suspicious Emails -->
-        <div onclick="handleTableFilter({target: {value: 'suspicious'}}); scrollToHistory();" class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 hover:border-amber-500 rounded-2xl p-5 shadow-sm transition group cursor-pointer">
+        <div onclick="handleTableFilter({target: {value: 'suspicious'}}); scrollToHistory();"
+          class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 hover:border-amber-500 rounded-2xl p-5 shadow-sm transition group cursor-pointer">
           <div class="flex items-center justify-between">
-            <span class="text-xs font-semibold text-gray-500 dark:text-gray-400 group-hover:text-amber-600 transition">Suspicious Emails</span>
-            <div class="h-9 w-9 rounded-2xl bg-amber-50 dark:bg-amber-950 text-amber-600 dark:text-amber-400 flex items-center justify-center text-sm">
+            <span
+              class="text-xs font-semibold text-gray-500 dark:text-gray-400 group-hover:text-amber-600 transition">Suspicious
+              Emails</span>
+            <div
+              class="h-9 w-9 rounded-2xl bg-amber-50 dark:bg-amber-950 text-amber-600 dark:text-amber-400 flex items-center justify-center text-sm">
               <i class="fa-solid fa-triangle-exclamation"></i>
             </div>
           </div>
           <div class="mt-3 flex items-baseline space-x-3">
-            <span id="stat-suspicious" class="text-3xl font-black text-amber-600 dark:text-amber-400 font-mono">341</span>
-            <span class="text-xs font-bold text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-950 px-2 py-0.5 rounded-full flex items-center">
+            <span id="stat-suspicious"
+              class="text-3xl font-black text-amber-600 dark:text-amber-400 font-mono">341</span>
+            <span
+              class="text-xs font-bold text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-950 px-2 py-0.5 rounded-full flex items-center">
               <i class="fa-solid fa-arrow-trend-up text-[10px] mr-1"></i>+125%
             </span>
           </div>
@@ -204,16 +245,21 @@
         </div>
 
         <!-- High Risk Threats -->
-        <div onclick="handleTableFilter({target: {value: 'malicious'}}); scrollToHistory();" class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 hover:border-rose-500 rounded-2xl p-5 shadow-sm transition group cursor-pointer">
+        <div onclick="handleTableFilter({target: {value: 'malicious'}}); scrollToHistory();"
+          class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 hover:border-rose-500 rounded-2xl p-5 shadow-sm transition group cursor-pointer">
           <div class="flex items-center justify-between">
-            <span class="text-xs font-semibold text-gray-500 dark:text-gray-400 group-hover:text-rose-600 transition">High Risk Threats</span>
-            <div class="h-9 w-9 rounded-2xl bg-rose-50 dark:bg-rose-950 text-rose-600 dark:text-rose-400 flex items-center justify-center text-sm">
+            <span
+              class="text-xs font-semibold text-gray-500 dark:text-gray-400 group-hover:text-rose-600 transition">High
+              Risk Threats</span>
+            <div
+              class="h-9 w-9 rounded-2xl bg-rose-50 dark:bg-rose-950 text-rose-600 dark:text-rose-400 flex items-center justify-center text-sm">
               <i class="fa-solid fa-shield-virus"></i>
             </div>
           </div>
           <div class="mt-3 flex items-baseline space-x-3">
             <span id="stat-malicious" class="text-3xl font-black text-rose-600 dark:text-rose-400 font-mono">360</span>
-            <span class="text-xs font-bold text-rose-700 dark:text-rose-300 bg-rose-50 dark:bg-rose-950 px-2 py-0.5 rounded-full flex items-center">
+            <span
+              class="text-xs font-bold text-rose-700 dark:text-rose-300 bg-rose-50 dark:bg-rose-950 px-2 py-0.5 rounded-full flex items-center">
               <i class="fa-solid fa-arrow-trend-down text-[10px] mr-1"></i>-36%
             </span>
           </div>
@@ -221,16 +267,21 @@
         </div>
 
         <!-- Safe / Clean Ingestions -->
-        <div onclick="handleTableFilter({target: {value: 'clean'}}); scrollToHistory();" class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 hover:border-emerald-500 rounded-2xl p-5 shadow-sm transition group cursor-pointer">
+        <div onclick="handleTableFilter({target: {value: 'clean'}}); scrollToHistory();"
+          class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 hover:border-emerald-500 rounded-2xl p-5 shadow-sm transition group cursor-pointer">
           <div class="flex items-center justify-between">
-            <span class="text-xs font-semibold text-gray-500 dark:text-gray-400 group-hover:text-emerald-600 transition">Clean & Verified</span>
-            <div class="h-9 w-9 rounded-2xl bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-sm">
+            <span
+              class="text-xs font-semibold text-gray-500 dark:text-gray-400 group-hover:text-emerald-600 transition">Clean
+              & Verified</span>
+            <div
+              class="h-9 w-9 rounded-2xl bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-sm">
               <i class="fa-solid fa-circle-check"></i>
             </div>
           </div>
           <div class="mt-3 flex items-baseline space-x-3">
             <span id="stat-clean" class="text-3xl font-black text-emerald-600 dark:text-emerald-400 font-mono">30</span>
-            <span class="text-xs font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950 px-2 py-0.5 rounded-full flex items-center">
+            <span
+              class="text-xs font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950 px-2 py-0.5 rounded-full flex items-center">
               <i class="fa-solid fa-shield-halved text-[10px] mr-1"></i>100% Safe
             </span>
           </div>
@@ -241,13 +292,15 @@
 
       <!-- INGESTION DROP ZONE & BENCHMARKS -->
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        
+
         <!-- Drag & Drop Ingestion Card -->
-        <div class="lg:col-span-7 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-3xl p-6 sm:p-8 shadow-sm flex flex-col justify-between">
+        <div
+          class="lg:col-span-7 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-3xl p-6 sm:p-8 shadow-sm flex flex-col justify-between">
           <div>
             <div class="flex items-center justify-between mb-3">
               <div class="flex items-center space-x-3">
-                <div class="h-9 w-9 rounded-2xl bg-blue-100 dark:bg-blue-950 text-blue-600 dark:text-blue-400 flex items-center justify-center text-sm">
+                <div
+                  class="h-9 w-9 rounded-2xl bg-blue-100 dark:bg-blue-950 text-blue-600 dark:text-blue-400 flex items-center justify-center text-sm">
                   <i class="fa-solid fa-cloud-arrow-up"></i>
                 </div>
                 <h3 class="text-base font-bold text-gray-900 dark:text-white">Ingest Email Evidence (.eml)</h3>
@@ -255,21 +308,26 @@
               <span class="text-xs font-mono text-gray-400">RFC 5322 Standard</span>
             </div>
             <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mb-6 leading-relaxed">
-              Drop an email file to trigger the multi-layer forensic pipeline: Header verification, Origin IP extraction, Geolocation resolution, Threat Intelligence, and ML risk scoring.
+              Drop an email file to trigger the multi-layer forensic pipeline: Header verification, Origin IP
+              extraction, Geolocation resolution, Threat Intelligence, and ML risk scoring.
             </p>
 
             <!-- Drop Zone -->
-            <div id="drop-zone" class="border-2 border-dashed border-gray-300 dark:border-gray-700 hover:border-blue-500 dark:hover:border-blue-400 rounded-2xl p-8 text-center cursor-pointer transition-all bg-gray-50/50 dark:bg-gray-800/40 hover:bg-blue-50/40 dark:hover:bg-gray-800/80 group">
+            <div id="drop-zone"
+              class="border-2 border-dashed border-gray-300 dark:border-gray-700 hover:border-blue-500 dark:hover:border-blue-400 rounded-2xl p-8 text-center cursor-pointer transition-all bg-gray-50/50 dark:bg-gray-800/40 hover:bg-blue-50/40 dark:hover:bg-gray-800/80 group">
               <input type="file" id="file-input" accept=".eml,.msg,.txt" class="hidden">
               <div class="space-y-3">
-                <div class="w-14 h-14 mx-auto rounded-2xl bg-blue-100 dark:bg-blue-950 text-blue-600 dark:text-blue-400 flex items-center justify-center group-hover:scale-105 transition-transform text-2xl">
+                <div
+                  class="w-14 h-14 mx-auto rounded-2xl bg-blue-100 dark:bg-blue-950 text-blue-600 dark:text-blue-400 flex items-center justify-center group-hover:scale-105 transition-transform text-2xl">
                   <i class="fa-solid fa-file-import"></i>
                 </div>
                 <div>
                   <p class="text-sm font-bold text-gray-800 dark:text-gray-200">
-                    Drag & drop your <code class="text-blue-600 dark:text-blue-400 font-mono">.eml</code> file here, or <span class="text-blue-600 dark:text-blue-400 underline">browse files</span>
+                    Drag & drop your <code class="text-blue-600 dark:text-blue-400 font-mono">.eml</code> file here, or
+                    <span class="text-blue-600 dark:text-blue-400 underline">browse files</span>
                   </p>
-                  <p class="text-xs text-gray-400 dark:text-gray-500 mt-1">Maximum file size: 25MB • Automated SHA-256 chain of custody</p>
+                  <p class="text-xs text-gray-400 dark:text-gray-500 mt-1">Maximum file size: 25MB • Automated SHA-256
+                    chain of custody</p>
                 </div>
               </div>
             </div>
@@ -278,19 +336,23 @@
           <!-- Quick Test Sample Buttons -->
           <div class="mt-6 pt-4 border-t border-gray-100 dark:border-gray-800">
             <div class="flex items-center justify-between mb-3">
-              <span class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Quick Benchmark Samples:</span>
+              <span class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Quick Benchmark
+                Samples:</span>
               <span class="text-[11px] text-gray-400">One-click analysis</span>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-              <button onclick="loadSample('clean')" class="px-4 py-2.5 rounded-2xl bg-gray-50 dark:bg-gray-800 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 border border-gray-200 dark:border-gray-700 hover:border-emerald-500 text-gray-700 dark:text-gray-300 hover:text-emerald-700 dark:hover:text-emerald-300 text-xs font-semibold flex items-center justify-center space-x-2 transition cursor-pointer">
+              <button onclick="loadSample('clean')"
+                class="px-4 py-2.5 rounded-2xl bg-gray-50 dark:bg-gray-800 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 border border-gray-200 dark:border-gray-700 hover:border-emerald-500 text-gray-700 dark:text-gray-300 hover:text-emerald-700 dark:hover:text-emerald-300 text-xs font-semibold flex items-center justify-center space-x-2 transition cursor-pointer">
                 <i class="fa-solid fa-circle-check text-emerald-500"></i>
                 <span>Clean Email</span>
               </button>
-              <button onclick="loadSample('phishing')" class="px-4 py-2.5 rounded-2xl bg-gray-50 dark:bg-gray-800 hover:bg-rose-50 dark:hover:bg-rose-950/40 border border-gray-200 dark:border-gray-700 hover:border-rose-500 text-gray-700 dark:text-gray-300 hover:text-rose-700 dark:hover:text-rose-300 text-xs font-semibold flex items-center justify-center space-x-2 transition cursor-pointer">
+              <button onclick="loadSample('phishing')"
+                class="px-4 py-2.5 rounded-2xl bg-gray-50 dark:bg-gray-800 hover:bg-rose-50 dark:hover:bg-rose-950/40 border border-gray-200 dark:border-gray-700 hover:border-rose-500 text-gray-700 dark:text-gray-300 hover:text-rose-700 dark:hover:text-rose-300 text-xs font-semibold flex items-center justify-center space-x-2 transition cursor-pointer">
                 <i class="fa-solid fa-triangle-exclamation text-rose-500"></i>
                 <span>Phishing Attack</span>
               </button>
-              <button onclick="loadSample('spoofed')" class="px-4 py-2.5 rounded-2xl bg-gray-50 dark:bg-gray-800 hover:bg-amber-50 dark:hover:bg-amber-950/40 border border-gray-200 dark:border-gray-700 hover:border-amber-500 text-gray-700 dark:text-gray-300 hover:text-amber-700 dark:hover:text-amber-300 text-xs font-semibold flex items-center justify-center space-x-2 transition cursor-pointer">
+              <button onclick="loadSample('spoofed')"
+                class="px-4 py-2.5 rounded-2xl bg-gray-50 dark:bg-gray-800 hover:bg-amber-50 dark:hover:bg-amber-950/40 border border-gray-200 dark:border-gray-700 hover:border-amber-500 text-gray-700 dark:text-gray-300 hover:text-amber-700 dark:hover:text-amber-300 text-xs font-semibold flex items-center justify-center space-x-2 transition cursor-pointer">
                 <i class="fa-solid fa-user-ninja text-amber-500"></i>
                 <span>CEO Wire Spoof</span>
               </button>
@@ -299,20 +361,25 @@
         </div>
 
         <!-- Threat Memory & Campaign Cluster Preview Card -->
-        <div id="campaign-section" class="lg:col-span-5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-3xl p-6 sm:p-8 shadow-sm flex flex-col justify-between">
+        <div id="campaign-section"
+          class="lg:col-span-5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-3xl p-6 sm:p-8 shadow-sm flex flex-col justify-between">
           <div>
             <div class="flex items-center justify-between mb-4">
               <div class="flex items-center space-x-3">
-                <div class="h-9 w-9 rounded-2xl bg-indigo-100 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-sm">
+                <div
+                  class="h-9 w-9 rounded-2xl bg-indigo-100 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-sm">
                   <i class="fa-solid fa-network-wired"></i>
                 </div>
                 <h3 class="text-base font-bold text-gray-900 dark:text-white">Threat Correlation Cluster</h3>
               </div>
-              <span class="text-[10px] font-bold px-2.5 py-1 rounded-full bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800">Threat Memory</span>
+              <span
+                class="text-[10px] font-bold px-2.5 py-1 rounded-full bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800">Threat
+                Memory</span>
             </div>
-            
+
             <!-- Visual SVG Cluster -->
-            <div class="relative h-48 rounded-2xl bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 flex items-center justify-center p-3">
+            <div
+              class="relative h-48 rounded-2xl bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 flex items-center justify-center p-3">
               <svg viewBox="0 0 400 180" class="w-full h-full">
                 <!-- Cluster links -->
                 <line x1="200" y1="90" x2="100" y2="40" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3,3" />
@@ -324,16 +391,18 @@
                 <!-- Center Campaign Node -->
                 <circle cx="200" cy="90" r="16" fill="#ef4444" opacity="0.9" />
                 <circle cx="200" cy="90" r="24" fill="none" stroke="#ef4444" stroke-width="1" opacity="0.4">
-                  <animate attributeName="r" values="16;28;16" dur="3s" repeatCount="indefinite"/>
+                  <animate attributeName="r" values="16;28;16" dur="3s" repeatCount="indefinite" />
                 </circle>
                 <text x="200" y="94" text-anchor="middle" fill="#ffffff" font-size="10" font-weight="bold">APT</text>
 
                 <!-- Sub-Nodes -->
                 <circle cx="100" cy="40" r="10" fill="#f97316" />
-                <text x="100" y="24" text-anchor="middle" fill="#64748b" font-size="9" font-family="monospace">185.220.101.5</text>
+                <text x="100" y="24" text-anchor="middle" fill="#64748b" font-size="9"
+                  font-family="monospace">185.220.101.5</text>
 
                 <circle cx="300" cy="40" r="10" fill="#8b5cf6" />
-                <text x="300" y="24" text-anchor="middle" fill="#64748b" font-size="9" font-family="monospace">login-verify.top</text>
+                <text x="300" y="24" text-anchor="middle" fill="#64748b" font-size="9"
+                  font-family="monospace">login-verify.top</text>
 
                 <circle cx="80" cy="130" r="8" fill="#3b82f6" />
                 <text x="80" y="148" text-anchor="middle" fill="#64748b" font-size="8">finance@victim</text>
@@ -349,7 +418,8 @@
 
           <div class="mt-4 flex items-center justify-between text-xs">
             <span class="text-gray-500 dark:text-gray-400 font-medium truncate">Wave: Brand Typosquatting Wave</span>
-            <button onclick="scrollToHistory()" class="text-blue-600 dark:text-blue-400 hover:underline font-semibold flex items-center space-x-1 cursor-pointer">
+            <button onclick="scrollToHistory()"
+              class="text-blue-600 dark:text-blue-400 hover:underline font-semibold flex items-center space-x-1 cursor-pointer">
               <span>View Correlated Cases</span>
               <i class="fa-solid fa-arrow-right text-[10px]"></i>
             </button>
@@ -358,74 +428,84 @@
 
       </div>
 
-      <!-- MAIN FORENSIC DISPLAY (TABLE + DEEP EVIDENCE DRAWER) -->
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <!-- MAIN FORENSIC DISPLAY (FULL-WIDTH TABLE) -->
+      <div class="space-y-6">
 
-        <!-- LEFT/MAIN: STRICT 10-ROW EMAIL INVESTIGATION TABLE (lg:col-span-8) -->
-        <div id="investigations" class="lg:col-span-8 space-y-6">
+        <!-- EMAIL INVESTIGATION TABLE -->
+        <div id="investigations" class="space-y-6">
 
           <!-- Table Container Card -->
-          <div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-3xl shadow-sm p-6 sm:p-8">
-            
+          <div
+            class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-3xl shadow-sm p-6 sm:p-8">
+
             <!-- Table Header Toolbar -->
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-gray-100 dark:border-gray-800">
+            <div
+              class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-gray-100 dark:border-gray-800">
               <div>
                 <h3 class="text-base font-bold text-gray-900 dark:text-white flex items-center space-x-2">
                   <i class="fa-solid fa-list-check text-blue-600"></i>
                   <span>Email Investigations</span>
-                  <span class="text-xs font-normal text-gray-400 font-mono">(Strictly 10 Rows Per Page)</span>
                 </h3>
-                <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Click any row to inspect deep forensic evidence in the right drawer</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Click any row or "View Investigation" to open
+                  the full forensic analysis</p>
               </div>
 
               <!-- Filter Search & Reload -->
               <div class="flex items-center space-x-2.5">
                 <div class="relative">
                   <i class="fa-solid fa-filter absolute left-3.5 top-3 text-gray-400 text-xs"></i>
-                  <input type="text" id="table-filter-input" onkeyup="handleTableFilter(event)" placeholder="Filter table..." class="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl pl-9 pr-3 py-2 text-xs text-gray-800 dark:text-gray-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 w-44">
+                  <input type="text" id="table-filter-input" onkeyup="handleTableFilter(event)"
+                    placeholder="Filter table..."
+                    class="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl pl-9 pr-3 py-2 text-xs text-gray-800 dark:text-gray-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 w-44">
                 </div>
-                <button onclick="fetchHistory()" class="px-3.5 py-2 rounded-2xl bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 text-xs font-semibold transition flex items-center space-x-1.5 cursor-pointer">
+                <button onclick="fetchHistory()"
+                  class="px-3.5 py-2 rounded-2xl bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 text-xs font-semibold transition flex items-center space-x-1.5 cursor-pointer">
                   <i class="fa-solid fa-rotate text-[10px]"></i>
                   <span>Reload</span>
                 </button>
               </div>
             </div>
 
-            <!-- Table -->
-            <div class="overflow-x-auto mt-2">
-              <table class="w-full text-left text-xs text-gray-700 dark:text-gray-300">
-                <thead class="text-[11px] uppercase tracking-wider text-gray-400 bg-gray-50/60 dark:bg-gray-800/60 border-b border-gray-200 dark:border-gray-800">
+            <!-- Table (Fixed Layout - Zero Horizontal Scrolling) -->
+            <div class="w-full overflow-hidden mt-2">
+              <table class="w-full table-fixed text-left text-xs text-gray-700 dark:text-gray-300">
+                <thead
+                  class="text-[11px] uppercase tracking-wider text-gray-400 bg-gray-50/60 dark:bg-gray-800/60 border-b border-gray-200 dark:border-gray-800">
                   <tr>
-                    <th class="py-3.5 px-4 font-semibold">Time</th>
-                    <th class="py-3.5 px-4 font-semibold">Sender</th>
-                    <th class="py-3.5 px-4 font-semibold">Subject</th>
-                    <th class="py-3.5 px-3 font-semibold text-center">SPF</th>
-                    <th class="py-3.5 px-3 font-semibold text-center">DKIM</th>
-                    <th class="py-3.5 px-3 font-semibold text-center">DMARC</th>
-                    <th class="py-3.5 px-3 font-semibold text-center">Score</th>
-                    <th class="py-3.5 px-3 font-semibold text-center">Threat Level</th>
-                    <th class="py-3.5 px-3 font-semibold text-center">Status</th>
-                    <th class="py-3.5 px-4 font-semibold text-right">Action</th>
+                    <th class="w-[10%] py-3 px-2 font-semibold">Time</th>
+                    <th class="w-[18%] py-3 px-2 font-semibold">Sender</th>
+                    <th class="w-[26%] py-3 px-2 font-semibold">Subject</th>
+                    <th class="w-[6%] py-3 px-1 font-semibold text-center">SPF</th>
+                    <th class="w-[6%] py-3 px-1 font-semibold text-center">DKIM</th>
+                    <th class="w-[6%] py-3 px-1 font-semibold text-center">DMARC</th>
+                    <th class="w-[5%] py-3 px-1 font-semibold text-center">Score</th>
+                    <th class="w-[7%] py-3 px-1 font-semibold text-center">Threat</th>
+                    <th class="w-[3%] py-3 px-1 font-semibold text-center">Status</th>
+                    <th class="w-[13%] py-3 px-2 font-semibold text-right">Action</th>
                   </tr>
                 </thead>
                 <tbody id="history-tbody" class="divide-y divide-gray-100 dark:divide-gray-800">
                   <tr>
-                    <td colspan="10" class="text-center py-8 text-gray-400 font-medium">Loading email investigations...</td>
+                    <td colspan="10" class="text-center py-8 text-gray-400 font-medium">Loading email investigations...
+                    </td>
                   </tr>
                 </tbody>
               </table>
             </div>
 
             <!-- Table Pagination Controls -->
-            <div class="mt-4 pt-4 border-t border-gray-100 dark:border-gray-800 flex items-center justify-between text-xs">
+            <div
+              class="mt-4 pt-4 border-t border-gray-100 dark:border-gray-800 flex items-center justify-between text-xs">
               <div class="text-gray-500 dark:text-gray-400 font-mono" id="pagination-info">
                 Showing 1-10 of 83,963 emails
               </div>
               <div class="flex items-center space-x-2">
-                <button id="btn-prev-page" onclick="changePage(-1)" class="px-3.5 py-2 rounded-2xl bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 font-semibold transition disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer">
+                <button id="btn-prev-page" onclick="changePage(-1)"
+                  class="px-3.5 py-2 rounded-2xl bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 font-semibold transition disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer">
                   <i class="fa-solid fa-chevron-left mr-1 text-[10px]"></i> Previous
                 </button>
-                <button id="btn-next-page" onclick="changePage(1)" class="px-3.5 py-2 rounded-2xl bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 font-semibold transition disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer">
+                <button id="btn-next-page" onclick="changePage(1)"
+                  class="px-3.5 py-2 rounded-2xl bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 font-semibold transition disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer">
                   Next <i class="fa-solid fa-chevron-right ml-1 text-[10px]"></i>
                 </button>
               </div>
@@ -434,217 +514,16 @@
           </div>
 
           <!-- Loading Processing Indicator -->
-          <div id="processing-indicator" class="hidden p-5 rounded-2xl bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-900/60 flex items-center space-x-4">
+          <div id="processing-indicator"
+            class="hidden p-5 rounded-2xl bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-900/60 flex items-center space-x-4">
             <div class="animate-spin text-blue-600 dark:text-blue-400 text-2xl">
               <i class="fa-solid fa-circle-notch"></i>
             </div>
             <div>
               <div class="text-sm font-bold text-gray-900 dark:text-white">Running 10-Step Forensic Pipeline...</div>
-              <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5 font-mono">Parsing MIME • Resolving DNS • Walking IP hops • Scanning Threat Intel • Generating AI Insights</p>
+              <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5 font-mono">Parsing MIME • Resolving DNS •
+                Walking IP hops • Scanning Threat Intel • Generating AI Insights</p>
             </div>
-          </div>
-
-        </div>
-
-        <!-- RIGHT: FORENSIC INVESTIGATION DRAWER / EVIDENCE PANEL (lg:col-span-4) -->
-        <div class="lg:col-span-4 space-y-6">
-
-          <!-- Results / Inspection Card -->
-          <div id="results-container" class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-3xl shadow-sm p-6 sm:p-7 space-y-5">
-            
-            <!-- Header Section -->
-            <div class="flex items-center justify-between pb-3 border-b border-gray-100 dark:border-gray-800">
-              <div class="flex items-center space-x-2.5">
-                <div class="h-9 w-9 rounded-2xl bg-blue-600 text-white flex items-center justify-center text-sm shadow-sm">
-                  <i class="fa-solid fa-microscope"></i>
-                </div>
-                <div>
-                  <h3 class="text-sm font-bold text-gray-900 dark:text-white">Forensic Investigation</h3>
-                  <div class="text-[10px] text-gray-400 font-mono">Case: <span id="chat-report-id" class="text-blue-600 dark:text-blue-400 font-bold">#Latest</span></div>
-                </div>
-              </div>
-              <span id="verdict-badge" class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-rose-50 dark:bg-rose-950/80 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-800">
-                PENDING SCAN
-              </span>
-            </div>
-
-            <!-- Threat Score Summary Box -->
-            <div class="flex items-center justify-between p-4 rounded-2xl bg-gray-50 dark:bg-gray-800/60 border border-gray-200 dark:border-gray-700/80">
-              <div class="flex items-center space-x-3.5">
-                <div id="verdict-icon-container" class="w-12 h-12 rounded-2xl bg-rose-100 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 flex items-center justify-center text-xl shadow-inner">
-                  <i id="verdict-icon" class="fa-solid fa-skull-crossbones"></i>
-                </div>
-                <div>
-                  <div id="verdict-title" class="text-xs font-black text-gray-900 dark:text-white uppercase tracking-tight">Threat Verdict</div>
-                  <p id="verdict-explanation" class="text-[11px] text-gray-500 dark:text-gray-400 leading-tight mt-0.5 line-clamp-2">Awaiting email ingestion to compute risk score</p>
-                </div>
-              </div>
-              <div class="text-right flex-shrink-0">
-                <div class="text-[10px] uppercase font-bold text-gray-400">Risk Score</div>
-                <div id="threat-score-val" class="text-2xl font-black font-mono text-rose-600 dark:text-rose-400">--/100</div>
-              </div>
-            </div>
-
-            <!-- Authentication 3-Pill Matrix & RFC 7489 Alignment -->
-            <div class="space-y-2">
-              <div class="flex items-center justify-between text-[11px] font-bold text-gray-400 uppercase tracking-wider">
-                <span>Authentication & Alignment</span>
-                <span id="dmarc-effective-badge" class="px-2 py-0.5 rounded-full text-[9px] font-mono font-bold bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300">RFC 7489</span>
-              </div>
-              <div class="grid grid-cols-3 gap-2 text-center text-xs font-mono">
-                <div class="p-2.5 rounded-2xl bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
-                  <div class="text-[10px] text-gray-400 font-sans">SPF Auth</div>
-                  <div id="auth-spf-badge" class="font-bold mt-0.5 text-emerald-500">PASS</div>
-                  <div id="spf-align-text" class="text-[9px] text-gray-400 font-sans mt-0.5">Aligned</div>
-                </div>
-                <div class="p-2.5 rounded-2xl bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
-                  <div class="text-[10px] text-gray-400 font-sans">DKIM Sign</div>
-                  <div id="auth-dkim-badge" class="font-bold mt-0.5 text-emerald-500">PASS</div>
-                  <div id="dkim-align-text" class="text-[9px] text-gray-400 font-sans mt-0.5">Aligned</div>
-                </div>
-                <div class="p-2.5 rounded-2xl bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
-                  <div class="text-[10px] text-gray-400 font-sans">DMARC Policy</div>
-                  <div id="auth-dmarc-badge" class="font-bold mt-0.5 text-rose-500">FAIL</div>
-                  <div id="dmarc-policy-text" class="text-[9px] text-rose-400 font-sans mt-0.5">Unaligned</div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Leaflet GeoLocation Map Card with Radar Sweep -->
-            <div id="map-card" class="space-y-2">
-              <div class="flex items-center justify-between text-[11px] font-bold text-gray-400 uppercase tracking-wider">
-                <span>Infrastructure Geolocation Lead</span>
-                <span id="geo-location-text" class="text-blue-600 dark:text-blue-400 font-mono text-[10px]">resolving...</span>
-              </div>
-              <div class="relative h-40 rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-800 radar-sweep">
-                <div id="threat-map" class="h-full w-full"></div>
-              </div>
-              <div id="radar-geo-fallback" class="text-[10px] text-gray-500 dark:text-gray-400 font-mono text-center truncate">
-                Probabilistic network routing lead
-              </div>
-            </div>
-
-            <!-- Interactive Threat Indicator Correlation Graph -->
-            <div id="correlation-graph-card" class="p-4 rounded-2xl bg-gray-50 dark:bg-gray-800/60 border border-gray-200 dark:border-gray-700/80 space-y-2.5">
-              <div class="flex items-center justify-between text-[11px] font-bold text-gray-700 dark:text-gray-300">
-                <span class="flex items-center space-x-1.5">
-                  <i class="fa-solid fa-circle-nodes text-indigo-600"></i>
-                  <span>Indicator Correlation Graph</span>
-                </span>
-                <span id="graph-stats-badge" class="text-[10px] font-mono text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/60 px-2 py-0.5 rounded-full">0 Nodes</span>
-              </div>
-              
-              <!-- SVG Visual Graph Canvas -->
-              <div class="relative w-full h-44 bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700/60 overflow-hidden flex items-center justify-center">
-                <svg id="correlation-svg" class="w-full h-full"></svg>
-                <div id="graph-placeholder" class="absolute inset-0 flex items-center justify-center text-[11px] text-gray-400 font-medium">
-                  Awaiting ingestion to map entity relationships
-                </div>
-              </div>
-
-              <!-- Node Legend Pills -->
-              <div class="flex flex-wrap gap-1.5 text-[9px] font-mono text-gray-600 dark:text-gray-400 pt-1">
-                <span class="px-2 py-0.5 rounded-md bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300">● Email</span>
-                <span class="px-2 py-0.5 rounded-md bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300">● Domain</span>
-                <span class="px-2 py-0.5 rounded-md bg-rose-100 dark:bg-rose-900/40 text-rose-700 dark:text-rose-300">● Origin IP</span>
-                <span class="px-2 py-0.5 rounded-md bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300">● ASN</span>
-                <span class="px-2 py-0.5 rounded-md bg-cyan-100 dark:bg-cyan-900/40 text-cyan-700 dark:text-cyan-300">● Link</span>
-              </div>
-            </div>
-
-            <!-- Transparent Explainable Risk Factors Breakdown -->
-            <div id="scoring-breakdown-card" class="p-4 rounded-2xl bg-gray-50 dark:bg-gray-800/60 border border-gray-200 dark:border-gray-700/80 space-y-2">
-              <div class="flex items-center justify-between text-[11px] font-bold text-gray-700 dark:text-gray-300">
-                <span class="flex items-center space-x-1.5">
-                  <i class="fa-solid fa-scale-balanced text-amber-600"></i>
-                  <span>Explainable Scoring Breakdown</span>
-                </span>
-                <span class="text-[10px] text-gray-400 font-mono">Weighted Heuristics</span>
-              </div>
-              <div id="scoring-factors-list" class="space-y-1.5 text-xs">
-                <div class="text-[11px] text-gray-400 font-medium py-1">Awaiting analysis for score explanations...</div>
-              </div>
-            </div>
-
-            <!-- Actionable Incident Containment Playbook -->
-            <div id="playbook-card" class="p-4 rounded-2xl bg-rose-50/50 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-900/40 space-y-2">
-              <div class="flex items-center justify-between text-[11px] font-bold text-rose-900 dark:text-rose-300">
-                <span class="flex items-center space-x-1.5">
-                  <i class="fa-solid fa-shield-halved text-rose-600"></i>
-                  <span>Incident Response Playbook</span>
-                </span>
-                <span class="text-[9px] uppercase font-bold tracking-wider text-rose-600 bg-rose-100 dark:bg-rose-900/60 px-2 py-0.5 rounded-full">SOC Triage</span>
-              </div>
-              <div id="playbook-actions-list" class="space-y-1 text-[11px] text-gray-700 dark:text-gray-300">
-                <div class="text-gray-400">Preserve message in compliance archive.</div>
-              </div>
-            </div>
-
-            <!-- Threat Intel 3-Metric Feeds -->
-            <div id="threat-intel" class="p-4 rounded-2xl bg-gray-50 dark:bg-gray-800/60 border border-gray-200 dark:border-gray-700/80 space-y-2.5">
-              <div class="flex items-center justify-between text-[11px] font-bold text-gray-700 dark:text-gray-300">
-                <span class="flex items-center space-x-1.5">
-                  <i class="fa-solid fa-tower-broadcast text-blue-600"></i>
-                  <span>Threat Intelligence Feeds</span>
-                </span>
-                <span id="intel-provenance-badge" class="text-[10px] text-emerald-600 dark:text-emerald-400 font-mono bg-emerald-50 dark:bg-emerald-950/50 px-2 py-0.5 rounded-full">LIVE API</span>
-              </div>
-              <div class="grid grid-cols-3 gap-2 text-center text-xs font-mono">
-                <div class="p-2 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
-                  <div class="text-[9px] text-gray-400 font-sans">AbuseIPDB</div>
-                  <div id="intel-abuse-score" class="font-bold text-gray-800 dark:text-gray-200 mt-0.5">-- %</div>
-                </div>
-                <div class="p-2 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
-                  <div class="text-[9px] text-gray-400 font-sans">VirusTotal</div>
-                  <div id="intel-vt-score" class="font-bold text-gray-800 dark:text-gray-200 mt-0.5">-- / 72</div>
-                </div>
-                <div class="p-2 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
-                  <div class="text-[9px] text-gray-400 font-sans">AlienVault</div>
-                  <div id="intel-otx-score" class="font-bold text-gray-800 dark:text-gray-200 mt-0.5">-- Pulses</div>
-                </div>
-              </div>
-            </div>
-
-            <!-- AI Forensic Explanation Card -->
-            <div class="p-4 rounded-2xl bg-blue-50/70 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-900/50 space-y-2">
-              <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-1.5 text-xs font-bold text-blue-900 dark:text-blue-300">
-                  <i class="fa-solid fa-brain text-blue-600"></i>
-                  <span>AI Forensic Intelligence</span>
-                </div>
-                <span id="ai-confidence-val" class="text-[10px] font-mono font-bold text-blue-700 dark:text-blue-400 bg-blue-100 dark:bg-blue-900/60 px-2 py-0.5 rounded-full">96% Conf</span>
-              </div>
-              <p id="ai-threat-explanation" class="text-xs text-gray-700 dark:text-gray-300 leading-relaxed">
-                Awaiting email ingestion to generate contextual AI explanation and root-cause analysis.
-              </p>
-            </div>
-
-            <!-- Forensic Rigor Disclaimer Callout -->
-            <div class="p-3 rounded-2xl bg-gray-50 dark:bg-gray-800/40 border border-gray-200 dark:border-gray-700/60 text-[10px] text-gray-500 dark:text-gray-400 leading-normal flex items-start space-x-2">
-              <i class="fa-solid fa-circle-info text-blue-500 mt-0.5 flex-shrink-0"></i>
-              <span><b>Forensic Notice:</b> Geolocation, ASN, and relay IPs represent probabilistic network routing leads. Conclusive human actor attribution requires judicial correlation with ISP subscriber records.</span>
-            </div>
-
-            <!-- Quick Action Buttons -->
-            <div class="space-y-2 pt-2 border-t border-gray-100 dark:border-gray-800">
-              <div class="grid grid-cols-2 gap-2">
-                <a id="btn-pdf" href="#" target="_blank" class="px-4 py-2.5 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold text-center transition flex items-center justify-center space-x-1.5 shadow-sm shadow-blue-500/20">
-                  <i class="fa-solid fa-file-pdf"></i>
-                  <span>Export PDF</span>
-                </a>
-                <a id="btn-json" href="#" target="_blank" class="px-4 py-2.5 rounded-2xl bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 text-xs font-bold text-center border border-gray-200 dark:border-gray-700 transition flex items-center justify-center space-x-1.5">
-                  <i class="fa-solid fa-code"></i>
-                  <span>Export JSON</span>
-                </a>
-              </div>
-              
-              <!-- Interactive AI Chatbot Launcher -->
-              <button onclick="toggleChatModal(true)" class="w-full px-4 py-3 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-xs font-bold transition flex items-center justify-center space-x-2 shadow-md shadow-indigo-500/20 cursor-pointer">
-                <i class="fa-solid fa-robot"></i>
-                <span>Open AI Investigation Assistant</span>
-              </button>
-            </div>
-
           </div>
 
         </div>
@@ -657,13 +536,16 @@
   <!-- =========================================================================
        6. DEDICATED AUTHENTICATION / LOGIN MODAL & SECTION ("aise hi login ka section rkho")
        ========================================================================= -->
-  <div id="login-modal" class="fixed inset-0 z-50 bg-gray-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
-    <div class="w-full max-w-md bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-3xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
-      
+  <div id="login-modal"
+    class="fixed inset-0 z-50 bg-gray-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div
+      class="w-full max-w-md bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-3xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+
       <!-- Modal Header -->
       <div class="p-6 pb-4 flex items-center justify-between border-b border-gray-100 dark:border-gray-800">
         <div class="flex items-center space-x-2.5">
-          <div class="h-9 w-9 rounded-2xl bg-blue-600 text-white flex items-center justify-center text-sm shadow-sm shadow-blue-500/30">
+          <div
+            class="h-9 w-9 rounded-2xl bg-blue-600 text-white flex items-center justify-center text-sm shadow-sm shadow-blue-500/30">
             <i class="fa-solid fa-shield-halved"></i>
           </div>
           <div>
@@ -674,31 +556,36 @@
             <p class="text-[11px] text-gray-400">Enterprise Security Access</p>
           </div>
         </div>
-        <button onclick="closeLoginModal()" class="rounded-full p-2 text-gray-400 hover:text-gray-700 dark:hover:text-white transition cursor-pointer">
+        <button onclick="closeLoginModal()"
+          class="rounded-full p-2 text-gray-400 hover:text-gray-700 dark:hover:text-white transition cursor-pointer">
           <i class="fa-solid fa-xmark text-base"></i>
         </button>
       </div>
 
       <!-- Auth Tabs: Sign In / Create Account -->
       <div class="flex border-b border-gray-200 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-800/40 px-6 pt-3">
-        <button id="auth-tab-login" onclick="switchAuthTab('login')" class="flex-1 py-2 text-center text-xs font-bold border-b-2 border-blue-600 text-blue-600 dark:text-blue-400 transition cursor-pointer">
+        <button id="auth-tab-login" onclick="switchAuthTab('login')"
+          class="flex-1 py-2 text-center text-xs font-bold border-b-2 border-blue-600 text-blue-600 dark:text-blue-400 transition cursor-pointer">
           Log In
         </button>
-        <button id="auth-tab-register" onclick="switchAuthTab('register')" class="flex-1 py-2 text-center text-xs font-semibold text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 border-b-2 border-transparent transition cursor-pointer">
+        <button id="auth-tab-register" onclick="switchAuthTab('register')"
+          class="flex-1 py-2 text-center text-xs font-semibold text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 border-b-2 border-transparent transition cursor-pointer">
           Create Account
         </button>
       </div>
 
       <!-- Modal Body -->
       <div class="p-6 sm:p-8">
-        
+
         <!-- Social One-Click Login -->
         <div class="space-y-2.5">
-          <button onclick="quickDemoLogin()" class="w-full flex items-center justify-center space-x-3 rounded-2xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-750 text-gray-700 dark:text-gray-200 text-xs font-semibold h-11 px-4 transition cursor-pointer shadow-sm">
+          <button onclick="quickDemoLogin()"
+            class="w-full flex items-center justify-center space-x-3 rounded-2xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-750 text-gray-700 dark:text-gray-200 text-xs font-semibold h-11 px-4 transition cursor-pointer shadow-sm">
             <i class="fa-brands fa-google text-rose-500"></i>
             <span>Continue with Google</span>
           </button>
-          <button onclick="quickDemoLogin()" class="w-full flex items-center justify-center space-x-3 rounded-2xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-750 text-gray-700 dark:text-gray-200 text-xs font-semibold h-11 px-4 transition cursor-pointer shadow-sm">
+          <button onclick="quickDemoLogin()"
+            class="w-full flex items-center justify-center space-x-3 rounded-2xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-750 text-gray-700 dark:text-gray-200 text-xs font-semibold h-11 px-4 transition cursor-pointer shadow-sm">
             <i class="fa-brands fa-microsoft text-blue-500"></i>
             <span>Continue with Microsoft 365</span>
           </button>
@@ -720,18 +607,22 @@
             <label class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1.5">Email Address</label>
             <div class="relative">
               <i class="fa-solid fa-envelope absolute left-3.5 top-3 text-gray-400 text-xs"></i>
-              <input type="email" id="login-email" required value="codex.monarch@soc.internal" placeholder="analyst@enterprise.com" class="w-full h-11 rounded-2xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 pl-9 pr-4 text-xs text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <input type="email" id="login-email" required value="codex.monarch@soc.internal"
+                placeholder="analyst@enterprise.com"
+                class="w-full h-11 rounded-2xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 pl-9 pr-4 text-xs text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500">
             </div>
           </div>
 
           <div>
             <div class="flex items-center justify-between mb-1.5">
               <label class="block text-xs font-semibold text-gray-700 dark:text-gray-300">Password</label>
-              <a href="javascript:void(0)" onclick="showToast('Password reset link sent to registered email.')" class="text-[11px] font-medium text-blue-600 dark:text-blue-400 hover:underline">Forgot password?</a>
+              <a href="javascript:void(0)" onclick="showToast('Password reset link sent to registered email.')"
+                class="text-[11px] font-medium text-blue-600 dark:text-blue-400 hover:underline">Forgot password?</a>
             </div>
             <div class="relative">
               <i class="fa-solid fa-lock absolute left-3.5 top-3 text-gray-400 text-xs"></i>
-              <input type="password" id="login-password" required value="••••••••••••" placeholder="••••••••••••" class="w-full h-11 rounded-2xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 pl-9 pr-4 text-xs text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <input type="password" id="login-password" required value="••••••••••••" placeholder="••••••••••••"
+                class="w-full h-11 rounded-2xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 pl-9 pr-4 text-xs text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500">
             </div>
           </div>
 
@@ -742,7 +633,8 @@
             </label>
           </div>
 
-          <button type="submit" class="w-full h-11 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold transition-all shadow-md shadow-blue-500/20 cursor-pointer flex items-center justify-center space-x-2">
+          <button type="submit"
+            class="w-full h-11 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold transition-all shadow-md shadow-blue-500/20 cursor-pointer flex items-center justify-center space-x-2">
             <span>Log In to Workspace</span>
             <i class="fa-solid fa-arrow-right text-[11px]"></i>
           </button>
@@ -752,17 +644,22 @@
         <form id="auth-form-register" onsubmit="handleLoginSubmit(event)" class="space-y-4 hidden">
           <div>
             <label class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1.5">Full Name</label>
-            <input type="text" placeholder="Security Analyst Name" class="w-full h-11 rounded-2xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-4 text-xs text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <input type="text" placeholder="Security Analyst Name"
+              class="w-full h-11 rounded-2xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-4 text-xs text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500">
           </div>
           <div>
-            <label class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1.5">Work Email Address</label>
-            <input type="email" placeholder="analyst@company.com" class="w-full h-11 rounded-2xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-4 text-xs text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <label class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1.5">Work Email
+              Address</label>
+            <input type="email" placeholder="analyst@company.com"
+              class="w-full h-11 rounded-2xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-4 text-xs text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500">
           </div>
           <div>
             <label class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1.5">Choose Password</label>
-            <input type="password" placeholder="Create strong password" class="w-full h-11 rounded-2xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-4 text-xs text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <input type="password" placeholder="Create strong password"
+              class="w-full h-11 rounded-2xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-4 text-xs text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500">
           </div>
-          <button type="submit" class="w-full h-11 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold transition-all shadow-md shadow-blue-500/20 cursor-pointer flex items-center justify-center space-x-2">
+          <button type="submit"
+            class="w-full h-11 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold transition-all shadow-md shadow-blue-500/20 cursor-pointer flex items-center justify-center space-x-2">
             <span>Create Free Account</span>
             <i class="fa-solid fa-user-plus text-[11px]"></i>
           </button>
@@ -770,7 +667,8 @@
 
         <!-- Quick One-Click Demo Button -->
         <div class="mt-5 pt-4 border-t border-gray-100 dark:border-gray-800 text-center">
-          <button onclick="quickDemoLogin()" class="text-xs text-blue-600 dark:text-blue-400 hover:underline font-bold inline-flex items-center space-x-1.5 cursor-pointer">
+          <button onclick="quickDemoLogin()"
+            class="text-xs text-blue-600 dark:text-blue-400 hover:underline font-bold inline-flex items-center space-x-1.5 cursor-pointer">
             <i class="fa-solid fa-bolt text-amber-500"></i>
             <span>One-Click Demo Login as Codex Monarch</span>
           </button>
@@ -783,12 +681,16 @@
   <!-- =========================================================================
        7. INTERACTIVE AI INVESTIGATION CHATBOT DRAWER MODAL
        ========================================================================= -->
-  <div id="chat-modal" class="fixed inset-0 z-50 bg-gray-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
-    <div class="w-full max-w-2xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-3xl shadow-2xl flex flex-col h-[640px] overflow-hidden">
+  <div id="chat-modal"
+    class="fixed inset-0 z-50 bg-gray-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div
+      class="w-full max-w-2xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-3xl shadow-2xl flex flex-col h-[640px] overflow-hidden">
       <!-- Chat Header -->
-      <div class="p-5 bg-gray-50 dark:bg-gray-800/70 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between">
+      <div
+        class="p-5 bg-gray-50 dark:bg-gray-800/70 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between">
         <div class="flex items-center space-x-3">
-          <div class="w-9 h-9 rounded-2xl bg-blue-100 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 flex items-center justify-center text-blue-600 dark:text-blue-400">
+          <div
+            class="w-9 h-9 rounded-2xl bg-blue-100 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 flex items-center justify-center text-blue-600 dark:text-blue-400">
             <i class="fa-solid fa-robot"></i>
           </div>
           <div>
@@ -796,10 +698,12 @@
               <span>MailGuardian AI Forensic Assistant</span>
               <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
             </h3>
-            <p class="text-[11px] text-gray-400">Context-grounded assistant for Case <span id="modal-chat-report-id" class="font-mono text-blue-600 dark:text-blue-400 font-bold"></span></p>
+            <p class="text-[11px] text-gray-400">Context-grounded assistant for Case <span id="modal-chat-report-id"
+                class="font-mono text-blue-600 dark:text-blue-400 font-bold"></span></p>
           </div>
         </div>
-        <button onclick="toggleChatModal(false)" class="text-gray-400 hover:text-gray-700 dark:hover:text-white p-2 text-base cursor-pointer">
+        <button onclick="toggleChatModal(false)"
+          class="text-gray-400 hover:text-gray-700 dark:hover:text-white p-2 text-base cursor-pointer">
           <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
@@ -807,28 +711,45 @@
       <!-- Chat Messages Container -->
       <div id="chat-messages-container" class="flex-grow p-5 overflow-y-auto space-y-4 text-xs font-sans">
         <div class="flex items-start space-x-3">
-          <div class="w-7 h-7 rounded-lg bg-blue-100 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 flex items-center justify-center text-blue-600 dark:text-blue-400 text-xs flex-shrink-0 mt-0.5">
+          <div
+            class="w-7 h-7 rounded-lg bg-blue-100 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 flex items-center justify-center text-blue-600 dark:text-blue-400 text-xs flex-shrink-0 mt-0.5">
             <i class="fa-solid fa-shield-halved"></i>
           </div>
-          <div class="bg-gray-100 dark:bg-gray-800/80 border border-gray-200 dark:border-gray-700 rounded-2xl p-4 text-gray-800 dark:text-gray-200 leading-relaxed max-w-[85%]">
-            Hello Security Analyst, I am your MailGuardian AI Forensic Assistant. I have analyzed this email's cryptographic headers, origin IP, SPF/DKIM/DMARC records, and threat memory history. What would you like to investigate?
+          <div
+            class="bg-gray-100 dark:bg-gray-800/80 border border-gray-200 dark:border-gray-700 rounded-2xl p-4 text-gray-800 dark:text-gray-200 leading-relaxed max-w-[85%]">
+            Hello Security Analyst, I am your MailGuardian AI Forensic Assistant. I have analyzed this email's
+            cryptographic headers, origin IP, SPF/DKIM/DMARC records, and threat memory history. What would you like to
+            investigate?
           </div>
         </div>
       </div>
 
       <!-- Suggested Prompt Chips -->
-      <div id="chat-chips-container" class="px-5 py-2.5 bg-gray-50 dark:bg-gray-850 border-t border-gray-200 dark:border-gray-800 flex items-center gap-2 overflow-x-auto text-[11px] text-blue-600 dark:text-blue-400 font-mono">
+      <div id="chat-chips-container"
+        class="px-5 py-2.5 bg-gray-50 dark:bg-gray-850 border-t border-gray-200 dark:border-gray-800 flex items-center gap-2 overflow-x-auto text-[11px] text-blue-600 dark:text-blue-400 font-mono">
         <span class="text-gray-400 text-[10px] flex-shrink-0">Suggested:</span>
-        <button onclick="sendQuickPrompt('Why is this email suspicious?')" class="px-3 py-1 rounded-xl bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700 flex-shrink-0 transition cursor-pointer">Why is this email suspicious?</button>
-        <button onclick="sendQuickPrompt('What does SPF failure mean here?')" class="px-3 py-1 rounded-xl bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700 flex-shrink-0 transition cursor-pointer">What does SPF failure mean?</button>
-        <button onclick="sendQuickPrompt('What is DMARC and why did it fail?')" class="px-3 py-1 rounded-xl bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700 flex-shrink-0 transition cursor-pointer">What is DMARC?</button>
-        <button onclick="sendQuickPrompt('What should I do next to contain this threat?')" class="px-3 py-1 rounded-xl bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700 flex-shrink-0 transition cursor-pointer">What should I do next?</button>
+        <button onclick="sendQuickPrompt('Why is this email suspicious?')"
+          class="px-3 py-1 rounded-xl bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700 flex-shrink-0 transition cursor-pointer">Why
+          is this email suspicious?</button>
+        <button onclick="sendQuickPrompt('What does SPF failure mean here?')"
+          class="px-3 py-1 rounded-xl bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700 flex-shrink-0 transition cursor-pointer">What
+          does SPF failure mean?</button>
+        <button onclick="sendQuickPrompt('What is DMARC and why did it fail?')"
+          class="px-3 py-1 rounded-xl bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700 flex-shrink-0 transition cursor-pointer">What
+          is DMARC?</button>
+        <button onclick="sendQuickPrompt('What should I do next to contain this threat?')"
+          class="px-3 py-1 rounded-xl bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700 flex-shrink-0 transition cursor-pointer">What
+          should I do next?</button>
       </div>
 
       <!-- Chat Input Form -->
-      <form id="chat-form" onsubmit="handleChatSubmit(event)" class="p-3 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 flex items-center space-x-2">
-        <input id="chat-input" type="text" placeholder="Ask a question about this email's forensic evidence..." autocomplete="off" class="flex-grow bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl px-4 py-2.5 text-xs text-gray-800 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500">
-        <button type="submit" id="chat-send-btn" class="px-4 py-2.5 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold transition flex items-center space-x-1.5 flex-shrink-0 cursor-pointer">
+      <form id="chat-form" onsubmit="handleChatSubmit(event)"
+        class="p-3 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 flex items-center space-x-2">
+        <input id="chat-input" type="text" placeholder="Ask a question about this email's forensic evidence..."
+          autocomplete="off"
+          class="flex-grow bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl px-4 py-2.5 text-xs text-gray-800 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <button type="submit" id="chat-send-btn"
+          class="px-4 py-2.5 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold transition flex items-center space-x-1.5 flex-shrink-0 cursor-pointer">
           <span>Send</span>
           <i class="fa-solid fa-paper-plane text-[10px]"></i>
         </button>
@@ -837,11 +758,108 @@
   </div>
 
   <!-- =========================================================================
-       8. FOOTER (Direct SaaS Footer from MailGuardianAI - Zero Pricing)
+       FORENSIC PROCESSING OVERLAYS
        ========================================================================= -->
-  <footer class="mt-auto border-t border-gray-200 bg-white py-12 dark:border-gray-800 dark:bg-gray-900 text-xs text-gray-500 dark:text-gray-400">
+
+  <!-- Upload Success Overlay -->
+  <div id="overlay-upload-success" class="forensic-overlay">
+    <div class="forensic-overlay-card">
+      <div class="p-8 text-center">
+        <div class="upload-success-icon">
+          <i class="fa-solid fa-check"></i>
+        </div>
+        <h3 class="text-lg font-extrabold text-gray-900 dark:text-white mt-5">Email uploaded successfully</h3>
+        <div
+          class="mt-3 p-3 rounded-xl bg-gray-50 dark:bg-gray-800/60 border border-gray-200 dark:border-gray-700/60 inline-flex items-center space-x-3 text-xs">
+          <i class="fa-solid fa-file-lines text-blue-600 text-lg"></i>
+          <div class="text-left">
+            <div id="upload-filename" class="font-bold text-gray-900 dark:text-white">email.eml</div>
+            <div id="upload-filesize" class="text-gray-400 font-mono text-[11px]">0 KB</div>
+          </div>
+          <div
+            class="h-6 w-6 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-600 flex items-center justify-center text-[10px]">
+            <i class="fa-solid fa-circle-check"></i>
+          </div>
+        </div>
+        <p class="text-xs text-gray-400 mt-4">Starting forensic analysis pipeline...</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Forensic Processing Overlay -->
+  <div id="overlay-processing" class="forensic-overlay">
+    <div class="forensic-overlay-card">
+      <div class="p-6 pb-4">
+        <div class="flex items-center space-x-3 mb-1">
+          <div class="h-10 w-10 rounded-2xl bg-blue-600 text-white flex items-center justify-center text-sm">
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+          <div>
+            <h3 class="text-sm font-extrabold text-gray-900 dark:text-white">Forensic Analysis in Progress</h3>
+            <p id="processing-status-text" class="text-[11px] text-gray-400 mt-0.5 forensic-status-text">Analyzing email
+              evidence...</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Progress bar -->
+      <div class="px-6">
+        <div class="flex items-center justify-between text-[10px] font-mono font-bold mb-1.5">
+          <span class="text-gray-400">Progress</span>
+          <span id="processing-pct" class="text-blue-600 dark:text-blue-400">0%</span>
+        </div>
+        <div class="forensic-progress-bar">
+          <div id="processing-progress-fill" class="forensic-progress-fill" style="width: 0%"></div>
+        </div>
+      </div>
+
+      <!-- Steps -->
+      <div class="p-6 pt-4 space-y-0.5" id="processing-steps-container">
+        <!-- Steps rendered by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Analysis Complete Overlay -->
+  <div id="overlay-complete" class="forensic-overlay">
+    <div class="forensic-overlay-card">
+      <div class="p-8 text-center">
+        <div class="upload-success-icon">
+          <i class="fa-solid fa-shield-check"></i>
+        </div>
+        <h3 class="text-lg font-extrabold text-gray-900 dark:text-white mt-5">Forensic analysis completed</h3>
+        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">All forensic checks have been processed successfully.
+        </p>
+
+        <!-- Risk score display -->
+        <div class="mt-5 risk-score-display inline-flex flex-col items-center">
+          <div id="complete-risk-score" class="text-4xl font-black font-mono text-gray-900 dark:text-white">—</div>
+          <div class="text-[10px] uppercase font-bold text-gray-400 tracking-wider mt-0.5">Risk Score / 100</div>
+          <div id="complete-verdict-badge"
+            class="mt-2 px-4 py-1.5 rounded-full text-[11px] font-black uppercase tracking-wider bg-gray-100 dark:bg-gray-800 text-gray-500">
+            —
+          </div>
+        </div>
+
+        <!-- View Investigation button -->
+        <div class="mt-6">
+          <a id="complete-view-btn" href="#"
+            class="inline-flex items-center space-x-2 px-6 py-3 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold transition shadow-md shadow-blue-500/20">
+            <span>View Investigation</span>
+            <i class="fa-solid fa-arrow-right text-xs"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       8. FOOTER
+       ========================================================================= -->
+  <footer
+    class="mt-auto border-t border-gray-200 bg-white py-12 dark:border-gray-800 dark:bg-gray-900 text-xs text-gray-500 dark:text-gray-400">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
-      
+
       <div class="flex items-center space-x-3">
         <div class="flex h-8 w-8 items-center justify-center rounded-xl bg-blue-600 text-white">
           <i class="fa-solid fa-shield-halved text-xs"></i>
@@ -856,9 +874,12 @@
       </div>
 
       <div class="flex flex-wrap items-center justify-center gap-6">
-        <a href="javascript:void(0)" onclick="showToast('Transient in-memory analysis. No persistent plain-text email retention.')" class="hover:text-gray-900 dark:hover:text-white transition">Privacy Policy</a>
-        <a href="javascript:void(0)" onclick="showToast('Aligned with RFC 5322 specifications and SOC operational security practices.')" class="hover:text-gray-900 dark:hover:text-white transition">Terms of Service</a>
-        <a href="javascript:void(0)" onclick="showToast('Security architecture designed for enterprise SOC environments.')" class="hover:text-gray-900 dark:hover:text-white transition">Security & Compliance</a>
+        <a href="javascript:void(0)" onclick="showToast('Zero data storage. Transient memory analysis.')"
+          class="hover:text-gray-900 dark:hover:text-white transition">Privacy Policy</a>
+        <a href="javascript:void(0)" onclick="showToast('RFC 5322 & SOC2 compliant.')"
+          class="hover:text-gray-900 dark:hover:text-white transition">Terms of Service</a>
+        <a href="javascript:void(0)" onclick="showToast('Security architecture designed for enterprise SOC environments.')"
+          class="hover:text-gray-900 dark:hover:text-white transition">Security & Compliance</a>
         <a href="mailto:support@mailguardian.ai" class="hover:text-gray-900 dark:hover:text-white transition">Contact Support</a>
       </div>
 
@@ -876,4 +897,5 @@
 
   <script src="/static/js/dashboard.js"></script>
 </body>
+
 </html>
