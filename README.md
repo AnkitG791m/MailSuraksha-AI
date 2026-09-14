@@ -1,9 +1,8 @@
-# MailSuraksha-AI (SecureX Enterprise Cyber Defense)
+# MailGuardian AI (Enterprise Cyber Defense & Forensic Intelligence)
 > **AI-Powered Autonomous Email Threat Intelligence, Forensic Investigation & Geolocation Defense Platform**  
-> *Targeted for Smart India Hackathon (SIH 2026) | Cyber Security & Digital Forensics Domain*  
 > **Tech Stack:** Python 3.11/3.12, FastAPI, Scikit-Learn, ReportLab Platypus, Leaflet.js, SQLite, Docker
 
-MailSuraksha-AI is an enterprise-grade digital forensics and automated SOC triage platform. It ingests raw RFC 822/5322 `.eml` email files, executes an automated 10-step forensic pipeline, and generates interactive origin radar maps, non-causal threat correlation graphs, calibrated risk scores, and court-admissible Section 65B (Indian Evidence Act / BSA) forensic dossiers.
+MailGuardian AI is an enterprise-grade digital forensics and automated SOC triage platform. It ingests raw RFC 822/5322 `.eml` email files, executes an automated 10-step forensic pipeline, and generates interactive origin radar maps, non-causal threat correlation graphs, calibrated risk scores, and court-admissible Section 65B (Indian Evidence Act / BSA) forensic dossiers.
 
 ---
 
@@ -30,7 +29,7 @@ flowchart TD
 
 ## 2. Deep Dive: Stage-by-Stage Forensic Engineering
 
-Every stage in MailSuraksha-AI is built according to RFC standards, forensic best practices, and enterprise fault tolerance. Below is the comprehensive matrix explaining:
+Every stage in MailGuardian AI is built according to RFC standards, forensic best practices, and enterprise fault tolerance. Below is the comprehensive matrix explaining:
 1. **What check/authentication is performed?**
 2. **Why is it performed (Forensic & Threat Rationale)?**
 3. **Can something else be used instead or alongside (Alternatives & Modern Standards)?**
@@ -243,58 +242,52 @@ Every stage in MailSuraksha-AI is built according to RFC standards, forensic bes
 ## 4. Directory Structure
 
 ```
-MailSuraksha-AI/
-├── app.py                 # FastAPI application, authentication & REST endpoints
-├── config.py              # Application settings, relay trust & scoring configuration
-├── database.py            # SQLite database models, threat memory & audit logs
+MailGuardian-AI/
+├── app.py                      # FastAPI application, route privacy guard, and REST endpoints
+├── config.py                   # Central settings, RFC parameters, and threshold constants
+├── database.py                 # SQLite database, 7-day threat cache, audit trail, threat memory
+├── Dockerfile                  # Containerized deployment manifest
+├── docker-compose.yml          # Production orchestration with health checks
+├── requirements.txt            # Production Python dependencies
 ├── core/
-│   ├── pipeline.py        # Master pipeline coordinator (Stages 1–10)
-│   ├── parser.py          # RFC 5322 parsing, deceptive URLs, shorteners, attachments
-│   ├── auth_check.py      # PSL-aware SPF, Multi-DKIM & DMARC verification
-│   ├── origin_ip.py       # Relay trust model, clock inversion checks, candidate origin IP
-│   ├── whois_lookup.py    # WHOIS queries & domain age calculation
-│   ├── geo.py             # IP geolocation coordinates & ISP/ASN resolution
-│   ├── threat_intel.py    # Selective 3-tier threat intel & 5-key VT rotator
-│   ├── threat_memory.py   # SQLite threat memory engine & campaign correlation
-│   ├── local_analyzer.py  # Layer 1 zero-network local risk scorer
-│   ├── classifier.py      # Random Forest ML classifier with explainable features
-│   ├── risk_scorer.py     # Calibrated Scoring Engine v2026.1 & structured playbooks
-│   ├── quishing_scanner.py# Computer vision QR code quishing payload detector
-│   ├── ai_intelligence.py # LLM multi-tier executive summaries & plain translation
-│   └── report.py          # ReportLab PDF (Section 65B format) & JSON forensic reports
-├── ml/
-│   ├── train.py           # Model training pipeline
-│   └── model.pkl          # Serialized model & TF-IDF vectorizer bundle
-├── tests/
-│   ├── test_rfc_alignment.py       # PSL extraction, strict vs relaxed, multi-DKIM
-│   ├── test_origin_assessment.py  # Relay trust model & timestamp inversion
-│   └── test_evidence_integrity.py  # Pre-parse hash stability & calibrated scoring
-├── samples/               # Realistic email evidence samples
-│   ├── clean_sample.eml   # Legitimate GitHub Dependabot alert
-│   ├── phishing_sample.eml# Microsoft credential harvest with deceptive anchor link
-│   └── spoofed_sample.eml # Executive wire transfer fraud with SPF failure
-├── templates/
-│   ├── index.html         # Public landing page with features & threat stats
-│   ├── login.html         # Secure SOC analyst login portal
-│   └── dashboard.html     # Protected SOC dashboard with Leaflet radar & graph
+│   ├── pipeline.py             # 10-stage forensic pipeline orchestrator
+│   ├── parser.py               # RFC 5322 MIME parser & deceptive URL detector
+│   ├── auth.py                 # PSL-aware SPF, Multi-DKIM, and DMARC alignment (RFC 7489)
+│   ├── relay.py                # Relay trust model, hop traversal, and anomaly detection
+│   ├── threat_intel.py         # Multi-tier selective threat enrichment & 5-key VT pool
+│   ├── local_analyzer.py       # Zero-network heuristics & lexical analysis engine
+│   ├── risk_engine.py          # Calibrated risk engine v2026.1 with decoupled confidence
+│   ├── ml_classifier.py        # Scikit-learn TF-IDF & heuristic feature classifier
+│   ├── report.py               # ReportLab Platypus PDF generator (Section 65B certified)
+│   ├── ai_intelligence.py      # LLM reasoning integration & plain-language translation
+│   ├── llm_client.py           # Multi-provider resilient LLM client (OpenRouter, Gemini, Local)
+│   └── prompts.py              # PII-sanitized forensic reasoning system prompts
 ├── static/
-│   ├── css/style.css      # Cyber defense dark-mode theme
-│   └── js/dashboard.js    # Interactive UI, Leaflet radar sweep & forensic drawers
-├── Dockerfile             # Production container definition
-├── docker-compose.yml     # Container orchestration
-├── requirements.txt       # Python dependencies
-└── .env.example           # Environment variable template
+│   ├── css/style.css           # UI styling & animations
+│   └── js/dashboard.js         # Leaflet.js radar, dynamic modals, and analyst filters
+├── templates/
+│   ├── landing.html            # Public landing page (zero sensitive data exposure)
+│   ├── login.html              # Analyst authentication portal
+│   ├── dashboard.html          # Protected SOC forensic command center
+│   └── index.html              # Standalone landing template
+├── samples/
+│   ├── clean_sample.eml        # Benign test message (DMARC pass, legitimate hops)
+│   ├── phishing_sample.eml     # Credential phishing attack (deceptive anchor, threat IP)
+│   └── spoofed_sample.eml      # Display name spoofing (DMARC alignment failure)
+├── runbooks/                   # Production incident response and recovery runbooks
+└── tests/
+    └── test_forensic_pipeline.py # Comprehensive 8-test unit verification suite
 ```
 
 ---
 
-## 5. Installation & Quick Start
+## 5. Quick Start & Installation
 
 ### 1. Prerequisites
-- Python 3.11+
+- Python 3.10, 3.11, or 3.12
 - Git
 
-### 2. Clone and Setup Environment
+### 2. Clone and Setup
 ```bash
 git clone git@github.com:AnkitG791m/MailSuraksha-AI.git
 cd MailSuraksha-AI
@@ -353,5 +346,5 @@ Open **http://localhost:8000** in your browser.
 
 ## 7. License & Disclaimers
 
-- **License:** MIT License. Built for Smart India Hackathon (SIH 2026).
-- **Forensic Disclaimer:** MailSuraksha-AI generates candidate technical intelligence and forensic documentation support. Conclusive human attribution requires lawful ISP subscriber subpoenas and judicial warrants. Electronic admissibility of Section 65B certificates is subject to court appraisal under the Indian Evidence Act / Bharatiya Sakshya Adhiniyam (BSA).
+- **License:** MIT License. Enterprise Cyber Defense Solution.
+- **Forensic Disclaimer:** MailGuardian AI generates candidate technical intelligence and forensic documentation support. Conclusive human attribution requires lawful ISP subscriber subpoenas and judicial warrants. Electronic admissibility of Section 65B certificates is subject to court appraisal under the Indian Evidence Act / Bharatiya Sakshya Adhiniyam (BSA).

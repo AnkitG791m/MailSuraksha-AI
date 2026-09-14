@@ -1,4 +1,4 @@
-# MailSuraksha AI — System Architecture & Forensic Pipeline Specification
+# MailGuardian AI — System Architecture & Forensic Pipeline Specification
 
 **Version:** 2.1.0  
 **Compliance Standards:** RFC 5322, RFC 7208, RFC 6376, RFC 7489, Section 65B (Indian Evidence Act / BSA 2023)  
@@ -8,7 +8,7 @@
 
 ## 1. High-Level Architecture Overview
 
-MailSuraksha AI implements an automated 10-layer forensic pipeline designed to ingest raw email messages (`.eml`), establish an immediate cryptographic baseline (SHA-256), verify cryptographic provenance, trace hop-by-hop relay paths, query live threat intelligence providers, evaluate ML risk classifiers, and generate forensically documented evidence packages suitable for examiner review.
+MailGuardian AI implements an automated 10-layer forensic pipeline designed to ingest raw email messages (`.eml`), establish an immediate cryptographic baseline (SHA-256), verify cryptographic provenance, trace hop-by-hop relay paths, query live threat intelligence providers, evaluate ML risk classifiers, and generate forensically documented evidence packages suitable for examiner review.
 
 ```
 +-------------------------------------------------------------------------------+

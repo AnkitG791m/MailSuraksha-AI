@@ -7,7 +7,7 @@ from config import settings
 
 class Database:
     """
-    SQLite database for SecureX:
+    SQLite database for MailGuardian AI:
     1. Analyses logs and audit trail.
     2. 7-Day Threat Intelligence Cache for indicators (IP, Domain, URL).
     3. Threat Memory Engine: historical suspicious/malicious emails for campaign correlation.

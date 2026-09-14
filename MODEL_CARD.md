@@ -1,6 +1,6 @@
-# MailSuraksha AI — Machine Learning Model Card
+# MailGuardian AI — Machine Learning Model Card
 
-**Model Name:** MailSuraksha Forensic Gradient Ensemble (FGE-v2)  
+**Model Name:** MailGuardian Forensic Gradient Ensemble (FGE-v2)  
 **Version:** 2.1.0  
 **Status:** Target benchmark specification — provisional and subject to independent validation against the reproducible test harness.  
 **Release Date:** September 2026  
@@ -16,7 +16,7 @@
 > **Provisional Evaluation Notice:**  
 > The quantitative metrics presented in this document represent **target benchmark specifications** established during prototyping. They are provisional and not yet independently verified across multi-institution evaluation sets. In strict adherence to forensic rigor, production deployment requires executing the reproducible evaluation harness described in Section 4.
 
-MailSuraksha FGE-v2 is an explainable machine learning model engineered for email threat classification and forensic attribution. The model operates on a 42-dimensional forensic feature vector extracted across header cryptographic integrity, DNS authentication alignment (RFC 7489), received relay path divergence, domain lexical entropy, and multi-source threat intelligence.
+MailGuardian FGE-v2 is an explainable machine learning model engineered for email threat classification and forensic attribution. The model operates on a 42-dimensional forensic feature vector extracted across header cryptographic integrity, DNS authentication alignment (RFC 7489), received relay path divergence, domain lexical entropy, and multi-source threat intelligence.
 
 The model classifies ingested `.eml` emails into three actionable risk categories:
 - **Clean (Risk Score: 0–30):** Valid authentication, standard relay transit, high-reputation infrastructure.

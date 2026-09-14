@@ -20,7 +20,7 @@ class TestRFCAlignment(unittest.TestCase):
         headers_strict = {
             "from": {"domain": "example.com", "email": "alice@example.com"},
             "return_path": {"domain": "example.com", "email": "bounces@example.com"},
-            "auth_results": "mailsuraksha.internal; spf=pass smtp.mailfrom=example.com"
+            "auth_results": "mailguardian.internal; spf=pass smtp.mailfrom=example.com"
         }
         checker_strict = AuthChecker(headers_strict)
         res_strict = checker_strict.check_all()
@@ -31,7 +31,7 @@ class TestRFCAlignment(unittest.TestCase):
         headers_relaxed = {
             "from": {"domain": "example.com", "email": "alice@example.com"},
             "return_path": {"domain": "mail.example.com", "email": "bounces@mail.example.com"},
-            "auth_results": "mailsuraksha.internal; spf=pass smtp.mailfrom=mail.example.com"
+            "auth_results": "mailguardian.internal; spf=pass smtp.mailfrom=mail.example.com"
         }
         checker_relaxed = AuthChecker(headers_relaxed)
         res_relaxed = checker_relaxed.check_all()
@@ -43,7 +43,7 @@ class TestRFCAlignment(unittest.TestCase):
         headers_unaligned = {
             "from": {"domain": "bank.com", "email": "security@bank.com"},
             "return_path": {"domain": "attacker.net", "email": "drop@attacker.net"},
-            "auth_results": "mailsuraksha.internal; spf=pass smtp.mailfrom=attacker.net"
+            "auth_results": "mailguardian.internal; spf=pass smtp.mailfrom=attacker.net"
         }
         checker_unaligned = AuthChecker(headers_unaligned)
         res_unaligned = checker_unaligned.check_all()
@@ -59,7 +59,7 @@ class TestRFCAlignment(unittest.TestCase):
                 "v=1; a=rsa-sha256; c=relaxed/relaxed; d=sendgrid.net; s=smtp; bh=xyz; b=abc",
                 "v=1; a=rsa-sha256; c=relaxed/relaxed; d=acme.com; s=s1; bh=xyz; b=123"
             ],
-            "auth_results": "mailsuraksha.internal; dkim=pass header.d=sendgrid.net; dkim=pass header.d=acme.com"
+            "auth_results": "mailguardian.internal; dkim=pass header.d=sendgrid.net; dkim=pass header.d=acme.com"
         }
         checker = AuthChecker(headers)
         res = checker.check_all()

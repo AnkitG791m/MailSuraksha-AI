@@ -59,7 +59,7 @@ class AnalysisPipeline:
             "md5": raw_md5,
             "byte_size": len(raw_bytes),
             "acquisition_utc": timestamp,
-            "tool_name": "MailSuraksha AI Forensic Engine",
+            "tool_name": "MailGuardian AI Forensic Engine",
             "tool_version": "2.1.0",
             "parser_policy": "RFC 5322 Standards-Compliant",
             "time_sync_reference": "UTC System Clock"

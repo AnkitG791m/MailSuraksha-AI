@@ -111,8 +111,8 @@ class LLMClient:
         headers = {
             "Authorization": f"Bearer {self.openrouter_key}",
             "Content-Type": "application/json",
-            "HTTP-Referer": "https://securex.defense",
-            "X-Title": "SecureX AI Intelligence"
+            "HTTP-Referer": "https://mailguardian.ai",
+            "X-Title": "MailGuardian AI Intelligence"
         }
         payload = {
             "model": model,

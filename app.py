@@ -24,7 +24,7 @@ from core.pipeline import pipeline
 from database import db
 
 app = FastAPI(
-    title="MailSuraksha AI - Enterprise Threat Intelligence & Forensic Platform",
+    title="MailGuardian AI - Enterprise Threat Intelligence & Forensic Platform",
     description="Automated evidence-preserving forensic analysis, RFC 7489 standards alignment, and multi-tier origin IP attribution",
     version="2.1.0"
 )
@@ -33,8 +33,8 @@ app = FastAPI(
 app.mount("/static", StaticFiles(directory=str(BASE_DIR / "static")), name="static")
 templates = Jinja2Templates(directory=str(BASE_DIR / "templates"))
 
-SESSION_COOKIE_NAME = "mailsuraksha_session"
-AUTH_SECRET = getattr(settings, "SECRET_KEY", "mailsuraksha-secure-soc-eval-2026")
+SESSION_COOKIE_NAME = "mailguardian_session"
+AUTH_SECRET = getattr(settings, "SECRET_KEY", "mailguardian-secure-soc-eval-2026")
 
 
 def create_session_token(email: str, name: str, role: str = "Lead SOC Analyst") -> str:
@@ -81,8 +81,8 @@ def require_auth(request: Request) -> dict:
 
 
 class LoginRequest(BaseModel):
-    email: Optional[str] = "codex@mailsuraksha.ai"
-    name: Optional[str] = "Codex Monarch"
+    email: Optional[str] = "analyst@mailguardian.ai"
+    name: Optional[str] = "Security Analyst"
     role: Optional[str] = "Lead SOC Analyst"
 
 
@@ -92,8 +92,8 @@ class LoginRequest(BaseModel):
 
 @app.post("/api/auth/login")
 async def auth_login(req: LoginRequest):
-    email = (req.email or "codex@mailsuraksha.ai").strip()
-    name = (req.name or "Codex Monarch").strip()
+    email = (req.email or "analyst@mailguardian.ai").strip()
+    name = (req.name or "Security Analyst").strip()
     role = (req.role or "Lead SOC Analyst").strip()
 
     token = create_session_token(email, name, role)

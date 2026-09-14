@@ -36,7 +36,7 @@ def sanitize_email_content(text: str, max_chars: int = 3000) -> str:
 
 # --- System & User Prompts ---
 
-AI_ANALYSIS_SYSTEM_PROMPT = """You are the AI Forensic Intelligence Core of SecureX, an enterprise email threat detection and forensic intelligence platform.
+AI_ANALYSIS_SYSTEM_PROMPT = """You are the AI Forensic Intelligence Core of MailGuardian AI, an enterprise email threat detection and forensic intelligence platform.
 Your role is to consume multi-layer forensic signals (SPF, DKIM, DMARC, WHOIS, Geolocation, Threat Intelligence, Heuristics, Threat Memory) and generate intelligent, human-readable forensic insights.
 
 CRITICAL RULES:
@@ -166,7 +166,7 @@ def build_analysis_prompt(
 
 # --- Investigation Assistant Chatbot Prompts ---
 
-CHAT_SYSTEM_PROMPT = """You are the SecureX Senior Incident Responder & Threat Hunting Assistant.
+CHAT_SYSTEM_PROMPT = """You are the MailGuardian AI Senior Incident Responder & Threat Hunting Assistant.
 You are assisting a security analyst or enterprise user investigating a specific analyzed email.
 
 You have access to the complete forensic evidence and investigation findings for this email.

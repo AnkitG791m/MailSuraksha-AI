@@ -1,15 +1,14 @@
-# MailGuardian AI — Master Technical Dossier & SIH Action Plan
+# MailGuardian AI — Master Technical Dossier & Platform Architecture
 > **Enterprise-Grade AI Email Threat Intelligence, Forensic Investigation & Automated Defense Platform**  
-> *Targeted for Smart India Hackathon (SIH 2026) | Cyber Security & Digital Forensics Domain*  
 > **Prepared by:** Lead Cyber Defense Architect  
 > **Document Status:** Comprehensive System Architecture, RFC Engineering & Forensic Evaluation Guide  
 
 ---
 
-## 1. Executive Summary & SIH Alignment
+## 1. Executive Summary & Enterprise Alignment
 
-### 1.1 SIH Problem Statement Context
-Email remains the **#1 initial attack vector**, accounting for over **91% of successful cyberattacks and data breaches globally** (Verizon DBIR). In the Indian cyber landscape, government bodies (CERT-In, I4C - Indian Cybercrime Coordination Centre), law enforcement agencies, defense networks, and BFSI institutions face thousands of sophisticated phishing, spoofing, Business Email Compromise (BEC), and state-sponsored Advanced Persistent Threat (APT) campaigns daily.
+### 1.1 Problem Statement Context
+Email remains the **#1 initial attack vector**, accounting for over **91% of successful cyberattacks and data breaches globally** (Verizon DBIR). Enterprise Security Operations Centers (SOCs), government bodies, law enforcement agencies, defense networks, and BFSI institutions face thousands of sophisticated phishing, spoofing, Business Email Compromise (BEC), and state-sponsored Advanced Persistent Threat (APT) campaigns daily.
 
 Traditional spam filters (like standard Gmail/Outlook keyword scanners) fail against:
 1. **Punycode & Homoglyph spoofing** (e.g., `sbi-support.co` or Greek alpha impersonating Latin `a`).
@@ -18,14 +17,12 @@ Traditional spam filters (like standard Gmail/Outlook keyword scanners) fail aga
 4. **Targeted spear-phishing & quishing (QR-code attacks)** designed to evade signature matching.
 5. **Lack of Court-Admissible Digital Evidence**: Law enforcement officers and forensic examiners spend hours manually deconstructing raw RFC 5322 MIME headers without automated chain-of-custody cryptographic hashing.
 
-### 1.2 Is This Idea Good for Smart India Hackathon (SIH)?
-**Verdict: YES, EXCEPTIONAL & HIGHLY COMPETITIVE (Top 1% Potential).**
-
-Here is why judges consistently award top prizes to this archetype in SIH:
-* **Tangible, Live Working Demo:** Processes an uploaded `.eml` file live in 2 seconds, displaying candidate origin coordinates on a world radar map, breaking down PSL-aligned SPF/DKIM/DMARC status, displaying a non-causal threat correlation graph, and generating an instant court-admissible PDF forensic report.
-* **Dual-Use Platform (Defense & Law Enforcement):** Serves both enterprise Security Operations Centers (SOC Level-1/2 triage automation) and Cyber Crime Police Stations (Section 65B Indian Evidence Act / BSA compliant evidence documentation).
+### 1.2 Enterprise Value & Core Capabilities
+MailGuardian AI delivers high-depth forensic automation:
+* **Instant Automated Triage:** Processes raw `.eml` files in under 2 seconds, displaying candidate origin coordinates on a world radar map, breaking down PSL-aligned SPF/DKIM/DMARC status, displaying a non-causal threat correlation graph, and generating an instant court-admissible PDF forensic report.
+* **Dual-Use Platform (Defense & Law Enforcement):** Serves both enterprise Security Operations Centers (SOC Level-1/2 triage automation) and Cyber Crime Police Units (Section 65B Indian Evidence Act / BSA compliant evidence documentation).
 * **High Technical Depth:** Bridges low-level network protocols (RFC 5322, RFC 7208 SPF, RFC 6376 DKIM, RFC 7489 DMARC), cryptographic integrity (SHA-256/MD5), OSINT threat feeds (AbuseIPDB, VirusTotal, AlienVault OTX), reverse hop parsing, and LLM-powered cognitive reasoning.
-* **National Impact:** Directly aligns with the mission of **I4C (Ministry of Home Affairs)** and **CERT-In** to combat financial fraud, bank impersonation, and identity theft.
+* **National & Corporate Impact:** Combats financial fraud, bank impersonation, credential theft, and executive extortion with zero data leakage.
 
 ---
 
@@ -101,21 +98,21 @@ graph TD
 
 ---
 
-## 6. SIH Pitch Script & Live Demo Strategy
+## 6. Operational Demonstration & Incident Response Workflow
 
-### The 3-Minute Elevator Pitch
-1. **The Hook (0:00 - 0:30):**  
-   *"Respected Judges, over 90% of cyberattacks start with an email. In India today, bank customers, MSMEs, and even critical government departments lose crores daily to sophisticated spoofed emails that bypass standard spam filters. Investigating a single email takes an experienced SOC analyst 30 minutes of manual header parsing."*
+### The 3-Minute SOC Investigation Flow
+1. **The Context (0:00 - 0:30):**  
+   Over 90% of security incidents originate via malicious email. SOC analysts often spend 20 to 30 minutes per incident conducting manual header deconstruction, WHOIS audits, IP reputation lookups, and reverse hop tracing.
 2. **The Solution (0:30 - 1:15):**  
-   *"We built **MailSuraksha-AI** — an autonomous email threat intelligence and forensic investigation platform. In under 2 seconds, our 10-step multi-tier engine validates pre-parse SHA-256 hashes, audits PSL-aligned SPF/DKIM/DMARC DNS records, reconstructs reverse MTA routing hops under an explicit relay trust model, resolves the candidate origin IP on a live geolocation radar, and generates an AI-grounded, court-admissible Section 65B forensic dossier."*
-3. **The Live Demo (1:15 - 2:15):**  
-   * Drop `phishing_sample.eml` live on screen.
-   * Watch the radar pin jump to Moscow/Offshore hosting.
-   * Highlight SPF pass vs DMARC fail and deceptive hyperlink mismatch (`login.microsoftonline.com` vs `login-security-update-993.top`).
-   * Show the non-causal correlation graph connecting the attacker IP, deceptive link, and campaign memory.
-   * Click **Export PDF** to show the instant Section 65B forensic certificate.
-4. **The Impact & Conclusion (2:15 - 3:00):**  
-   *"MailSuraksha-AI reduces SOC triage time by 95%, protects citizens with plain-language translations, and provides police cyber cells with automated evidence packaging. It is fast, privacy-first, and built for a safer Digital India."*
+   **MailGuardian AI** executes an autonomous 10-step forensic pipeline in under 2 seconds: validating pre-parse SHA-256 integrity, verifying PSL-aligned SPF/DKIM/DMARC DNS records, evaluating reverse MTA routing hops under an explicit relay trust model, resolving the candidate origin IP on a live geolocation radar, and compiling a Section 65B court-admissible forensic dossier.
+3. **The Live Demonstration (1:15 - 2:15):**  
+   * Ingest target suspicious `.eml` message into the secure analyst workstation.
+   * Review immediate geolocation radar tracking candidate originating infrastructure.
+   * Examine DMARC alignment diagnostics, display name spoofing markers, and deceptive hyperlink mismatches.
+   * Inspect the non-causal correlation graph linking the threat IP, domain age, and historical campaign memory.
+   * Generate an official cryptographic PDF report complete with Section 65B certification.
+4. **The Impact (2:15 - 3:00):**  
+   MailGuardian AI accelerates SOC triage time by over 90%, protects end-users with plain-language threat explanations, and provides incident response teams with forensically sound evidence packages.
 
 ---
-*End of Master Dossier — MailGuardian AI / MailSuraksha-AI*
+*End of Master Dossier — MailGuardian AI*

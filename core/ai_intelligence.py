@@ -3,7 +3,7 @@ from typing import Dict, Any, List, Optional
 from core.llm_client import llm_client
 from core.prompts import AI_ANALYSIS_SYSTEM_PROMPT, build_analysis_prompt
 
-logger = logging.getLogger("securex.ai")
+logger = logging.getLogger("mailguardian.ai")
 
 VALID_CLASSIFICATIONS = [
     "Legitimate",
@@ -19,7 +19,7 @@ VALID_CLASSIFICATIONS = [
 
 class AIIntelligenceEngine:
     """
-    SecureX AI Intelligence Layer.
+    MailGuardian AI Intelligence Layer.
     Consumes outputs of deterministic modules:
     - SPF / DKIM / DMARC
     - WHOIS & Domain Age

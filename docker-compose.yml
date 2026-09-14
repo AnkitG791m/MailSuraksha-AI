@@ -1,11 +1,11 @@
 services:
-  securex:
+  mailguardian:
     build: .
-    container_name: securex_platform
+    container_name: mailguardian_platform
     ports:
       - "8000:8000"
     environment:
-      - APP_NAME=SecureX
+      - APP_NAME=MailGuardian AI
       - APP_ENV=production
       - DEBUG=False
       - VIRUSTOTAL_API_KEY=${VIRUSTOTAL_API_KEY:-}

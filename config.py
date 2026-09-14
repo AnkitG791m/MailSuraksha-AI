@@ -21,7 +21,7 @@ except ImportError:
                     os.environ[k.strip()] = v.strip()
 
 class Settings:
-    APP_NAME: str = os.getenv("APP_NAME", "SecureX")
+    APP_NAME: str = os.getenv("APP_NAME", "MailGuardian AI")
     APP_ENV: str = os.getenv("APP_ENV", "development")
     DEBUG: bool = os.getenv("DEBUG", "True").lower() in ("true", "1", "yes")
     HOST: str = os.getenv("HOST", "0.0.0.0")
@@ -89,7 +89,7 @@ class Settings:
     # Only Authentication-Results headers whose authserv-id matches these will be trusted
     @property
     def TRUSTED_AUTHSERV_IDS(self) -> list[str]:
-        raw = os.getenv("TRUSTED_AUTHSERV_IDS", "mailsuraksha.internal,mx.corporate.in,protection.outlook.com,google.com").strip()
+        raw = os.getenv("TRUSTED_AUTHSERV_IDS", "mailguardian.internal,mx.corporate.in,protection.outlook.com,google.com").strip()
         return [item.strip().lower() for item in raw.split(",") if item.strip()]
 
     # Configured organizational relays and boundary MTAs (CIDR or IPs)

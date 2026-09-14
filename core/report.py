@@ -315,7 +315,7 @@ class ForensicReportGenerator:
             "<b>STATUTORY EVIDENCE DOCUMENTATION CERTIFICATE (EXAMINER SUPPORT RECORD)</b><br/><br/>"
             f"1. <b>Evidence Identifier:</b> <code>{esc(self.report_id)}</code> | <b>Original Bitstream Hash (SHA-256):</b> <code>{esc(hashes.get('sha256', 'N/A'))}</code><br/>"
             f"2. <b>Acquisition Timestamp (UTC):</b> <b>{esc(self.timestamp)}</b> | <b>Time Sync Reference:</b> UTC System Clock via NTP.<br/>"
-            "3. <b>Acquisition & Processing Tool:</b> MailSuraksha AI Forensic Workstation (v2.1.0-SOC) operating on deterministic RFC 5322/7489 parsers.<br/>"
+            "3. <b>Acquisition & Processing Tool:</b> MailGuardian AI Forensic Workstation (v2.1.0-SOC) operating on deterministic RFC 5322/7489 parsers.<br/>"
             "4. <b>Integrity Baseline:</b> The SHA-256 cryptographic hash of the original electronic bitstream was recorded immediately upon ingestion prior to memory representation. "
             "No modification was made to the underlying raw evidence.<br/>"
             "5. <b>Forensic Attribution Scope:</b> Geolocation, candidate origin IP, and Autonomous System Numbers represent probabilistic network routing leads. "
