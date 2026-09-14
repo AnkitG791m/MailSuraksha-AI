@@ -16,6 +16,23 @@
   --accent-crimson: #ef4444;
 }
 
+html {
+  font-size: 17.5px;
+  -webkit-text-size-adjust: 100%;
+}
+
+@media (min-width: 1280px) {
+  html {
+    font-size: 18px;
+  }
+}
+
+@media (min-width: 1536px) {
+  html {
+    font-size: 18.5px;
+  }
+}
+
 html.dark {
   --bg-main: #0b0f19;
   --bg-card: #121829;

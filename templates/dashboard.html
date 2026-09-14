@@ -85,6 +85,12 @@
       <!-- Right Action Toolbar: Theme + User Profile + Logout -->
       <div class="flex items-center space-x-3 sm:space-x-4">
         
+        <!-- TEE Enclave Status Badge -->
+        <div class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-800 text-xs font-mono font-bold text-blue-700 dark:text-blue-300">
+          <i class="fa-solid fa-microchip text-blue-500"></i>
+          <span>TEE ENCLAVE: SECURE</span>
+        </div>
+
         <!-- Live Engine Nominal Badge -->
         <div class="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 text-[10px] font-mono font-bold text-emerald-700 dark:text-emerald-300">
           <span class="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
@@ -132,9 +138,14 @@
       <!-- Section Header -->
       <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <div class="flex items-center space-x-2">
+          <div class="flex flex-wrap items-center gap-2">
             <div class="h-2.5 w-2.5 rounded-full bg-emerald-500 animate-pulse"></div>
             <span class="text-xs font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400">Live SOC Intelligence Workspace</span>
+            <span class="text-gray-300 dark:text-gray-700">•</span>
+            <span class="inline-flex items-center space-x-1 text-xs font-bold text-emerald-600 dark:text-emerald-400">
+              <i class="fa-solid fa-user-shield text-[11px]"></i>
+              <span>TEE Enclave Active • Privacy Priority #1</span>
+            </span>
           </div>
           <h2 class="text-2xl sm:text-3xl font-extrabold text-gray-900 dark:text-white mt-1">
             Email Evidence Ingestion & Forensic Radar

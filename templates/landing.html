@@ -38,29 +38,40 @@
 
   <!-- TOP PUBLIC NAVBAR -->
   <header class="sticky top-0 z-40 w-full border-b border-gray-200/80 dark:border-gray-800/80 bg-white/90 dark:bg-gray-950/90 backdrop-blur-md">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
       
       <!-- Brand Logo -->
-      <a href="/" class="flex items-center space-x-3 group">
-        <div class="h-9 w-9 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white shadow-md shadow-blue-500/20 group-hover:scale-105 transition">
-          <i class="fa-solid fa-shield-halved text-base"></i>
+      <a href="/" class="flex items-center space-x-3.5 group">
+        <div class="h-10 w-10 sm:h-11 sm:w-11 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white shadow-md shadow-blue-500/20 group-hover:scale-105 transition">
+          <i class="fa-solid fa-shield-halved text-lg"></i>
         </div>
         <div>
           <div class="flex items-center space-x-2">
-            <span class="font-extrabold text-base tracking-tight text-gray-900 dark:text-white">MailGuardian<span class="text-blue-600 dark:text-blue-400">AI</span></span>
-            <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800">SOC 2 Type II</span>
+            <span class="font-black text-lg sm:text-xl tracking-tight text-gray-900 dark:text-white">MailGuardian<span class="text-blue-600 dark:text-blue-400">AI</span></span>
+            <span class="text-xs font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800 flex items-center space-x-1">
+              <i class="fa-solid fa-microchip text-[10px]"></i>
+              <span>TEE Enclave</span>
+            </span>
+            <span class="hidden sm:inline-block text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800">SOC 2 Type II</span>
           </div>
-          <p class="text-[10px] text-gray-400 font-mono -mt-0.5">Automated Evidence-Preserving Forensics</p>
+          <p class="text-xs text-gray-500 dark:text-gray-400 font-mono -mt-0.5 flex items-center space-x-1.5">
+            <span class="text-emerald-600 dark:text-emerald-400 font-bold">Privacy #1</span>
+            <span>•</span>
+            <span>Hardware-Isolated Confidential Forensics</span>
+          </p>
         </div>
       </a>
 
       <!-- Navigation Links -->
-      <nav class="hidden md:flex items-center space-x-8 text-xs font-semibold text-gray-600 dark:text-gray-300">
+      <nav class="hidden md:flex items-center space-x-8 text-sm font-semibold text-gray-600 dark:text-gray-300">
         <a href="#how-it-works" class="hover:text-blue-600 dark:hover:text-blue-400 transition">How It Works</a>
-        <a href="#privacy-trust" class="hover:text-blue-600 dark:hover:text-blue-400 transition">Privacy & Trust</a>
+        <a href="#privacy-trust" class="hover:text-blue-600 dark:hover:text-blue-400 transition flex items-center space-x-1.5 text-emerald-600 dark:text-emerald-400 font-bold">
+          <i class="fa-solid fa-lock text-xs"></i>
+          <span>TEE Privacy & Trust</span>
+        </a>
         <a href="#features" class="hover:text-blue-600 dark:hover:text-blue-400 transition">Forensic Capabilities</a>
         <a href="https://github.com/AnkitG791m/MailSuraksha-AI" target="_blank" class="hover:text-blue-600 dark:hover:text-blue-400 transition flex items-center space-x-1.5">
-          <i class="fa-brands fa-github text-sm"></i>
+          <i class="fa-brands fa-github text-base"></i>
           <span>GitHub</span>
         </a>
       </nav>
@@ -68,12 +79,12 @@
       <!-- Right Controls & Authentication Button -->
       <div class="flex items-center space-x-3">
         <!-- Theme Toggle -->
-        <button onclick="toggleTheme()" class="h-9 w-9 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition flex items-center justify-center cursor-pointer" title="Toggle dark mode">
-          <i id="theme-icon" class="fa-solid fa-moon text-sm"></i>
+        <button onclick="toggleTheme()" class="h-10 w-10 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition flex items-center justify-center cursor-pointer" title="Toggle dark mode">
+          <i id="theme-icon" class="fa-solid fa-moon text-base"></i>
         </button>
 
         <!-- Sign In Button (Redirects to /login) -->
-        <a href="/login" class="h-9 px-4 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold transition flex items-center space-x-1.5 shadow-sm shadow-blue-500/20">
+        <a href="/login" class="h-10 sm:h-11 px-5 sm:px-6 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold transition flex items-center space-x-2 shadow-md shadow-blue-500/25">
           <i class="fa-solid fa-user-lock text-xs"></i>
           <span>Analyst Login</span>
         </a>
@@ -86,103 +97,113 @@
   <main class="flex-grow">
     
     <!-- Hero Block -->
-    <section class="relative pt-16 pb-20 overflow-hidden">
+    <section class="relative pt-16 sm:pt-20 pb-20 sm:pb-24 overflow-hidden">
       <!-- Background Ambient Glow -->
       <div class="absolute inset-0 pointer-events-none opacity-40 dark:opacity-20 flex justify-center">
-        <div class="w-[800px] h-[400px] bg-gradient-to-b from-blue-500/20 via-indigo-500/10 to-transparent blur-3xl rounded-full"></div>
+        <div class="w-[900px] h-[450px] bg-gradient-to-b from-blue-500/20 via-indigo-500/10 to-transparent blur-3xl rounded-full"></div>
       </div>
 
-      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 space-y-6">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 space-y-7">
         
-        <!-- Enterprise Threat Intelligence Badge -->
-        <div class="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-blue-50/90 dark:bg-blue-950/80 border border-blue-200/80 dark:border-blue-800 text-blue-700 dark:text-blue-300 text-xs font-semibold shadow-sm">
-          <i class="fa-solid fa-shield-halved text-emerald-500 text-xs"></i>
-          <span>Enterprise Cyber Defense & Forensic Platform</span>
-          <span class="text-blue-300 dark:text-blue-700">|</span>
-          <span class="text-gray-500 dark:text-gray-400 font-mono text-[11px]">RFC 7489 & Section 65B Compliant</span>
+        <!-- TEE Confidential Computing & Privacy Badge -->
+        <div class="inline-flex flex-wrap items-center justify-center gap-2 px-5 py-2 rounded-full bg-emerald-50/90 dark:bg-emerald-950/80 border border-emerald-300/80 dark:border-emerald-700 text-emerald-800 dark:text-emerald-200 text-xs sm:text-sm font-semibold shadow-sm">
+          <span class="flex items-center space-x-1.5 text-emerald-600 dark:text-emerald-400 font-bold">
+            <i class="fa-solid fa-microchip"></i>
+            <span>TEE Confidential Enclave Active</span>
+          </span>
+          <span class="text-emerald-300 dark:text-emerald-700">|</span>
+          <span class="font-extrabold text-blue-700 dark:text-blue-300 flex items-center space-x-1">
+            <i class="fa-solid fa-user-shield"></i>
+            <span>User Privacy is Priority #1</span>
+          </span>
+          <span class="hidden sm:inline text-emerald-300 dark:text-emerald-700">|</span>
+          <span class="hidden sm:inline text-gray-600 dark:text-gray-400 font-mono text-xs">Zero Data Exposure</span>
         </div>
 
         <!-- Hero Headline -->
-        <h1 class="text-4xl sm:text-5xl lg:text-[56px] font-extrabold text-gray-950 dark:text-white tracking-tight leading-[1.18] max-w-3xl mx-auto">
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black text-gray-950 dark:text-white tracking-tight leading-[1.15] max-w-4xl mx-auto">
           Stop Email Threats <br>
           <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500">Before They Compromise Your Enterprise.</span>
         </h1>
 
         <!-- Subheadline -->
-        <p class="max-w-2xl mx-auto text-sm sm:text-base text-gray-600 dark:text-gray-400 leading-relaxed font-normal">
-          MailGuardian AI parses raw email headers, evaluates RFC-compliant SPF/DKIM/DMARC alignment, inspects deceptive QR quishing vectors, and correlates multi-hop infrastructure into legally defensible electronic evidence.
+        <p class="max-w-3xl mx-auto text-base sm:text-lg text-gray-600 dark:text-gray-300 leading-relaxed font-normal">
+          MailGuardian AI processes email payloads inside hardware-isolated <strong class="text-emerald-600 dark:text-emerald-400 font-semibold">Trusted Execution Environments (TEE)</strong>. Inspect RFC-compliant SPF/DKIM/DMARC alignment, uncover deceptive QR quishing vectors, and generate legally defensible Section 65B forensic evidence with complete privacy isolation.
         </p>
 
         <!-- CTA Buttons -->
-        <div class="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
-          <a href="/login" class="w-full sm:w-auto px-7 py-3.5 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs transition flex items-center justify-center space-x-2 shadow-lg shadow-blue-500/25">
-            <i class="fa-solid fa-microscope text-sm"></i>
+        <div class="pt-3 flex flex-col sm:flex-row items-center justify-center gap-4">
+          <a href="/login" class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm transition flex items-center justify-center space-x-2.5 shadow-xl shadow-blue-500/30">
+            <i class="fa-solid fa-microscope text-base"></i>
             <span>Launch Forensic Scanner</span>
             <i class="fa-solid fa-arrow-right text-xs ml-1"></i>
           </a>
 
-          <a href="#how-it-works" class="w-full sm:w-auto px-7 py-3.5 rounded-2xl bg-white dark:bg-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 border border-gray-200 dark:border-gray-800 text-gray-800 dark:text-gray-200 font-semibold text-xs transition flex items-center justify-center space-x-2">
-            <i class="fa-solid fa-circle-play text-blue-600"></i>
-            <span>Explore 10-Step Architecture</span>
+          <a href="#how-it-works" class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-white dark:bg-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 border border-gray-200 dark:border-gray-800 text-gray-800 dark:text-gray-200 font-bold text-sm transition flex items-center justify-center space-x-2.5 shadow-sm">
+            <i class="fa-solid fa-circle-play text-blue-600 text-base"></i>
+            <span>Explore 10-Step TEE Pipeline</span>
           </a>
         </div>
 
-        <!-- Notice: Zero Data Exposure on Public Landing -->
-        <div class="pt-2 flex items-center justify-center space-x-2 text-[11px] text-gray-400 font-mono">
+        <!-- Notice: Zero Data Exposure & Privacy Guarantee -->
+        <div class="pt-2 flex items-center justify-center space-x-2 text-xs text-gray-500 dark:text-gray-400 font-mono">
           <i class="fa-solid fa-lock text-emerald-500"></i>
-          <span>Workspace Access Protected: Forensic records & investigations require authenticated credentials.</span>
+          <span>Protected SOC Workspace: Zero plain-text email bodies are stored or sent to public LLMs.</span>
         </div>
 
       </div>
     </section>
 
     <!-- TRUST & PRIVACY PILLARS (Your Privacy Comes First) -->
-    <section id="privacy-trust" class="py-16 border-y border-gray-200/70 dark:border-gray-800/70 bg-white/50 dark:bg-gray-900/30">
-      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+    <section id="privacy-trust" class="py-20 border-y border-gray-200/80 dark:border-gray-800/80 bg-white/60 dark:bg-gray-900/40">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         
-        <div class="text-center space-y-2">
-          <span class="text-xs font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400 font-mono">Forensic Integrity First</span>
-          <h2 class="text-2xl sm:text-3xl font-extrabold text-gray-950 dark:text-white tracking-tight">
-            Engineered for Judicial Defense & Zero Data Leakage
+        <div class="text-center space-y-3">
+          <div class="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 text-xs font-bold uppercase tracking-wider font-mono">
+            <i class="fa-solid fa-user-shield"></i>
+            <span>Privacy Priority #1 • Zero Data Leakage</span>
+          </div>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-gray-950 dark:text-white tracking-tight">
+            Engineered with Hardware TEE Enclave Isolation
           </h2>
-          <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 max-w-xl mx-auto">
-            Unlike consumer email checkers that upload your sensitive corporate messages to public third parties, MailGuardian AI operates with complete privacy isolation.
+          <p class="text-sm sm:text-base text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+            Unlike commercial email scanners that upload sensitive corporate communications to third-party cloud LLMs, MailGuardian AI guarantees total cryptographic isolation.
           </p>
         </div>
 
         <!-- 3 Feature Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
           
-          <!-- Card 1: Ephemeral Processing -->
-          <div class="p-6 rounded-3xl bg-white dark:bg-gray-900 border border-gray-200/80 dark:border-gray-800 shadow-sm space-y-3">
-            <div class="h-10 w-10 rounded-2xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center text-lg">
-              <i class="fa-solid fa-server"></i>
+          <!-- Card 1: Hardware-Enforced TEE Enclave -->
+          <div class="p-7 sm:p-8 rounded-3xl bg-white dark:bg-gray-900 border border-gray-200/90 dark:border-gray-800 shadow-sm space-y-4">
+            <div class="h-12 w-12 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-2xl">
+              <i class="fa-solid fa-microchip"></i>
             </div>
-            <h3 class="text-sm font-bold text-gray-900 dark:text-white">Zero Cloud Leakage</h3>
-            <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
-              Email payload text is processed locally and in-memory. Zero sensitive message bodies are transmitted to public LLM servers without cryptographic sanitization.
+            <h3 class="text-lg font-extrabold text-gray-900 dark:text-white">Hardware TEE Enclave (AWS Nitro)</h3>
+            <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+              Email payload parsing, evidence hashing, and PII redacting execute in a hardware-isolated enclave. Memory is encrypted with CPU-enforced isolation, so neither cloud administrators nor host processes can view your emails.
             </p>
           </div>
 
-          <!-- Card 2: Standards-Based Alignment -->
-          <div class="p-6 rounded-3xl bg-white dark:bg-gray-900 border border-gray-200/80 dark:border-gray-800 shadow-sm space-y-3">
-            <div class="h-10 w-10 rounded-2xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-lg">
+          <!-- Card 2: Standards-Based Alignment & Zero Cloud Leakage -->
+          <div class="p-7 sm:p-8 rounded-3xl bg-white dark:bg-gray-900 border border-gray-200/90 dark:border-gray-800 shadow-sm space-y-4">
+            <div class="h-12 w-12 rounded-2xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-2xl">
               <i class="fa-solid fa-scale-balanced"></i>
             </div>
-            <h3 class="text-sm font-bold text-gray-900 dark:text-white">RFC 7489 Alignment Rigor</h3>
-            <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
-              Calculates strict vs relaxed domain alignment across envelope MAIL FROM, visible Header From, and DKIM d= signing selectors to eliminate spoofing evasion.
+            <h3 class="text-lg font-extrabold text-gray-900 dark:text-white">RFC 7489 Alignment & Zero Cloud Leakage</h3>
+            <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+              Calculates strict vs relaxed domain alignment across envelope MAIL FROM, visible Header From, and DKIM d= signing selectors. Scoring heuristics run locally in-memory with zero raw text transmitted to public AI models.
             </p>
           </div>
 
           <!-- Card 3: Section 65B Certified Dossiers -->
-          <div class="p-6 rounded-3xl bg-white dark:bg-gray-900 border border-gray-200/80 dark:border-gray-800 shadow-sm space-y-3">
-            <div class="h-10 w-10 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-lg">
+          <div class="p-7 sm:p-8 rounded-3xl bg-white dark:bg-gray-900 border border-gray-200/90 dark:border-gray-800 shadow-sm space-y-4">
+            <div class="h-12 w-12 rounded-2xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center text-2xl">
               <i class="fa-solid fa-stamp"></i>
             </div>
-            <h3 class="text-sm font-bold text-gray-900 dark:text-white">Section 65B Evidence Ready</h3>
-            <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
-              Automatically generates chain-of-custody hashes (SHA-256) and statutory electronic evidence certificates aligned with the Indian Evidence Act & Bharatiya Sakshya Adhiniyam 2023.
+            <h3 class="text-lg font-extrabold text-gray-900 dark:text-white">Section 65B & Cryptographic Attestation</h3>
+            <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+              Generates court-admissible electronic evidence certificates aligned with the Indian Evidence Act & Bharatiya Sakshya Adhiniyam 2023, sealed with SHA-256 chain of custody and TEE attestation metadata.
             </p>
           </div>
 
@@ -191,61 +212,108 @@
       </div>
     </section>
 
-    <!-- HOW IT WORKS (3 Step Visual Guide) -->
-    <section id="how-it-works" class="py-20">
-      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+    <!-- HOW IT WORKS (10-Layer Automated Pipeline with TEE Protection) -->
+    <section id="how-it-works" class="py-20 sm:py-24">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         
-        <div class="text-center space-y-2">
-          <span class="text-xs font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400 font-mono">10-Layer Automated Pipeline</span>
-          <h2 class="text-2xl sm:text-3xl font-extrabold text-gray-950 dark:text-white tracking-tight">
+        <div class="text-center space-y-3">
+          <div class="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-blue-50 dark:bg-blue-950/80 border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-300 text-xs font-bold uppercase tracking-wider font-mono">
+            <i class="fa-solid fa-microchip text-blue-500"></i>
+            <span>10-Layer Automated Pipeline • Hardware-Enforced TEE Enclave</span>
+          </div>
+          <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-950 dark:text-white tracking-tight">
             How MailGuardian AI Detects Deception
           </h2>
-          <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 max-w-lg mx-auto">
-            From raw RFC 5322 byte ingestion to judicial evidence dossiers in under 1.8 seconds.
+          <p class="text-base sm:text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto font-medium">
+            <span class="text-emerald-600 dark:text-emerald-400 font-bold">User privacy is our #1 priority:</span> From hardware-isolated TEE ingestion to judicial evidence dossiers in under 1.8 seconds.
           </p>
         </div>
 
+        <!-- TEE Confidential Computing Callout Bar -->
+        <div class="p-5 sm:p-6 rounded-3xl bg-gradient-to-r from-blue-50/90 via-emerald-50/90 to-indigo-50/90 dark:from-blue-950/40 dark:via-emerald-950/40 dark:to-indigo-950/40 border border-emerald-300/80 dark:border-emerald-800/80 flex flex-col md:flex-row items-center justify-between gap-5 shadow-sm">
+          <div class="flex items-center space-x-4">
+            <div class="h-12 w-12 sm:h-14 sm:w-14 rounded-2xl bg-emerald-500 text-white flex items-center justify-center text-2xl shadow-lg shadow-emerald-500/25 flex-shrink-0">
+              <i class="fa-solid fa-user-shield"></i>
+            </div>
+            <div>
+              <div class="flex items-center space-x-2">
+                <span class="text-base sm:text-lg font-extrabold text-gray-950 dark:text-white">Confidential TEE Enclave Active</span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-emerald-100 dark:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700">Hardware-Isolated</span>
+              </div>
+              <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-300 mt-1">
+                Every uploaded email is processed inside a Trusted Execution Environment (TEE). Encrypted memory architecture guarantees zero host eavesdropping and absolute user privacy.
+              </p>
+            </div>
+          </div>
+          <div class="flex items-center space-x-2 flex-shrink-0">
+            <span class="px-3.5 py-2 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 text-xs font-bold text-gray-700 dark:text-gray-200 shadow-sm flex items-center space-x-1.5">
+              <i class="fa-solid fa-check text-emerald-500"></i>
+              <span>Ephemeral Memory Only</span>
+            </span>
+            <span class="px-3.5 py-2 rounded-xl bg-emerald-600 text-white text-xs font-bold shadow-sm flex items-center space-x-1.5">
+              <i class="fa-solid fa-shield text-xs"></i>
+              <span>Privacy Priority #1</span>
+            </span>
+          </div>
+        </div>
+
+        <!-- 3 Pipeline Step Cards with Rich Typography & Spacing -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
           
           <!-- Step 1 -->
-          <div class="relative p-6 rounded-3xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 space-y-4">
+          <div class="relative p-7 sm:p-8 rounded-3xl bg-white dark:bg-gray-900 border border-gray-200/90 dark:border-gray-800 shadow-sm hover:shadow-md transition space-y-4">
             <div class="flex items-center justify-between">
-              <span class="text-3xl font-black font-mono text-blue-600/20 dark:text-blue-400/20">01</span>
-              <span class="h-8 w-8 rounded-full bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400 flex items-center justify-center text-xs font-bold">
+              <span class="text-4xl font-black font-mono text-blue-600/25 dark:text-blue-400/25">01</span>
+              <span class="h-11 w-11 rounded-2xl bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400 flex items-center justify-center text-base font-bold shadow-sm">
                 <i class="fa-solid fa-file-arrow-up"></i>
               </span>
             </div>
-            <h3 class="text-base font-bold text-gray-900 dark:text-white">Raw MIME Ingestion</h3>
-            <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
-              Drag & drop any suspicious <code class="text-blue-600 font-mono">.eml</code> file. The engine computes SHA-256 forensic fingerprints, extracts boundary headers, decodes base64 attachments, and traverses the Received hop chain.
+            <div>
+              <div class="inline-block text-xs font-bold font-mono uppercase tracking-wider text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950 px-2.5 py-0.5 rounded-full mb-2">
+                TEE Ingestion & Hashing
+              </div>
+              <h3 class="text-lg sm:text-xl font-extrabold text-gray-900 dark:text-white">Raw MIME Ingestion</h3>
+            </div>
+            <p class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+              Drag & drop any suspicious <code class="text-blue-600 dark:text-blue-400 font-mono font-bold">.eml</code> file. Enclave-isolated memory calculates SHA-256 forensic fingerprints, strips sender PII, decodes base64 attachments, and traverses the Received hop chain with zero host exposure.
             </p>
           </div>
 
           <!-- Step 2 -->
-          <div class="relative p-6 rounded-3xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 space-y-4">
+          <div class="relative p-7 sm:p-8 rounded-3xl bg-white dark:bg-gray-900 border border-gray-200/90 dark:border-gray-800 shadow-sm hover:shadow-md transition space-y-4">
             <div class="flex items-center justify-between">
-              <span class="text-3xl font-black font-mono text-indigo-600/20 dark:text-indigo-400/20">02</span>
-              <span class="h-8 w-8 rounded-full bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-xs font-bold">
+              <span class="text-4xl font-black font-mono text-indigo-600/25 dark:text-indigo-400/25">02</span>
+              <span class="h-11 w-11 rounded-2xl bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-base font-bold shadow-sm">
                 <i class="fa-solid fa-network-wired"></i>
               </span>
             </div>
-            <h3 class="text-base font-bold text-gray-900 dark:text-white">Multi-Tier Inspection</h3>
-            <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
-              Local zero-network scoring checks DNS TXT records, scans inline QR quishing images, resolves origin IP infrastructure via BGP ASN, and selectively correlates global threat intel (AbuseIPDB, OTX, VirusTotal).
+            <div>
+              <div class="inline-block text-xs font-bold font-mono uppercase tracking-wider text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950 px-2.5 py-0.5 rounded-full mb-2">
+                Zero Cloud Leakage
+              </div>
+              <h3 class="text-lg sm:text-xl font-extrabold text-gray-900 dark:text-white">Multi-Tier Inspection</h3>
+            </div>
+            <p class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+              Local zero-network scoring checks DNS TXT records, scans inline QR quishing images, resolves origin IP infrastructure via BGP ASN, and selectively correlates threat intelligence without sharing sensitive email bodies.
             </p>
           </div>
 
           <!-- Step 3 -->
-          <div class="relative p-6 rounded-3xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 space-y-4">
+          <div class="relative p-7 sm:p-8 rounded-3xl bg-white dark:bg-gray-900 border border-gray-200/90 dark:border-gray-800 shadow-sm hover:shadow-md transition space-y-4">
             <div class="flex items-center justify-between">
-              <span class="text-3xl font-black font-mono text-emerald-600/20 dark:text-emerald-400/20">03</span>
-              <span class="h-8 w-8 rounded-full bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xs font-bold">
+              <span class="text-4xl font-black font-mono text-emerald-600/25 dark:text-emerald-400/25">03</span>
+              <span class="h-11 w-11 rounded-2xl bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-base font-bold shadow-sm">
                 <i class="fa-solid fa-file-shield"></i>
               </span>
             </div>
-            <h3 class="text-base font-bold text-gray-900 dark:text-white">SOC Triage & Evidence Export</h3>
-            <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
-              SOC analysts receive itemized explainable score factors, visual graph correlation, actionable containment playbooks (quarantine, block domain), and one-click Section 65B forensic PDF dossiers.
+            <div>
+              <div class="inline-block text-xs font-bold font-mono uppercase tracking-wider text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950 px-2.5 py-0.5 rounded-full mb-2">
+                Section 65B & PCR Attested
+              </div>
+              <h3 class="text-lg sm:text-xl font-extrabold text-gray-900 dark:text-white">SOC Triage & Evidence Export</h3>
+            </div>
+            <p class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+              SOC analysts receive itemized explainable score factors, visual graph correlation, containment playbooks, and one-click Section 65B forensic PDF dossiers backed by hardware TEE attestation integrity.
             </p>
           </div>
 
