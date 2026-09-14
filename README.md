@@ -10,20 +10,32 @@ MailGuardian AI is an enterprise-grade digital forensics and automated SOC triag
 
 The backend processes every incoming email through a strict 10-stage forensic pipeline managed by [`AnalysisPipeline`](file:///home/ankitg791/dEMO/core/pipeline.py). The pipeline enforces zero-trust verification, cryptographic chain of custody, and multi-tier threat enrichment:
 
+<div align="center">
+  <img src="docs/images/solution_workflow.png" alt="MailGuardian AI Solution Workflow" width="850px" style="border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.1); margin: 16px 0;" />
+</div>
+
 ```mermaid
 flowchart TD
-    A[Raw .eml Email File Ingestion] --> B[Stage 1: Pre-Parse Cryptographic Ingestion & Hashing\nSHA-256 + MD5]
-    B --> C[Stage 2: Deep RFC 5322 Parsing & URL Analysis\nHeaders, Body, Attachments, Deceptive Links]
-    C --> D[Stage 3: RFC Authentication Verification\nPSL-aware SPF, Multi-DKIM, DMARC Alignment]
-    D --> E[Stage 4: Relay Trust Model & Header Anomaly Assessment\nReverse Hop Traversal, Monotonicity Checks, Candidate Origin IP]
-    E --> F[Stage 5: WHOIS & Domain Age Intelligence\nRegistration Audit, &lt;30d Disposable Domain Flag]
-    E --> G[Stage 6: Geolocation & Network Autonomous System\nCountry, City, Coordinates, ISP, ASN]
-    E --> H[Stage 7: Multi-Tier Selective Threat Intelligence\nTier 1: Local &lt;50 (0 APIs) | Tier 2: 50-70 Cache/AbuseIPDB | Tier 3: &gt;70 VT 5-Key Pool]
-    C --> I[Stage 8: ML Risk Classification & NLP Vectorization\nTF-IDF + Urgency NLP + Structural Security Signals]
-    D & F & G & H & I --> J[Stage 9: Calibrated Risk Engine v2026.1 & Threat Memory\nDecoupled Confidence, Collinearity Capping, Playbooks]
-    J --> K[Stage 10: Non-Causal Correlation Graph & Forensic Reports\nReportLab PDF with Section 65B Certificate & JSON]
-    K --> L[SOC Web Dashboard & REST APIs\nLeaflet.js Radar, Forensic Drawers, Chatbot Copilot]
+    A["Raw .eml Email File Ingestion"] --> B["Stage 1: Pre-Parse Cryptographic Ingestion & Hashing"]
+    B --> C["Stage 2: Deep RFC 5322 Parsing & Deceptive URL Analysis"]
+    C --> D["Stage 3: RFC Authentication Verification (SPF, DKIM, DMARC)"]
+    D --> E["Stage 4: Relay Trust Model & Header Anomaly Assessment"]
+    E --> F["Stage 5: WHOIS & Domain Age Intelligence"]
+    E --> G["Stage 6: Geolocation & Network Autonomous System"]
+    E --> H["Stage 7: Multi-Tier Selective Threat Intel (VT, AbuseIPDB, OTX)"]
+    C --> I["Stage 8: ML Risk Classification & NLP Vectorization"]
+    D --> J["Stage 9: Calibrated Risk Engine v2026.1 & Threat Memory"]
+    F --> J
+    G --> J
+    H --> J
+    I --> J
+    J --> K["Stage 10: Non-Causal Correlation Graph & Forensic Reports"]
+    K --> L["SOC Web Dashboard & REST APIs"]
 ```
+
+<div align="center">
+  <img src="docs/images/implementation_methodology.png" alt="Implementation Methodology & Technical Approach" width="850px" style="border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.1); margin: 16px 0;" />
+</div>
 
 ---
 
@@ -239,7 +251,41 @@ Every stage in MailGuardian AI is built according to RFC standards, forensic bes
 
 ---
 
-## 4. Directory Structure
+## 4. Technology Stack & Operational Benchmarks
+
+<div align="center">
+  <img src="docs/images/tech_stack.png" alt="MailGuardian AI Technology Stack" width="750px" style="border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.1); margin: 16px 0;" />
+</div>
+
+| Layer | Component / Tool | Role in Architecture |
+| :--- | :--- | :--- |
+| **Backend API** | **Python 3.11+ / FastAPI** | High-concurrency async REST API for evidence ingestion and analysis orchestration |
+| **Parsing Engine** | **Deterministic RFC 5322 MIME Parser** | Strict header decomposition, URL de-obfuscation, and attachment safety checks |
+| **Auth Verification** | **dnspython + publicsuffixlist** | Live RFC 7489 PSL organizational alignment, multi-DKIM, and strict/relaxed SPF |
+| **Machine Learning** | **Scikit-Learn (TF-IDF + Random Forest)** | 42-feature explainable classification and social engineering detection |
+| **Forensic Reporting** | **ReportLab Platypus Engine** | Tamper-evident PDF generation with Section 65B examiner evidence certification |
+| **Geolocation Radar** | **Leaflet.js + OpenStreetMap** | Real-time candidate origin IP geographic tracking and radar visualization |
+| **Threat Intelligence**| **VT 5-Key Pool + AbuseIPDB + OTX** | 3-tier selective quota-preserving threat enrichment |
+
+---
+
+## 5. Enterprise Impact & Comparative Analysis
+
+MailGuardian AI dramatically optimizes SOC triage velocity while minimizing false positives:
+
+<div align="center">
+  <img src="docs/images/security_challenges_comparison.png" alt="Security Challenges Comparison: Current vs MailGuardian AI" width="750px" style="border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.1); margin: 16px 0;" />
+</div>
+
+### Competitive Matrix
+
+<div align="center">
+  <img src="docs/images/competitor_analysis.png" alt="MailGuardian AI vs Traditional Gateways" width="750px" style="border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.1); margin: 16px 0;" />
+</div>
+
+---
+
+## 6. Directory Structure
 
 ```
 MailGuardian-AI/
@@ -249,6 +295,8 @@ MailGuardian-AI/
 ├── Dockerfile                  # Containerized deployment manifest
 ├── docker-compose.yml          # Production orchestration with health checks
 ├── requirements.txt            # Production Python dependencies
+├── docs/
+│   └── images/                 # Architecture, workflow, and comparative visual diagrams
 ├── core/
 │   ├── pipeline.py             # 10-stage forensic pipeline orchestrator
 │   ├── parser.py               # RFC 5322 MIME parser & deceptive URL detector
@@ -281,7 +329,7 @@ MailGuardian-AI/
 
 ---
 
-## 5. Quick Start & Installation
+## 7. Quick Start & Installation
 
 ### 1. Prerequisites
 - Python 3.10, 3.11, or 3.12
@@ -317,7 +365,7 @@ test_public_suffix_organizational_domain ... ok
 test_spf_strict_vs_relaxed_alignment ... ok
 test_untrusted_auth_results_filtering ... ok
 
-Ran 8 tests in 14.730s
+Ran 8 tests in 14.739s
 OK
 ```
 
@@ -329,7 +377,7 @@ Open **http://localhost:8000** in your browser.
 
 ---
 
-## 6. API Reference
+## 8. API Reference
 
 | Method | Endpoint | Description |
 |---|---|---|

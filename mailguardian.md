@@ -32,16 +32,20 @@ MailGuardian AI operates on a **10-Step Deterministic + Cognitive Pipeline**. It
 
 ```mermaid
 graph TD
-    A[Raw .eml Email File] --> B[Step 1: Pre-Parse Cryptographic Ingestion\nSHA-256, MD5 Chain of Custody]
-    B --> C[Step 2: Deep RFC 5322 MIME Deconstruction\nHeaders, Body, Attachments, Deceptive Links]
-    C --> D[Step 3: RFC Authentication Verification\nPSL-aware SPF, Multi-DKIM, DMARC Alignment]
-    D --> E[Step 4: Relay Trust Model & Anomaly Assessment\nMonotonicity Checks, Candidate Origin IP]
-    E --> F[Step 5: WHOIS & Domain Age Intelligence\nRegistration Audit, &lt;30d Disposable Domain Flag]
-    E --> G[Step 6: Geolocation & Autonomous System\nCountry, City, Coordinates, ISP, ASN]
-    E --> H[Step 7: Multi-Tier Selective Threat Intel\nTier 1: Local &lt;50 | Tier 2: 50-70 Cache/AbuseIPDB | Tier 3: &gt;70 VT 5-Key Pool]
-    C --> I[Step 8: ML Risk Classification & NLP Vectorization\nTF-IDF + Urgency NLP + Structural Security Signals]
-    D & F & G & H & I --> J[Step 9: Calibrated Risk Engine v2026.1 & Threat Memory\nDecoupled Confidence, Collinearity Capping, Playbooks]
-    J --> K[Step 10: Non-Causal Correlation Graph & Forensic Reports\nReportLab PDF with Section 65B Certificate & JSON]
+    A["Raw .eml Email File"] --> B["Step 1: Pre-Parse Cryptographic Ingestion (SHA-256, MD5)"]
+    B --> C["Step 2: Deep RFC 5322 MIME Deconstruction"]
+    C --> D["Step 3: RFC Authentication Verification (SPF, DKIM, DMARC)"]
+    D --> E["Step 4: Relay Trust Model & Anomaly Assessment"]
+    E --> F["Step 5: WHOIS & Domain Age Intelligence"]
+    E --> G["Step 6: Geolocation & Autonomous System"]
+    E --> H["Step 7: Multi-Tier Selective Threat Intel (VT, AbuseIPDB, OTX)"]
+    C --> I["Step 8: ML Risk Classification & NLP Vectorization"]
+    D --> J["Step 9: Calibrated Risk Engine v2026.1 & Threat Memory"]
+    F --> J
+    G --> J
+    H --> J
+    I --> J
+    J --> K["Step 10: Non-Causal Correlation Graph & Forensic Reports"]
 ```
 
 ---
